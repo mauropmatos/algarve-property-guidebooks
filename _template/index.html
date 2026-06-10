@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Property Name] — Guest Information</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1AA3DC;
+      --navy:    #1C1C5C;
+      --bg:      #FFFFFF;
+      --card:    #F8F9FB;
+      --border:  #E8EAEC;
+      --grey:    #9BA3AB;
+      --text:    #2D2D3A;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .hero {
+      background-color: var(--navy);
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 32px 20px 26px;
+    }
+    .hero-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .hero-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.15;
+    }
+    .hero-location {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 6px;
+    }
+
+    .tab-nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: var(--navy);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .tab-nav::-webkit-scrollbar { display: none; }
+    .tab-list { display: flex; padding: 0 8px; white-space: nowrap; }
+    .tab-btn {
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: rgba(255,255,255,0.45);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 13px 9px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .tab-btn:hover  { color: rgba(255,255,255,0.8); }
+    .tab-btn.active { color: #fff; border-bottom-color: var(--primary); }
+
+    .main { padding-bottom: 60px; }
+    .section { padding: 26px 20px 30px; border-bottom: 8px solid var(--card); }
+    .section:last-child { border-bottom: none; }
+    .section-heading {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 18px;
+    }
+
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+    .card:last-child { margin-bottom: 0; }
+    .card-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 5px; }
+    .card-value { font-size: 15px; font-weight: 600; color: var(--navy); }
+    .card-value.long { font-size: 13px; font-weight: 500; line-height: 1.7; color: var(--text); }
+    .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .card-grid .card { margin-bottom: 0; }
+
+    .empty { color: var(--grey) !important; font-style: italic; font-weight: 400 !important; }
+
+    .step-list { list-style: none; }
+    .step-item { display: flex; gap: 14px; align-items: flex-start; padding: 13px 0; border-bottom: 1px solid var(--border); }
+    .step-item:last-child { border-bottom: none; }
+    .step-num { flex-shrink: 0; width: 28px; height: 28px; background: var(--primary); color: #fff; border-radius: 50%; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .step-text { font-size: 14px; line-height: 1.55; color: var(--text); padding-top: 4px; }
+
+    .prop-list { list-style: none; }
+    .prop-item { padding: 13px 0; border-bottom: 1px solid var(--border); }
+    .prop-item:last-child { border-bottom: none; }
+    .prop-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 4px; }
+    .prop-value { font-size: 14px; font-weight: 500; color: var(--navy); line-height: 1.5; }
+
+    .info-list { list-style: none; }
+    .info-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--border); }
+    .info-item:last-child { border-bottom: none; }
+    .info-label { font-size: 13px; font-weight: 500; color: var(--grey); flex-shrink: 0; }
+    .info-value { font-size: 13px; font-weight: 600; color: var(--navy); text-align: right; }
+
+    .place-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+    .place-card:last-child { margin-bottom: 0; }
+    .place-name { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+    .place-desc { font-size: 13px; color: var(--grey); line-height: 1.55; }
+    .place-link { display: inline-block; margin-top: 9px; font-size: 12px; font-weight: 700; color: var(--primary); text-decoration: none; letter-spacing: 0.03em; }
+    .place-link:hover { text-decoration: underline; }
+
+    .rule-list { list-style: none; }
+    .rule-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); }
+    .rule-item:last-child { border-bottom: none; }
+    .rule-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
+
+    .checklist { list-style: none; }
+    .checklist-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); line-height: 1.5; }
+    .checklist-item:last-child { border-bottom: none; }
+    .check-box { flex-shrink: 0; width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 5px; margin-top: 1px; }
+
+    a.contact-card { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 13px 16px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; text-decoration: none; transition: background 0.15s; }
+    a.contact-card:last-child { margin-bottom: 0; }
+    a.contact-card:hover { background: #edf6fb; }
+    .contact-name { font-size: 13px; font-weight: 600; color: var(--navy); }
+    .contact-num { font-size: 13px; font-weight: 700; color: var(--primary); }
+
+    .manager-area { padding: 44px 20px 24px; text-align: center; }
+    .manager-area a { font-size: 11px; color: var(--border); text-decoration: none; letter-spacing: 0.05em; }
+    .manager-area a:hover { color: var(--grey); }
+  </style>
+</head>
+<body>
+
+  <!-- STEP 1: Update property_name, hero-location text, and page <title> above -->
+  <!-- STEP 2: Replace YOUR_SHEET_ID in the script below -->
+  <!-- STEP 3: Replace hardcoded arrival steps, restaurants, beaches, rules, checkout, and help contacts -->
+
+  <header class="hero">
+    <p class="hero-eyebrow">Guest Information</p>
+    <h1 class="hero-title" data-key="property_name">[Property Name]</h1>
+    <p class="hero-location">[Location, City, Algarve]</p>
+  </header>
+
+  <nav class="tab-nav" aria-label="Page sections">
+    <div class="tab-list">
+      <button class="tab-btn active" data-target="quick-info">Quick Info</button>
+      <button class="tab-btn" data-target="arrival">Arrival</button>
+      <button class="tab-btn" data-target="access">Access</button>
+      <button class="tab-btn" data-target="property">Property</button>
+      <button class="tab-btn" data-target="local-info">Local Info</button>
+      <button class="tab-btn" data-target="beaches">Beaches</button>
+      <button class="tab-btn" data-target="eat-drink">Eat &amp; Drink</button>
+      <button class="tab-btn" data-target="explore">Explore</button>
+      <button class="tab-btn" data-target="rules">Rules</button>
+      <button class="tab-btn" data-target="checkout">Checkout</button>
+      <button class="tab-btn" data-target="help">Help</button>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <section class="section" id="quick-info">
+      <h2 class="section-heading">Quick Info</h2>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-label">Check-in</div>
+          <div class="card-value" data-key="checkin_time"></div>
+        </div>
+        <div class="card">
+          <div class="card-label">Checkout</div>
+          <div class="card-value" data-key="checkout_time"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">Wi-Fi Network</div>
+        <div class="card-value" data-key="wifi_name"></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Wi-Fi Password</div>
+        <div class="card-value" data-key="wifi_password"></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Parking</div>
+        <div class="card-value" data-key="parking"></div>
+      </div>
+    </section>
+
+    <section class="section" id="arrival">
+      <h2 class="section-heading">Arrival</h2>
+      <ol class="step-list">
+        <!-- Replace with property-specific arrival steps -->
+        <li class="step-item"><span class="step-num">1</span><span class="step-text">Step one</span></li>
+        <li class="step-item"><span class="step-num">2</span><span class="step-text">Step two</span></li>
+      </ol>
+    </section>
+
+    <section class="section" id="access">
+      <h2 class="section-heading">Access</h2>
+      <div class="card"><div class="card-label">Gate Code</div><div class="card-value" data-key="gate_code"></div></div>
+      <div class="card"><div class="card-label">Building Code</div><div class="card-value" data-key="building_code"></div></div>
+      <div class="card"><div class="card-label">Keysafe Code</div><div class="card-value" data-key="keysafe_code"></div></div>
+      <div class="card"><div class="card-label">Address</div><div class="card-value" data-key="address"></div></div>
+      <div class="card"><div class="card-label">GPS Coordinates</div><div class="card-value" data-key="gps"></div></div>
+    </section>
+
+    <section class="section" id="property">
+      <h2 class="section-heading">Property</h2>
+      <ul class="prop-list">
+        <li class="prop-item"><div class="prop-label">Air Conditioning</div><div class="prop-value" data-key="ac_info"></div></li>
+        <li class="prop-item"><div class="prop-label">Heating</div><div class="prop-value" data-key="heating_info"></div></li>
+        <li class="prop-item"><div class="prop-label">Washing Machine</div><div class="prop-value" data-key="washing_machine"></div></li>
+        <li class="prop-item"><div class="prop-label">Dishwasher</div><div class="prop-value" data-key="dishwasher"></div></li>
+        <li class="prop-item"><div class="prop-label">Oven</div><div class="prop-value" data-key="oven"></div></li>
+        <li class="prop-item"><div class="prop-label">Coffee</div><div class="prop-value" data-key="coffee_machine"></div></li>
+        <li class="prop-item"><div class="prop-label">Hot Water</div><div class="prop-value" data-key="hot_water"></div></li>
+        <li class="prop-item"><div class="prop-label">Fuse Box</div><div class="prop-value" data-key="fuse_box"></div></li>
+        <li class="prop-item"><div class="prop-label">Bins</div><div class="prop-value" data-key="bins_location"></div></li>
+      </ul>
+    </section>
+
+    <section class="section" id="local-info">
+      <h2 class="section-heading">Local Info</h2>
+      <ul class="info-list">
+        <li class="info-item"><span class="info-label">Tap water</span><span class="info-value" data-key="tap_water"></span></li>
+        <li class="info-item"><span class="info-label">Town centre</span><span class="info-value" data-key="distance_centre"></span></li>
+        <li class="info-item"><span class="info-label">Getting around</span><span class="info-value" data-key="getting_around"></span></li>
+      </ul>
+      <div class="card" style="margin-top: 16px;">
+        <div class="card-label">Supermarkets</div>
+        <div class="card-value long" data-key="supermarkets"></div>
+      </div>
+    </section>
+
+    <section class="section" id="beaches">
+      <h2 class="section-heading">Beaches</h2>
+      <!-- Replace with property-specific beach recommendations -->
+      <div class="place-card">
+        <div class="place-name">Beach Name</div>
+        <div class="place-desc">X min walk/drive &mdash; Description.</div>
+      </div>
+    </section>
+
+    <section class="section" id="eat-drink">
+      <h2 class="section-heading">Eat &amp; Drink</h2>
+      <!-- Replace with property-specific restaurant recommendations -->
+      <div class="place-card">
+        <div class="place-name">Restaurant Name</div>
+        <div class="place-desc">Cuisine type &mdash; X min walk/drive</div>
+        <a class="place-link" href="https://maps.app.goo.gl/REPLACE" target="_blank" rel="noopener">View on Maps &rarr;</a>
+      </div>
+    </section>
+
+    <section class="section" id="explore">
+      <h2 class="section-heading">Explore</h2>
+      <!-- Replace with property-specific activities -->
+      <div class="place-card">
+        <div class="place-name">Activity Name</div>
+        <div class="place-desc">Description.</div>
+      </div>
+    </section>
+
+    <section class="section" id="rules">
+      <h2 class="section-heading">Rules</h2>
+      <ul class="rule-list">
+        <!-- Replace with property-specific house rules -->
+        <li class="rule-item"><span class="rule-dot"></span>No smoking inside</li>
+        <li class="rule-item"><span class="rule-dot"></span>No parties</li>
+        <li class="rule-item"><span class="rule-dot"></span>Quiet hours 22:00 to 08:00</li>
+      </ul>
+    </section>
+
+    <section class="section" id="checkout">
+      <h2 class="section-heading">Checkout</h2>
+      <div class="card" style="margin-bottom: 18px;">
+        <div class="card-label">Checkout by</div>
+        <div class="card-value" data-key="checkout_time"></div>
+      </div>
+      <ul class="checklist">
+        <!-- Replace with property-specific checkout steps -->
+        <li class="checklist-item"><span class="check-box"></span>Leave keys in keysafe and scramble the code</li>
+        <li class="checklist-item"><span class="check-box"></span>Close all windows and doors</li>
+        <li class="checklist-item"><span class="check-box"></span>Turn off all lights and air conditioning</li>
+      </ul>
+    </section>
+
+    <section class="section" id="help">
+      <h2 class="section-heading">Help</h2>
+      <!-- Replace phone numbers with property-specific contacts -->
+      <a class="contact-card" href="tel:+351000000000">
+        <span class="contact-name">Host 24/7</span>
+        <span class="contact-num">+351 000 000 000</span>
+      </a>
+      <a class="contact-card" href="tel:112">
+        <span class="contact-name">Emergency Services</span>
+        <span class="contact-num">112</span>
+      </a>
+    </section>
+
+  </main>
+
+  <!-- Update Sheet ID in the manager link href below too -->
+  <div class="manager-area">
+    <a href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit" target="_blank" rel="noopener">Manager Access</a>
+  </div>
+
+  <script>
+    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/export?format=csv';
+
+    function parseCSVLine(line) {
+      const fields = [];
+      let i = 0;
+      while (i < line.length) {
+        if (line[i] === '"') {
+          let field = '';
+          i++;
+          while (i < line.length) {
+            if (line[i] === '"' && line[i + 1] === '"') {
+              field += '"'; i += 2;
+            } else if (line[i] === '"') {
+              i++; break;
+            } else {
+              field += line[i++];
+            }
+          }
+          fields.push(field);
+        } else {
+          let field = '';
+          while (i < line.length && line[i] !== ',') field += line[i++];
+          fields.push(field);
+        }
+        if (i < line.length && line[i] === ',') i++;
+      }
+      return fields;
+    }
+
+    function parseCSV(text) {
+      const data = {};
+      const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim().split('\n');
+      lines.forEach(line => {
+        if (!line.trim()) return;
+        const fields = parseCSVLine(line);
+        if (fields.length >= 2) {
+          const key = fields[0].trim();
+          const value = fields[1].trim();
+          if (key) data[key] = value;
+        }
+      });
+      return data;
+    }
+
+    function injectData(data) {
+      document.querySelectorAll('[data-key]').forEach(el => {
+        const key = el.getAttribute('data-key');
+        const value = data[key];
+        if (value && value.trim()) {
+          el.textContent = value;
+          el.classList.remove('empty');
+        } else {
+          el.textContent = 'Not provided';
+          el.classList.add('empty');
+        }
+      });
+    }
+
+    async function loadSheet() {
+      try {
+        const res = await fetch(SHEET_URL);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        injectData(parseCSV(await res.text()));
+      } catch (err) {
+        console.warn('Sheet load failed:', err);
+        document.querySelectorAll('[data-key]').forEach(el => {
+          if (!el.textContent.trim()) { el.textContent = 'Not provided'; el.classList.add('empty'); }
+        });
+      }
+    }
+
+    loadSheet();
+
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const sections = document.querySelectorAll('.section');
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = document.getElementById(btn.dataset.target);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const id = entry.target.id;
+        tabBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.target === id));
+        const activeBtn = document.querySelector('.tab-btn[data-target="' + id + '"]');
+        if (activeBtn) activeBtn.scrollIntoView({ block: 'nearest', inline: 'center' });
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+    sections.forEach(s => observer.observe(s));
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDM 10 — Guest Information</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1AA3DC;
+      --navy:    #1C1C5C;
+      --bg:      #FFFFFF;
+      --card:    #F8F9FB;
+      --border:  #E8EAEC;
+      --grey:    #9BA3AB;
+      --text:    #2D2D3A;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      background-color: var(--navy);
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 32px 20px 26px;
+      overflow: hidden;
+    }
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 0;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.1) 100%);
+      z-index: 1;
+    }
+    .hero-eyebrow,
+    .hero-title,
+    .hero-location {
+      position: relative;
+      z-index: 2;
+    }
+    .hero-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .hero-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.15;
+    }
+    .hero-location {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 6px;
+    }
+
+    /* ── Tab nav ── */
+    .tab-nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: var(--navy);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .tab-nav::-webkit-scrollbar { display: none; }
+
+    .tab-list {
+      display: flex;
+      padding: 0 8px;
+      white-space: nowrap;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: rgba(255,255,255,0.45);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 13px 9px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .tab-btn:hover  { color: rgba(255,255,255,0.8); }
+    .tab-btn.active { color: #fff; border-bottom-color: var(--primary); }
+
+    /* ── Layout ── */
+    .main { padding-bottom: 60px; }
+
+    .section {
+      padding: 26px 20px 30px;
+      border-bottom: 8px solid var(--card);
+    }
+    .section:last-child { border-bottom: none; }
+
+    .section-heading {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 18px;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+    }
+    .card:last-child { margin-bottom: 0; }
+
+    .card-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 5px;
+    }
+    .card-value {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .card-value.long {
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.7;
+      color: var(--text);
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .card-grid .card { margin-bottom: 0; }
+
+    /* ── Empty placeholder ── */
+    .empty {
+      color: var(--grey) !important;
+      font-style: italic;
+      font-weight: 400 !important;
+    }
+
+    /* ── Steps ── */
+    .step-list { list-style: none; }
+    .step-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .step-item:last-child { border-bottom: none; }
+    .step-num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-text {
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--text);
+      padding-top: 4px;
+    }
+
+    /* ── Property detail rows ── */
+    .prop-list { list-style: none; }
+    .prop-item {
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .prop-item:last-child { border-bottom: none; }
+    .prop-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 4px;
+    }
+    .prop-value {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--navy);
+      line-height: 1.5;
+    }
+
+    /* ── Info rows ── */
+    .info-list { list-style: none; }
+    .info-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .info-item:last-child { border-bottom: none; }
+    .info-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--grey);
+      flex-shrink: 0;
+    }
+    .info-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--navy);
+      text-align: right;
+    }
+
+    /* ── Place cards ── */
+    .place-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+    }
+    .place-card:last-child { margin-bottom: 0; }
+    .place-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 3px;
+    }
+    .place-desc {
+      font-size: 13px;
+      color: var(--grey);
+      line-height: 1.55;
+    }
+    .place-link {
+      display: inline-block;
+      margin-top: 9px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: 0.03em;
+    }
+    .place-link:hover { text-decoration: underline; }
+
+    /* ── Rules ── */
+    .rule-list { list-style: none; }
+    .rule-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--text);
+    }
+    .rule-item:last-child { border-bottom: none; }
+    .rule-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--primary);
+      flex-shrink: 0;
+    }
+
+    /* ── Checkout checklist ── */
+    .checklist { list-style: none; }
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .checklist-item:last-child { border-bottom: none; }
+    .check-box {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border);
+      border-radius: 5px;
+      margin-top: 1px;
+    }
+
+    /* ── Contact cards ── */
+    a.contact-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    a.contact-card:last-child { margin-bottom: 0; }
+    a.contact-card:hover { background: #edf6fb; }
+    .contact-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .contact-num {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* ── Wi-Fi two-row card ── */
+    .wifi-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 7px 0;
+    }
+    .wifi-row + .wifi-row { border-top: 1px solid var(--border); }
+    .wifi-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--grey);
+      flex-shrink: 0;
+    }
+    .wifi-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      text-align: right;
+    }
+
+    /* ── Welcome note ── */
+    .welcome-section {
+      display: none;
+      padding: 20px 20px 24px;
+      border-bottom: 8px solid #d4eef8;
+    }
+    .welcome-section.visible { display: block; }
+    .welcome-card {
+      background: #EAF6FD;
+      border-left: 3px solid #1AA3DC;
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .welcome-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 8px;
+    }
+    .welcome-text {
+      font-size: 15px;
+      line-height: 1.65;
+      color: #2c3035;
+    }
+
+    /* ── Accordion (Property) ── */
+    .accordion { list-style: none; }
+    .accordion-item { border-bottom: 1px solid var(--border); }
+    .accordion-item:last-child { border-bottom: none; }
+
+    .accordion-trigger {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 14px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+      text-align: left;
+    }
+    .accordion-trigger:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+    .accordion-header { flex: 1; min-width: 0; }
+    .accordion-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 1.3;
+      margin-bottom: 3px;
+    }
+    .accordion-summary {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--grey);
+      line-height: 1.4;
+    }
+
+    .accordion-icon {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border: 1.5px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--grey);
+      font-size: 17px;
+      font-weight: 300;
+      line-height: 1;
+      margin-top: 2px;
+      transition: transform 0.28s ease, border-color 0.2s, color 0.2s;
+      user-select: none;
+    }
+    .accordion-item.open .accordion-icon {
+      transform: rotate(45deg);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.32s ease;
+    }
+    .accordion-item.open .accordion-body { max-height: 600px; }
+
+    .accordion-detail {
+      background: #EAF6FD;
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 14px;
+      font-size: 14px;
+      color: #2c3035;
+      line-height: 1.65;
+    }
+
+    /* ── Tap water subtext ── */
+    .info-subtext {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--grey);
+      margin-top: 3px;
+      text-align: right;
+    }
+
+    /* ── Manager link ── */
+    .manager-area {
+      padding: 44px 20px 24px;
+      text-align: center;
+    }
+    .manager-area a {
+      font-size: 11px;
+      color: var(--border);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+    .manager-area a:hover { color: var(--grey); }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <header class="hero">
+    <img src="../../assets/images/pdm10-hero.jpg" alt="PDM 10 exterior view" class="hero-img">
+    <p class="hero-eyebrow">Guest Information</p>
+    <h1 class="hero-title" data-key="property_name">PDM 10</h1>
+    <p class="hero-location">Porto de Mós, Lagos, Algarve</p>
+  </header>
+
+  <!-- Sticky tab navigation -->
+  <nav class="tab-nav" aria-label="Page sections">
+    <div class="tab-list">
+      <button class="tab-btn active" data-target="quick-info">Quick Info</button>
+      <button class="tab-btn" data-target="arrival">Arrival</button>
+      <button class="tab-btn" data-target="access">Access</button>
+      <button class="tab-btn" data-target="property">Property</button>
+      <button class="tab-btn" data-target="local-info">Local Info</button>
+      <button class="tab-btn" data-target="beaches">Beaches</button>
+      <button class="tab-btn" data-target="eat-drink">Eat &amp; Drink</button>
+      <button class="tab-btn" data-target="explore">Explore</button>
+      <button class="tab-btn" data-target="rules">Rules</button>
+      <button class="tab-btn" data-target="checkout">Checkout</button>
+      <button class="tab-btn" data-target="help">Help</button>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <!-- QUICK INFO -->
+    <section class="section" id="quick-info">
+      <h2 class="section-heading">Quick Info</h2>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-label">Check-in</div>
+          <div class="card-value" data-key="checkin_time"></div>
+        </div>
+        <div class="card">
+          <div class="card-label">Checkout</div>
+          <div class="card-value" data-key="checkout_time"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="wifi-row">
+          <span class="wifi-label">Network</span>
+          <span class="wifi-value" data-key="wifi_name"></span>
+        </div>
+        <div class="wifi-row">
+          <span class="wifi-label">Password</span>
+          <span class="wifi-value" data-key="wifi_password"></span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">Parking</div>
+        <div class="card-value" data-key="parking"></div>
+      </div>
+    </section>
+
+    <!-- WELCOME NOTE (shown only when manager_notes is non-empty) -->
+    <div class="welcome-section" id="welcome-note">
+      <div class="welcome-card">
+        <div class="welcome-label">Welcome Note</div>
+        <p class="welcome-text" data-key="manager_notes"></p>
+      </div>
+    </div>
+
+    <!-- ARRIVAL -->
+    <section class="section" id="arrival">
+      <h2 class="section-heading">Arrival</h2>
+      <ol class="step-list">
+        <li class="step-item">
+          <span class="step-num">1</span>
+          <span class="step-text">Head to Núcleo I at the front of the pool</span>
+        </li>
+        <li class="step-item">
+          <span class="step-num">2</span>
+          <span class="step-text">Enter the gate code at the entrance keypad</span>
+        </li>
+        <li class="step-item">
+          <span class="step-num">3</span>
+          <span class="step-text">Go to the 2nd floor, apartment 10</span>
+        </li>
+        <li class="step-item">
+          <span class="step-num">4</span>
+          <span class="step-text">Find the keysafe below the AL sign</span>
+        </li>
+        <li class="step-item">
+          <span class="step-num">5</span>
+          <span class="step-text">Enter the keysafe code and press the metal button down to open</span>
+        </li>
+        <li class="step-item">
+          <span class="step-num">6</span>
+          <span class="step-text">Take the key, close the panel, and scramble the code</span>
+        </li>
+        <li class="step-item">
+          <span class="step-num">7</span>
+          <span class="step-text">Any problems: call the host immediately</span>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ACCESS -->
+    <section class="section" id="access">
+      <h2 class="section-heading">Access</h2>
+      <div class="card">
+        <div class="card-label">Gate Code</div>
+        <div class="card-value" data-key="gate_code"></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Building Code</div>
+        <div class="card-value" data-key="building_code"></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Keysafe Code</div>
+        <div class="card-value" data-key="keysafe_code"></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Address</div>
+        <div class="card-value" data-key="address"></div>
+      </div>
+      <div class="card">
+        <div class="card-label">GPS Coordinates</div>
+        <div class="card-value" data-key="gps"></div>
+      </div>
+    </section>
+
+    <!-- PROPERTY -->
+    <section class="section" id="property">
+      <h2 class="section-heading">Property</h2>
+      <ul class="accordion">
+
+        <li class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false">
+            <div class="accordion-header">
+              <div class="accordion-title">Air Conditioning</div>
+              <div class="accordion-summary">Daikin panel on the wall</div>
+            </div>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-detail">Set the temperature using the remote or wall panel. Press the power button, use the up/down arrows to adjust temperature. For cooling set between 20 and 23 degrees. Turn off when leaving.</div>
+          </div>
+        </li>
+
+        <li class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false">
+            <div class="accordion-header">
+              <div class="accordion-title">Heating</div>
+              <div class="accordion-summary">Square white panel on the wall</div>
+            </div>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-detail">Press the power button to activate. Adjust temperature using the plus and minus buttons. Recommended setting is 21 degrees. Turn off when leaving.</div>
+          </div>
+        </li>
+
+        <li class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false">
+            <div class="accordion-header">
+              <div class="accordion-title">Washing Machine</div>
+              <div class="accordion-summary">Available. Pods under the kitchen sink.</div>
+            </div>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-detail">Bosch WGG256Z1ES. Place one pod in the drum before adding clothes. Select your programme and press start. Standard cycle is 40 degrees.</div>
+          </div>
+        </li>
+
+        <li class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false">
+            <div class="accordion-header">
+              <div class="accordion-title">Dishwasher</div>
+              <div class="accordion-summary">Available. Tablets under the kitchen sink.</div>
+            </div>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-detail">Bosch SMS4HTI16E. Place one tablet in the dispenser. Load dishes and select a programme. Press start.</div>
+          </div>
+        </li>
+
+        <li class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false">
+            <div class="accordion-header">
+              <div class="accordion-title">Oven</div>
+              <div class="accordion-summary">Teka HLB 830 electric. Easy to use.</div>
+            </div>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-detail">Turn the left dial to select the function. Turn the right dial to set the temperature. Allow 10 minutes to preheat. Turn both dials back to zero when finished.</div>
+          </div>
+        </li>
+
+        <li class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false">
+            <div class="accordion-header">
+              <div class="accordion-title">Coffee</div>
+              <div class="accordion-summary">Dolce Gusto capsules and French press available.</div>
+            </div>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-detail">Capsules and machine are on the kitchen counter. Insert a capsule, place your cup, and press the button. French press and ground coffee are also available in the cupboard above the kettle.</div>
+          </div>
+        </li>
+
+        <li class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false">
+            <div class="accordion-header">
+              <div class="accordion-title">Hot Water</div>
+              <div class="accordion-summary">Instant hot water.</div>
+            </div>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-detail">Hot water is instant throughout the apartment. No need to switch anything on.</div>
+          </div>
+        </li>
+
+        <li class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false">
+            <div class="accordion-header">
+              <div class="accordion-title">Fuse Box</div>
+              <div class="accordion-summary">Next to the entrance door, on the left.</div>
+            </div>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-detail">If you lose power, open the fuse box panel and check if any switches have flipped down. Push them back up to restore power. Call the host if the problem persists.</div>
+          </div>
+        </li>
+
+        <li class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false">
+            <div class="accordion-header">
+              <div class="accordion-title">Bins</div>
+              <div class="accordion-summary">Exit building, turn right, 30 metres ahead.</div>
+            </div>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-detail">Leave the building through the main entrance. Turn right toward the beach. The bins and recycling containers are on the right side, approximately 30 metres ahead.</div>
+          </div>
+        </li>
+
+        <li class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false">
+            <div class="accordion-header">
+              <div class="accordion-title">Parking</div>
+              <div class="accordion-summary">Any space inside the complex.</div>
+            </div>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-detail">You may park in any unmarked space within the complex. Do not park in spaces with apartment numbers marked on the ground.</div>
+          </div>
+        </li>
+
+      </ul>
+    </section>
+
+    <!-- LOCAL INFO -->
+    <section class="section" id="local-info">
+      <h2 class="section-heading">Local Info</h2>
+      <ul class="info-list">
+        <li class="info-item">
+          <span class="info-label">Tap water</span>
+          <span class="info-value">Safe to drink.<span class="info-subtext">Most guests prefer bottled water.</span></span>
+        </li>
+        <li class="info-item">
+          <span class="info-label">Town centre</span>
+          <span class="info-value" data-key="distance_centre"></span>
+        </li>
+        <li class="info-item">
+          <span class="info-label">Getting around</span>
+          <span class="info-value" data-key="getting_around"></span>
+        </li>
+      </ul>
+      <h3 class="section-heading" style="margin-top: 24px;">Supermarkets</h3>
+      <div class="place-card">
+        <div class="place-name">Aldi</div>
+        <div class="place-desc">7 min drive</div>
+      </div>
+      <div class="place-card">
+        <div class="place-name">Lidl</div>
+        <div class="place-desc">9 min drive</div>
+      </div>
+      <div class="place-card">
+        <div class="place-name">Continente</div>
+        <div class="place-desc">9 min drive &mdash; Good for fresh fish and Portuguese products</div>
+      </div>
+      <div class="place-card">
+        <div class="place-name">Intermarché</div>
+        <div class="place-desc">9 min drive &mdash; Wide international selection and wine</div>
+      </div>
+      <div class="place-card">
+        <div class="place-name">Pingo Doce Marina</div>
+        <div class="place-desc">12 min drive &mdash; Good for fish, bread and wine. Has in-house restaurant.</div>
+      </div>
+    </section>
+
+    <!-- BEACHES -->
+    <section class="section" id="beaches">
+      <h2 class="section-heading">Beaches</h2>
+      <div class="place-card">
+        <div class="place-name">Porto de Mós</div>
+        <div class="place-desc">7 min walk &mdash; Turn right from complex, 200m downhill, take right at fork, follow steps trail to beach.</div>
+      </div>
+      <div class="place-card">
+        <div class="place-name">Dona Ana</div>
+        <div class="place-desc">7 min drive &mdash; Stairs access. Most famous beach in Lagos.</div>
+      </div>
+      <div class="place-card">
+        <div class="place-name">Meia Praia</div>
+        <div class="place-desc">10 min drive &mdash; Long flat beach, great for families.</div>
+      </div>
+    </section>
+
+    <!-- EAT & DRINK -->
+    <section class="section" id="eat-drink">
+      <h2 class="section-heading">Eat &amp; Drink</h2>
+      <div class="place-card">
+        <div class="place-name">António</div>
+        <div class="place-desc">Seafood, beachfront &mdash; 10 min walk</div>
+        <a class="place-link" href="https://maps.app.goo.gl/antonio-porto-de-mos" target="_blank" rel="noopener">View on Maps &rarr;</a>
+      </div>
+      <div class="place-card">
+        <div class="place-name">Campimar</div>
+        <div class="place-desc">Seafood, beachfront &mdash; 10 min walk</div>
+        <a class="place-link" href="https://maps.app.goo.gl/campimar-porto-de-mos" target="_blank" rel="noopener">View on Maps &rarr;</a>
+      </div>
+      <div class="place-card">
+        <div class="place-name">Maria Petisca</div>
+        <div class="place-desc">Modern Portuguese, tapas &mdash; 5 min drive</div>
+        <a class="place-link" href="https://maps.app.goo.gl/jDmdrLfPiN11qGzi9" target="_blank" rel="noopener">View on Maps &rarr;</a>
+      </div>
+      <div class="place-card">
+        <div class="place-name">Adega da Marina</div>
+        <div class="place-desc">Relaxed, good value Algarvian food &mdash; 10 min drive</div>
+        <a class="place-link" href="https://maps.app.goo.gl/adega-da-marina-lagos" target="_blank" rel="noopener">View on Maps &rarr;</a>
+      </div>
+      <div class="place-card">
+        <div class="place-name">Reis</div>
+        <div class="place-desc">Typical Algarvian tasca, old town &mdash; 10 min drive</div>
+        <a class="place-link" href="https://maps.app.goo.gl/reis-lagos" target="_blank" rel="noopener">View on Maps &rarr;</a>
+      </div>
+    </section>
+
+    <!-- EXPLORE -->
+    <section class="section" id="explore">
+      <h2 class="section-heading">Explore</h2>
+      <div class="place-card">
+        <div class="place-name">Ropes Course</div>
+        <div class="place-desc">Great for kids &mdash; Ask host for details.</div>
+      </div>
+      <div class="place-card">
+        <div class="place-name">Boat Cruise to Benagil</div>
+        <div class="place-desc">Departs from Lagos Marina.</div>
+      </div>
+      <div class="place-card">
+        <div class="place-name">Wine Tasting at Falésia Wine</div>
+        <div class="place-desc">Ask host for details.</div>
+      </div>
+    </section>
+
+    <!-- RULES -->
+    <section class="section" id="rules">
+      <h2 class="section-heading">Rules</h2>
+      <ul class="rule-list">
+        <li class="rule-item"><span class="rule-dot"></span>No smoking inside</li>
+        <li class="rule-item"><span class="rule-dot"></span>No parties</li>
+        <li class="rule-item"><span class="rule-dot"></span>Remove shoes inside</li>
+        <li class="rule-item"><span class="rule-dot"></span>Quiet hours 22:00 to 08:00</li>
+        <li class="rule-item"><span class="rule-dot"></span>Load and start dishwasher before leaving</li>
+        <li class="rule-item"><span class="rule-dot"></span>Only registered guests may stay overnight</li>
+        <li class="rule-item"><span class="rule-dot"></span>Pets on prior approval only</li>
+      </ul>
+    </section>
+
+    <!-- CHECKOUT -->
+    <section class="section" id="checkout">
+      <h2 class="section-heading">Checkout</h2>
+      <div class="card" style="margin-bottom: 18px;">
+        <div class="card-label">Checkout by</div>
+        <div class="card-value" data-key="checkout_time"></div>
+      </div>
+      <ul class="checklist">
+        <li class="checklist-item"><span class="check-box"></span>Leave keys in keysafe and scramble the code</li>
+        <li class="checklist-item"><span class="check-box"></span>Bag up rubbish and take to bin location</li>
+        <li class="checklist-item"><span class="check-box"></span>Sealed food stays in fridge, bin anything open</li>
+        <li class="checklist-item"><span class="check-box"></span>Close all windows and doors</li>
+        <li class="checklist-item"><span class="check-box"></span>Turn off all lights and air conditioning</li>
+      </ul>
+    </section>
+
+    <!-- HELP -->
+    <section class="section" id="help">
+      <h2 class="section-heading">Help</h2>
+      <a class="contact-card" href="tel:+351912024702">
+        <span class="contact-name">Host 24/7</span>
+        <span class="contact-num">+351 912 024 702</span>
+      </a>
+      <a class="contact-card" href="tel:112">
+        <span class="contact-name">Emergency Services</span>
+        <span class="contact-num">112</span>
+      </a>
+      <a class="contact-card" href="tel:+351282770100">
+        <span class="contact-name">Hospital Terras do Infante</span>
+        <span class="contact-num">+351 282 770 100</span>
+      </a>
+      <a class="contact-card" href="tel:+351282762930">
+        <span class="contact-name">PSP Police Lagos</span>
+        <span class="contact-num">+351 282 762 930</span>
+      </a>
+      <a class="contact-card" href="tel:+351282762830">
+        <span class="contact-name">Pharmacy Ribeiro Lopes</span>
+        <span class="contact-num">+351 282 762 830</span>
+      </a>
+      <a class="contact-card" href="tel:+351282770790">
+        <span class="contact-name">Fire Department</span>
+        <span class="contact-num">+351 282 770 790</span>
+      </a>
+      <a class="contact-card" href="tel:+351935913869">
+        <span class="contact-name">Roadside Assistance</span>
+        <span class="contact-num">+351 935 913 869</span>
+      </a>
+    </section>
+
+  </main>
+
+  <div class="manager-area">
+    <a href="https://docs.google.com/spreadsheets/d/1AIpb29463hRb-saVK0Mpp9SQcRWOBiJ4vy8hMGECDfg/edit" target="_blank" rel="noopener">Manager Access</a>
+  </div>
+
+  <script>
+    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1AIpb29463hRb-saVK0Mpp9SQcRWOBiJ4vy8hMGECDfg/export?format=csv';
+
+    function parseCSVLine(line) {
+      const fields = [];
+      let i = 0;
+      while (i < line.length) {
+        if (line[i] === '"') {
+          let field = '';
+          i++;
+          while (i < line.length) {
+            if (line[i] === '"' && line[i + 1] === '"') {
+              field += '"'; i += 2;
+            } else if (line[i] === '"') {
+              i++; break;
+            } else {
+              field += line[i++];
+            }
+          }
+          fields.push(field);
+        } else {
+          let field = '';
+          while (i < line.length && line[i] !== ',') field += line[i++];
+          fields.push(field);
+        }
+        if (i < line.length && line[i] === ',') i++;
+      }
+      return fields;
+    }
+
+    function parseCSV(text) {
+      const data = {};
+      const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim().split('\n');
+      lines.forEach(line => {
+        if (!line.trim()) return;
+        const fields = parseCSVLine(line);
+        if (fields.length >= 2) {
+          const key = fields[0].trim();
+          const value = fields[1].trim();
+          if (key) data[key] = value;
+        }
+      });
+      return data;
+    }
+
+    function injectData(data) {
+      document.querySelectorAll('[data-key]').forEach(el => {
+        const key = el.getAttribute('data-key');
+        const value = data[key];
+        if (value && value.trim()) {
+          el.textContent = value;
+          el.classList.remove('empty');
+        } else {
+          el.textContent = 'Not provided';
+          el.classList.add('empty');
+        }
+      });
+      // Welcome note: only show section when the field has content
+      const notes = data['manager_notes'];
+      if (notes && notes.trim()) {
+        const welcomeSection = document.getElementById('welcome-note');
+        if (welcomeSection) welcomeSection.classList.add('visible');
+      }
+    }
+
+    async function loadSheet() {
+      try {
+        const res = await fetch(SHEET_URL);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const text = await res.text();
+        injectData(parseCSV(text));
+      } catch (err) {
+        console.warn('Sheet load failed:', err);
+        document.querySelectorAll('[data-key]').forEach(el => {
+          if (!el.textContent.trim()) {
+            el.textContent = 'Not provided';
+            el.classList.add('empty');
+          }
+        });
+      }
+    }
+
+    loadSheet();
+
+    // Accordion
+    document.querySelectorAll('.accordion-trigger').forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.closest('.accordion-item');
+        const isOpen = item.classList.contains('open');
+        item.classList.toggle('open', !isOpen);
+        trigger.setAttribute('aria-expanded', String(!isOpen));
+      });
+    });
+
+    // Tab navigation — scroll to section on click
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const sections = document.querySelectorAll('.section');
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = document.getElementById(btn.dataset.target);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // Highlight active tab as user scrolls
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const id = entry.target.id;
+        tabBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.target === id));
+        const activeBtn = document.querySelector('.tab-btn[data-target="' + id + '"]');
+        if (activeBtn) activeBtn.scrollIntoView({ block: 'nearest', inline: 'center' });
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+    sections.forEach(s => observer.observe(s));
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{PROPERTY_NAME}} — Guidebook</title>
+<style>
+
+/* ── Reset ─────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  background: #F8F9FA;
+  color: #1A1A1A;
+  line-height: 1.65;
+}
+
+/* ── Colour tokens (injected by generator) ──────────────────────────────────
+   Edit the fallback values here to preview in a browser without running Python.
+   The generator replaces {{COLOR_*}} tokens at build time.                    */
+:root {
+  --color-primary:    {{COLOR_PRIMARY}};
+  --color-dark:       {{COLOR_DARK}};
+  --color-light:      {{COLOR_LIGHT}};
+  --color-very-light: {{COLOR_VERY_LIGHT}};
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────────*/
+.site-header {
+  background: var(--color-dark);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+.site-header__tagline {
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: .85;
+}
+
+/* ── Cover ──────────────────────────────────────────────────────────────────*/
+.cover {
+  position: relative;
+  height: 92vh;
+  min-height: 500px;
+  overflow: hidden;
+}
+.cover__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cover__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.1) 0%, rgba(0,0,0,.55) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 60px 24px 80px;
+}
+.cover__title {
+  color: #fff;
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  font-weight: 800;
+  text-align: center;
+  text-shadow: 0 2px 12px rgba(0,0,0,.5);
+  margin: 0 0 12px;
+}
+.cover__subtitle {
+  color: rgba(255,255,255,.88);
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  text-align: center;
+  margin: 0;
+}
+
+/* ── Language bar ───────────────────────────────────────────────────────────*/
+.lang-bar {
+  background: var(--color-very-light);
+  padding: 16px 24px;
+  text-align: center;
+  border-bottom: 2px solid var(--color-light);
+  position: sticky;
+  top: 53px;
+  z-index: 99;
+}
+.lang-bar__label {
+  margin: 0 0 8px;
+  font-size: .8rem;
+  color: #555;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.lang-bar__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+}
+.lang-btn {
+  padding: 8px 14px;
+  border: 2px solid var(--color-primary);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  background: #fff;
+  color: var(--color-primary);
+  font-weight: 600;
+  transition: background .2s, color .2s;
+}
+.lang-btn:hover,
+.lang-btn.active-lang {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* ── Main content ───────────────────────────────────────────────────────────*/
+.main-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 16px 60px;
+}
+
+/* ── Section card ───────────────────────────────────────────────────────────*/
+.section {
+  background: #fff;
+  border-radius: 12px;
+  margin: 32px 0;
+  box-shadow: 0 2px 12px rgba(0,0,0,.07);
+  overflow: hidden;
+}
+.section__header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 24px;
+  background: var(--color-primary);
+  color: #fff;
+}
+.section__header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+.section__icon {
+  font-size: 1.5rem;
+}
+.section__body {
+  padding: 24px;
+}
+
+/* ── Language blocks inside sections ────────────────────────────────────────*/
+.lang-block        { display: none; }
+.lang-block.active { display: block; }
+
+.lang-label {
+  display: inline-block;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--color-primary);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+/* ── Section body text ──────────────────────────────────────────────────────*/
+.section-text { font-size: .95rem; }
+
+.section-text p        { margin: .5em 0; }
+.section-text h4       { margin: 1.2em 0 .4em; font-size: .95rem;
+                          letter-spacing: .05em; text-transform: uppercase;
+                          color: #333; }
+.section-text .bullet  { display: flex; gap: 8px; margin: .3em 0; }
+.section-text .warning { background: #FEF3C7; border-left: 4px solid #D97706;
+                          padding: 10px 14px; border-radius: 4px; margin: .6em 0; }
+
+/* ── WiFi boxes ─────────────────────────────────────────────────────────────*/
+.wifi-row  { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 8px; }
+.wifi-box  { flex: 1; min-width: 200px; border: 2px solid var(--color-primary);
+             border-radius: 10px; padding: 16px 20px; background: #FAFAFA; }
+.wifi-box__label { font-size: .75rem; font-weight: 700; letter-spacing: .08em;
+                   text-transform: uppercase; color: var(--color-primary);
+                   margin-bottom: 6px; }
+.wifi-box__value { font-size: 1.4rem; font-weight: 800; font-family: monospace;
+                   word-break: break-all; }
+
+/* ── Back page ──────────────────────────────────────────────────────────────*/
+.back-page {
+  background: var(--color-very-light);
+  border-radius: 12px;
+  text-align: center;
+  padding: 40px 24px;
+  margin-top: 40px;
+}
+.back-page__updated { font-size: .85rem; color: #666; margin: 0 0 16px; }
+.back-page__name    { font-size: 2rem; font-weight: 800; color: var(--color-dark);
+                      margin: 0 0 8px; }
+.back-page__contact { color: #555; margin: 0 0 24px; }
+.back-page__contact a { color: var(--color-primary); }
+.back-page__qr      { width: 140px; height: 140px; border: 4px solid var(--color-primary);
+                      border-radius: 8px; }
+.back-page__qr-note { font-size: .75rem; color: #888; margin: 10px 0 0; }
+
+/* ── Footer ─────────────────────────────────────────────────────────────────*/
+.site-footer {
+  background: var(--color-dark);
+  color: rgba(255,255,255,.7);
+  text-align: center;
+  padding: 24px;
+  font-size: .8rem;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────────*/
+@media (max-width: 600px) {
+  .section__body  { padding: 16px; }
+  .wifi-box__value { font-size: 1.1rem; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════ HEADER ══════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="site-header__logo">{{LOGO_HTML}}</div>
+  <div class="site-header__tagline">{{PROPERTY_NAME}} Guidebook</div>
+</header>
+
+<!-- ═══════════════════════ COVER ═══════════════════════════════════════════ -->
+<section class="cover" id="cover">
+  <img class="cover__img" src="{{COVER_SRC}}" alt="Cover photo of {{PROPERTY_NAME}}">
+  <div class="cover__overlay">
+    <h1 class="cover__title">{{PROPERTY_NAME}}</h1>
+    <p class="cover__subtitle">Your Algarve Guidebook</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════ LANGUAGE BAR ════════════════════════════════════ -->
+<div class="lang-bar" id="lang-bar">
+  <p class="lang-bar__label">Select language / Selecionar idioma</p>
+  <div class="lang-bar__buttons">
+    {{LANG_BUTTONS}}
+  </div>
+</div>
+
+<!-- ═══════════════════════ SECTIONS ════════════════════════════════════════ -->
+<main class="main-content">
+  {{SECTIONS}}
+</main>
+
+<!-- ═══════════════════════ FOOTER ══════════════════════════════════════════ -->
+<footer class="site-footer">
+  {{PROPERTY_NAME}} &nbsp;·&nbsp; Last updated {{LAST_UPDATED}} &nbsp;·&nbsp; {{CONTACT_EMAIL}}
+</footer>
+
+<!-- ═══════════════════════ JAVASCRIPT ══════════════════════════════════════ -->
+<script>
+{{JS}}
+</script>
+
+</body>
+</html>

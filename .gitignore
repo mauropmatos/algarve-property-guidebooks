@@ -13,3 +13,9 @@ Thumbs.db
 
 # Node (if added later)
 node_modules/
+
+# Property configs contain credentials — never commit
+guidebook-generator/properties/
+
+# VS Code workspace files
+*.code-workspace
