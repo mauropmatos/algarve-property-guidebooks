@@ -490,6 +490,56 @@
       text-align: right;
     }
 
+    /* ── Subsection headings (within a section) ── */
+    .subsection-heading {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-top: 28px;
+      margin-bottom: 14px;
+    }
+    .section-heading + .subsection-heading { margin-top: 0; }
+
+    /* ── What's Included list ── */
+    .inclusion-list { list-style: none; }
+    .inclusion-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .inclusion-item:last-child { border-bottom: none; }
+    .inclusion-check {
+      flex-shrink: 0;
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 1px;
+    }
+
+    /* ── Large checkout time display ── */
+    .checkout-time-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 16px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .checkout-time-value {
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1;
+      margin-top: 8px;
+    }
+
     /* ── Manager link ── */
     .manager-area {
       padding: 44px 20px 24px;
@@ -517,25 +567,30 @@
   <!-- Sticky tab navigation -->
   <nav class="tab-nav" aria-label="Page sections">
     <div class="tab-list">
-      <button class="tab-btn active" data-target="quick-info">Quick Info</button>
-      <button class="tab-btn" data-target="arrival">Arrival</button>
-      <button class="tab-btn" data-target="access">Access</button>
-      <button class="tab-btn" data-target="property">Property</button>
-      <button class="tab-btn" data-target="local-info">Local Info</button>
-      <button class="tab-btn" data-target="beaches">Beaches</button>
+      <button class="tab-btn active" data-target="arrival">Arrival</button>
+      <button class="tab-btn" data-target="apartment">Apartment</button>
+      <button class="tab-btn" data-target="local">Local</button>
       <button class="tab-btn" data-target="eat-drink">Eat &amp; Drink</button>
       <button class="tab-btn" data-target="explore">Explore</button>
-      <button class="tab-btn" data-target="rules">Rules</button>
-      <button class="tab-btn" data-target="checkout">Checkout</button>
+      <button class="tab-btn" data-target="departure">Departure</button>
       <button class="tab-btn" data-target="help">Help</button>
     </div>
   </nav>
 
   <main class="main">
 
-    <!-- QUICK INFO -->
-    <section class="section" id="quick-info">
-      <h2 class="section-heading">Quick Info</h2>
+    <!-- WELCOME NOTE (shown only when manager_notes is non-empty) -->
+    <div class="welcome-section" id="welcome-note">
+      <div class="welcome-card">
+        <div class="welcome-label">Welcome Note</div>
+        <p class="welcome-text" data-key="manager_notes"></p>
+      </div>
+    </div>
+
+    <!-- 1. ARRIVAL -->
+    <section class="section" id="arrival">
+      <h2 class="section-heading">Arrival</h2>
+
       <div class="card-grid">
         <div class="card">
           <div class="card-label">Check-in</div>
@@ -560,20 +615,8 @@
         <div class="card-label">Parking</div>
         <div class="card-value" data-key="parking"></div>
       </div>
-    </section>
 
-    <!-- WELCOME NOTE (shown only when manager_notes is non-empty) -->
-    <div class="welcome-section" id="welcome-note">
-      <div class="welcome-card">
-        <div class="welcome-label">Welcome Note</div>
-        <p class="welcome-text" data-key="manager_notes"></p>
-      </div>
-    </div>
-
-    <!-- ARRIVAL -->
-    <section class="section" id="arrival">
-      <h2 class="section-heading">Arrival</h2>
-      <ol class="step-list">
+      <ol class="step-list" style="margin-top: 22px;">
         <li class="step-item">
           <span class="step-num">1</span>
           <span class="step-text">Head to Núcleo I at the front of the pool</span>
@@ -603,12 +646,8 @@
           <span class="step-text">Any problems: call the host immediately</span>
         </li>
       </ol>
-    </section>
 
-    <!-- ACCESS -->
-    <section class="section" id="access">
-      <h2 class="section-heading">Access</h2>
-      <div class="card">
+      <div class="card" style="margin-top: 22px;">
         <div class="card-label">Gate Code</div>
         <div class="card-value" data-key="gate_code"></div>
       </div>
@@ -630,9 +669,23 @@
       </div>
     </section>
 
-    <!-- PROPERTY -->
-    <section class="section" id="property">
-      <h2 class="section-heading">Property</h2>
+    <!-- 2. APARTMENT -->
+    <section class="section" id="apartment">
+      <h2 class="section-heading">Apartment</h2>
+
+      <h3 class="subsection-heading">What's Included</h3>
+      <ul class="inclusion-list">
+        <li class="inclusion-item"><span class="inclusion-check">✓</span>Bath towel, hand towel, pool towel and beach towel provided per guest</li>
+        <li class="inclusion-item"><span class="inclusion-check">✓</span>Cleaning kit: washing up liquid, scrub and cloths</li>
+        <li class="inclusion-item"><span class="inclusion-check">✓</span>Hand soap in all bathrooms</li>
+        <li class="inclusion-item"><span class="inclusion-check">✓</span>2 toilet rolls per bathroom</li>
+        <li class="inclusion-item"><span class="inclusion-check">✓</span>Iron and ironing board</li>
+        <li class="inclusion-item"><span class="inclusion-check">✓</span>Hairdryer</li>
+        <li class="inclusion-item"><span class="inclusion-check">✓</span>First aid kit</li>
+        <li class="inclusion-item"><span class="inclusion-check">✓</span>In-room safe</li>
+      </ul>
+
+      <h3 class="subsection-heading">Appliances</h3>
       <ul class="accordion">
 
         <li class="accordion-item">
@@ -765,12 +818,25 @@
           </div>
         </li>
 
+        <li class="accordion-item">
+          <div style="padding: 14px 0;">
+            <div class="accordion-title">Smart TV</div>
+            <div class="accordion-summary">Portuguese cable channels and streaming apps including Netflix</div>
+          </div>
+        </li>
+
       </ul>
+
+      <h3 class="subsection-heading">Pool</h3>
+      <div class="card">
+        <div class="card-label">Pool Access</div>
+        <div class="card-value" style="font-size: 14px; font-weight: 400; color: var(--text); line-height: 1.55;">Pool access available within the complex. Contact the host for current hours and rules.</div>
+      </div>
     </section>
 
-    <!-- LOCAL INFO -->
-    <section class="section" id="local-info">
-      <h2 class="section-heading">Local Info</h2>
+    <!-- 3. LOCAL -->
+    <section class="section" id="local">
+      <h2 class="section-heading">Local</h2>
       <ul class="info-list">
         <li class="info-item">
           <span class="info-label">Tap water</span>
@@ -785,7 +851,7 @@
           <span class="info-value" data-key="getting_around"></span>
         </li>
       </ul>
-      <h3 class="section-heading" style="margin-top: 24px;">Supermarkets</h3>
+      <h3 class="subsection-heading">Supermarkets</h3>
       <div class="place-card">
         <div class="place-name">Aldi</div>
         <div class="place-desc">7 min drive</div>
@@ -808,24 +874,7 @@
       </div>
     </section>
 
-    <!-- BEACHES -->
-    <section class="section" id="beaches">
-      <h2 class="section-heading">Beaches</h2>
-      <div class="place-card">
-        <div class="place-name">Porto de Mós</div>
-        <div class="place-desc">7 min walk &mdash; Turn right from complex, 200m downhill, take right at fork, follow steps trail to beach.</div>
-      </div>
-      <div class="place-card">
-        <div class="place-name">Dona Ana</div>
-        <div class="place-desc">7 min drive &mdash; Stairs access. Most famous beach in Lagos.</div>
-      </div>
-      <div class="place-card">
-        <div class="place-name">Meia Praia</div>
-        <div class="place-desc">10 min drive &mdash; Long flat beach, great for families.</div>
-      </div>
-    </section>
-
-    <!-- EAT & DRINK -->
+    <!-- 4. EAT & DRINK -->
     <section class="section" id="eat-drink">
       <h2 class="section-heading">Eat &amp; Drink</h2>
       <div class="place-card">
@@ -855,9 +904,25 @@
       </div>
     </section>
 
-    <!-- EXPLORE -->
+    <!-- 5. EXPLORE -->
     <section class="section" id="explore">
       <h2 class="section-heading">Explore</h2>
+
+      <h3 class="subsection-heading">Beaches</h3>
+      <div class="place-card">
+        <div class="place-name">Porto de Mós</div>
+        <div class="place-desc">7 min walk &mdash; Turn right from complex, 200m downhill, take right at fork, follow steps trail to beach.</div>
+      </div>
+      <div class="place-card">
+        <div class="place-name">Dona Ana</div>
+        <div class="place-desc">7 min drive &mdash; Stairs access. Most famous beach in Lagos.</div>
+      </div>
+      <div class="place-card">
+        <div class="place-name">Meia Praia</div>
+        <div class="place-desc">10 min drive &mdash; Long flat beach, great for families.</div>
+      </div>
+
+      <h3 class="subsection-heading">Activities</h3>
       <div class="place-card">
         <div class="place-name">Ropes Course</div>
         <div class="place-desc">Great for kids &mdash; Ask host for details.</div>
@@ -872,9 +937,16 @@
       </div>
     </section>
 
-    <!-- RULES -->
-    <section class="section" id="rules">
-      <h2 class="section-heading">Rules</h2>
+    <!-- 6. DEPARTURE -->
+    <section class="section" id="departure">
+      <h2 class="section-heading">Departure</h2>
+
+      <div class="checkout-time-card">
+        <div class="card-label">Checkout by</div>
+        <div class="checkout-time-value" data-key="checkout_time"></div>
+      </div>
+
+      <h3 class="subsection-heading">House Rules</h3>
       <ul class="rule-list">
         <li class="rule-item"><span class="rule-dot"></span>No smoking inside</li>
         <li class="rule-item"><span class="rule-dot"></span>No parties</li>
@@ -884,15 +956,8 @@
         <li class="rule-item"><span class="rule-dot"></span>Only registered guests may stay overnight</li>
         <li class="rule-item"><span class="rule-dot"></span>Pets on prior approval only</li>
       </ul>
-    </section>
 
-    <!-- CHECKOUT -->
-    <section class="section" id="checkout">
-      <h2 class="section-heading">Checkout</h2>
-      <div class="card" style="margin-bottom: 18px;">
-        <div class="card-label">Checkout by</div>
-        <div class="card-value" data-key="checkout_time"></div>
-      </div>
+      <h3 class="subsection-heading">Checkout Checklist</h3>
       <ul class="checklist">
         <li class="checklist-item"><span class="check-box"></span>Leave keys in keysafe and scramble the code</li>
         <li class="checklist-item"><span class="check-box"></span>Bag up rubbish and take to bin location</li>
@@ -902,7 +967,7 @@
       </ul>
     </section>
 
-    <!-- HELP -->
+    <!-- 7. HELP -->
     <section class="section" id="help">
       <h2 class="section-heading">Help</h2>
       <a class="contact-card" href="tel:+351912024702">
