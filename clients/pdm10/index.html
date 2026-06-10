@@ -678,6 +678,13 @@
     }
     .aic-step:last-child { border-bottom: none; }
 
+    /* Arrival Info Card inside a section — bleed to edges, no shadow */
+    .section > .arrival-info-card {
+      margin: 0 -20px 24px;
+      box-shadow: none;
+      border-bottom: 8px solid var(--card);
+    }
+
     /* ── Manager link ── */
     .manager-area {
       padding: 44px 20px 24px;
@@ -702,104 +709,6 @@
     <p class="hero-location">Porto de Mós, Lagos, Algarve</p>
   </header>
 
-  <!-- Arrival Information Card -->
-  <div class="arrival-info-card">
-
-    <!-- Location -->
-    <div class="aic-row">
-      <div class="aic-left">
-        <span class="aic-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
-        <span class="aic-label">Location</span>
-      </div>
-      <div class="aic-right">
-        <a class="aic-value" href="https://maps.google.com/?q=37.089417,-8.686195" target="_blank" rel="noopener" data-key="address"></a>
-      </div>
-    </div>
-
-    <!-- Wi-Fi -->
-    <div class="aic-row">
-      <div class="aic-left">
-        <span class="aic-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg></span>
-        <span class="aic-label">Wi-Fi</span>
-      </div>
-      <div class="aic-right">
-        <div class="aic-wifi-block">
-          <div class="aic-wifi-name" data-key="wifi_name"></div>
-          <div class="aic-wifi-pwd-row">
-            <span class="aic-wifi-pwd" id="aic-wifi-pwd" data-key="wifi_password"></span>
-            <button class="aic-copy-btn" id="aic-copy-btn" aria-label="Copy Wi-Fi password">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-              <span class="aic-copy-toast" id="aic-copy-toast">Copied</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Parking -->
-    <div class="aic-row">
-      <div class="aic-left">
-        <span class="aic-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1l2-3h8l2 3h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></span>
-        <span class="aic-label">Parking</span>
-      </div>
-      <div class="aic-right">
-        <span class="aic-value" data-key="parking"></span>
-      </div>
-    </div>
-
-    <!-- Access Codes -->
-    <div class="aic-row tappable" id="aic-access-row">
-      <div class="aic-left">
-        <span class="aic-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
-        <span class="aic-label">Access Codes</span>
-      </div>
-      <div class="aic-right">
-        <span class="aic-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-      </div>
-    </div>
-    <div class="aic-dropdown" id="aic-access-drop">
-      <div class="aic-dropdown-inner">
-        <div class="aic-code-row">
-          <span class="aic-code-label">Gate</span>
-          <span class="aic-code-value" data-key="gate_code"></span>
-        </div>
-        <div class="aic-code-row">
-          <span class="aic-code-label">Building</span>
-          <span class="aic-code-value" data-key="building_code"></span>
-        </div>
-        <div class="aic-code-row">
-          <span class="aic-code-label">Keysafe</span>
-          <span class="aic-code-value" data-key="keysafe_code"></span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Self Check-in -->
-    <div class="aic-row tappable" id="aic-checkin-row">
-      <div class="aic-left">
-        <span class="aic-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></span>
-        <span class="aic-label">Self Check-in</span>
-      </div>
-      <div class="aic-right">
-        <span class="aic-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-      </div>
-    </div>
-    <div class="aic-dropdown" id="aic-checkin-drop">
-      <div class="aic-dropdown-inner">
-        <ol class="aic-steps">
-          <li class="aic-step"><span class="step-num">1</span><span class="step-text">Head to Núcleo I at the front of the pool</span></li>
-          <li class="aic-step"><span class="step-num">2</span><span class="step-text">Enter the gate code at the entrance keypad</span></li>
-          <li class="aic-step"><span class="step-num">3</span><span class="step-text">Go to the 2nd floor, apartment 10</span></li>
-          <li class="aic-step"><span class="step-num">4</span><span class="step-text">Find the keysafe below the AL sign</span></li>
-          <li class="aic-step"><span class="step-num">5</span><span class="step-text">Enter the keysafe code and press the metal button down to open</span></li>
-          <li class="aic-step"><span class="step-num">6</span><span class="step-text">Take the key, close the panel, and scramble the code</span></li>
-          <li class="aic-step"><span class="step-num">7</span><span class="step-text">Any problems: call the host immediately</span></li>
-        </ol>
-      </div>
-    </div>
-
-  </div>
-
   <!-- Sticky tab navigation -->
   <nav class="tab-nav" aria-label="Page sections">
     <div class="tab-list">
@@ -818,6 +727,104 @@
     <!-- 1. ARRIVAL -->
     <section class="section" id="arrival">
       <h2 class="section-heading">Arrival</h2>
+
+      <!-- Arrival Information Card -->
+      <div class="arrival-info-card">
+
+        <!-- Location -->
+        <div class="aic-row">
+          <div class="aic-left">
+            <span class="aic-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+            <span class="aic-label">Location</span>
+          </div>
+          <div class="aic-right">
+            <a class="aic-value" href="https://maps.google.com/?q=37.089417,-8.686195" target="_blank" rel="noopener" data-key="address"></a>
+          </div>
+        </div>
+
+        <!-- Wi-Fi -->
+        <div class="aic-row">
+          <div class="aic-left">
+            <span class="aic-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg></span>
+            <span class="aic-label">Wi-Fi</span>
+          </div>
+          <div class="aic-right">
+            <div class="aic-wifi-block">
+              <div class="aic-wifi-name" data-key="wifi_name"></div>
+              <div class="aic-wifi-pwd-row">
+                <span class="aic-wifi-pwd" id="aic-wifi-pwd" data-key="wifi_password"></span>
+                <button class="aic-copy-btn" id="aic-copy-btn" aria-label="Copy Wi-Fi password">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  <span class="aic-copy-toast" id="aic-copy-toast">Copied</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parking -->
+        <div class="aic-row">
+          <div class="aic-left">
+            <span class="aic-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1l2-3h8l2 3h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></span>
+            <span class="aic-label">Parking</span>
+          </div>
+          <div class="aic-right">
+            <span class="aic-value" data-key="parking"></span>
+          </div>
+        </div>
+
+        <!-- Access Codes -->
+        <div class="aic-row tappable" id="aic-access-row">
+          <div class="aic-left">
+            <span class="aic-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+            <span class="aic-label">Access Codes</span>
+          </div>
+          <div class="aic-right">
+            <span class="aic-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </div>
+        </div>
+        <div class="aic-dropdown" id="aic-access-drop">
+          <div class="aic-dropdown-inner">
+            <div class="aic-code-row">
+              <span class="aic-code-label">Gate</span>
+              <span class="aic-code-value" data-key="gate_code"></span>
+            </div>
+            <div class="aic-code-row">
+              <span class="aic-code-label">Building</span>
+              <span class="aic-code-value" data-key="building_code"></span>
+            </div>
+            <div class="aic-code-row">
+              <span class="aic-code-label">Keysafe</span>
+              <span class="aic-code-value" data-key="keysafe_code"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Self Check-in -->
+        <div class="aic-row tappable" id="aic-checkin-row">
+          <div class="aic-left">
+            <span class="aic-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></span>
+            <span class="aic-label">Self Check-in</span>
+          </div>
+          <div class="aic-right">
+            <span class="aic-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </div>
+        </div>
+        <div class="aic-dropdown" id="aic-checkin-drop">
+          <div class="aic-dropdown-inner">
+            <ol class="aic-steps">
+              <li class="aic-step"><span class="step-num">1</span><span class="step-text">Head to Núcleo I at the front of the pool</span></li>
+              <li class="aic-step"><span class="step-num">2</span><span class="step-text">Enter the gate code at the entrance keypad</span></li>
+              <li class="aic-step"><span class="step-num">3</span><span class="step-text">Go to the 2nd floor, apartment 10</span></li>
+              <li class="aic-step"><span class="step-num">4</span><span class="step-text">Find the keysafe below the AL sign</span></li>
+              <li class="aic-step"><span class="step-num">5</span><span class="step-text">Enter the keysafe code and press the metal button down to open</span></li>
+              <li class="aic-step"><span class="step-num">6</span><span class="step-text">Take the key, close the panel, and scramble the code</span></li>
+              <li class="aic-step"><span class="step-num">7</span><span class="step-text">Any problems: call the host immediately</span></li>
+            </ol>
+          </div>
+        </div>
+
+      </div>
 
       <!-- Welcome note (shown only when manager_notes is non-empty) -->
       <div class="welcome-section" id="welcome-note">
