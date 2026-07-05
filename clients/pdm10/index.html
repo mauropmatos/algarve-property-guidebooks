@@ -715,6 +715,10 @@
 </head>
 <body>
 
+  <div id="expiry-screen" style="display:none;min-height:100vh;align-items:center;justify-content:center;padding:40px 24px;text-align:center;flex-direction:column;">
+    <p style="font-size:18px;font-weight:600;color:var(--navy);line-height:1.6;">Esta página expirou,<br>contacte o seu anfitrião.</p>
+  </div>
+
   <!-- Hero -->
   <header class="hero">
     <img src="../../assets/images/pdm10-hero.jpg" alt="PDM 10 exterior view" class="hero-img">
@@ -1207,10 +1211,6 @@
 
   </main>
 
-  <div class="manager-area">
-    <a href="https://docs.google.com/spreadsheets/d/1AIpb29463hRb-saVK0Mpp9SQcRWOBiJ4vy8hMGECDfg/edit" target="_blank" rel="noopener">Manager Access</a>
-  </div>
-
   <p class="powered-by">Powered by <a href="https://guestpage-landing.vercel.app" target="_blank" rel="noopener">GuestPage Algarve</a></p>
 
   <!-- WhatsApp FAB -->
@@ -1283,12 +1283,30 @@
       }
     }
 
+    function checkExpiry(data) {
+      const raw = (data['expiry_date'] || '').trim();
+      if (!raw) return;
+      const parts = raw.split('-').map(Number);
+      if (parts.length < 3 || !parts[0]) return;
+      const expiry = new Date(parts[0], parts[1] - 1, parts[2]);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (today > expiry) {
+        Array.from(document.body.children).forEach(el => {
+          if (el.id !== 'expiry-screen') el.style.display = 'none';
+        });
+        document.getElementById('expiry-screen').style.display = 'flex';
+      }
+    }
+
     async function loadSheet() {
       try {
         const res = await fetch(SHEET_URL);
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const text = await res.text();
-        injectData(parseCSV(text));
+        const data = parseCSV(text);
+        checkExpiry(data);
+        injectData(data);
       } catch (err) {
         console.warn('Sheet load failed:', err);
         document.querySelectorAll('[data-key]').forEach(el => {

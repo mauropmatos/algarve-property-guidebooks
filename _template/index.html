@@ -326,11 +326,6 @@
 
   </main>
 
-  <!-- Update Sheet ID in the manager link href below too -->
-  <div class="manager-area">
-    <a href="https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit" target="_blank" rel="noopener">Manager Access</a>
-  </div>
-
   <script>
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/export?format=csv';
 
@@ -399,11 +394,10 @@
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       if (today > expiry) {
+        Array.from(document.body.children).forEach(el => {
+          if (el.id !== 'expiry-screen') el.style.display = 'none';
+        });
         document.getElementById('expiry-screen').style.display = 'flex';
-        document.querySelector('.hero').style.display = 'none';
-        document.querySelector('.tab-nav').style.display = 'none';
-        document.querySelector('.main').style.display = 'none';
-        document.querySelector('.manager-area').style.display = 'none';
       }
     }
 

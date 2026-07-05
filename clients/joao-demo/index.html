@@ -326,14 +326,8 @@
 
   </main>
 
-  <!-- Update Sheet ID in the manager link href below too -->
-  <div class="manager-area">
-    <a href="https://docs.google.com/spreadsheets/d/PASTE_JOAO_DEMO_SHEET_ID_HERE/edit" target="_blank" rel="noopener">Manager Access</a>
-  </div>
-
   <script>
-    // TODO: replace PASTE_JOAO_DEMO_SHEET_ID_HERE with the real Google Sheet ID for João's property
-    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/PASTE_JOAO_DEMO_SHEET_ID_HERE/export?format=csv';
+    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1g8n0rmvyKgQg9mC3IDrL1mfmRSCPhDgx_lHW9dlBzeQ/export?format=csv';
 
     function parseCSVLine(line) {
       const fields = [];
@@ -400,11 +394,10 @@
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       if (today > expiry) {
+        Array.from(document.body.children).forEach(el => {
+          if (el.id !== 'expiry-screen') el.style.display = 'none';
+        });
         document.getElementById('expiry-screen').style.display = 'flex';
-        document.querySelector('.hero').style.display = 'none';
-        document.querySelector('.tab-nav').style.display = 'none';
-        document.querySelector('.main').style.display = 'none';
-        document.querySelector('.manager-area').style.display = 'none';
       }
     }
 
