@@ -10,12 +10,12 @@
   <style>
     :root {
       --primary:   #2E6E7E;
-      --secondary: #C08A3E;
+      --secondary: #B8813C;
       --navy:      #2B2926;
-      --bg:        #FAF7F2;
-      --card:      #EFE7DB;
-      --border:    #E2D6C4;
-      --grey:      #6A6357;
+      --bg:        #FFFFFF;
+      --card:      #F7F6F4;
+      --border:    #E7E5E1;
+      --grey:      #6A6660;
       --text:      #33322E;
     }
 
@@ -64,7 +64,7 @@
       font-weight: 700;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--primary);
+      color: var(--secondary);
       margin-bottom: 8px;
     }
     .hero-title {
@@ -116,11 +116,12 @@
       font-weight: 700;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--primary);
+      color: var(--secondary);
       margin-bottom: 18px;
     }
 
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; transition: border-color 0.15s ease; }
+    .card:hover, .place-card:hover, .gallery-toggle:hover { border-color: var(--secondary); }
     .card:last-child { margin-bottom: 0; }
     .card-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 5px; }
     .card-value { font-size: 15px; font-weight: 600; color: var(--navy); }
@@ -148,7 +149,7 @@
     .info-label { font-size: 13px; font-weight: 500; color: var(--grey); flex-shrink: 0; }
     .info-value { font-size: 13px; font-weight: 600; color: var(--navy); text-align: left; flex: 1; }
 
-    .place-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+    .place-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; transition: border-color 0.15s ease; }
     .place-card:last-child { margin-bottom: 0; }
     .place-name { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
     .place-desc { font-size: 13px; color: var(--grey); line-height: 1.55; }
@@ -163,8 +164,8 @@
     .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.25s; }
     .gallery-item:hover img { transform: scale(1.04); }
 
-    .gallery-toggle { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 13px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; color: var(--navy); }
-    .gallery-chevron { color: var(--grey); display: flex; align-items: center; transition: transform 0.25s ease; }
+    .gallery-toggle { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 13px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; color: var(--navy); transition: border-color 0.15s ease; }
+    .gallery-chevron { color: var(--secondary); display: flex; align-items: center; transition: transform 0.25s ease; }
     .gallery-toggle.open .gallery-chevron { transform: rotate(180deg); }
     .gallery-collapse { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
     .gallery-collapse.open { max-height: 3000px; }
@@ -197,7 +198,7 @@
 
     a.contact-card { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 13px 16px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; text-decoration: none; transition: background 0.15s; }
     a.contact-card:last-child { margin-bottom: 0; }
-    a.contact-card:hover { background: #E7DDCE; }
+    a.contact-card:hover { border-color: var(--secondary); background: #fff; }
     .contact-name { font-size: 13px; font-weight: 600; color: var(--navy); }
     .contact-num { font-size: 13px; font-weight: 700; color: var(--primary); }
 
