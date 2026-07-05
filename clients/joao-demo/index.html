@@ -146,7 +146,7 @@
     .info-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--border); }
     .info-item:last-child { border-bottom: none; }
     .info-label { font-size: 13px; font-weight: 500; color: var(--grey); flex-shrink: 0; }
-    .info-value { font-size: 13px; font-weight: 600; color: var(--navy); text-align: right; }
+    .info-value { font-size: 13px; font-weight: 600; color: var(--navy); text-align: left; flex: 1; }
 
     .place-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
     .place-card:last-child { margin-bottom: 0; }
@@ -213,7 +213,7 @@
   </div>
 
   <header class="hero">
-    <img src="images/hero.jpg" alt="Casinha 23" class="hero-img">
+    <img src="/clients/joao-demo/images/hero.jpg" alt="Casinha 23" class="hero-img">
     <p class="hero-eyebrow">Guest Information</p>
     <h1 class="hero-title" data-key="property_name">Casinha 23</h1>
     <p class="hero-location">Lagos, Algarve</p>
@@ -311,11 +311,11 @@
         </button>
         <div class="gallery-collapse" id="gallery-collapse">
           <div class="gallery-grid">
-            <a class="gallery-item" href="images/1.jpg" target="_blank" rel="noopener"><img src="images/1.jpg" alt="Casinha 23 photo 1" loading="lazy"></a>
-            <a class="gallery-item" href="images/2.jpg" target="_blank" rel="noopener"><img src="images/2.jpg" alt="Casinha 23 photo 2" loading="lazy"></a>
-            <a class="gallery-item" href="images/3.jpg" target="_blank" rel="noopener"><img src="images/3.jpg" alt="Casinha 23 photo 3" loading="lazy"></a>
-            <a class="gallery-item" href="images/4.jpg" target="_blank" rel="noopener"><img src="images/4.jpg" alt="Casinha 23 photo 4" loading="lazy"></a>
-            <a class="gallery-item" href="images/5.jpg" target="_blank" rel="noopener"><img src="images/5.jpg" alt="Casinha 23 photo 5" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/joao-demo/images/1.jpg" target="_blank" rel="noopener"><img src="/clients/joao-demo/images/1.jpg" alt="Casinha 23 photo 1" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/joao-demo/images/2.jpg" target="_blank" rel="noopener"><img src="/clients/joao-demo/images/2.jpg" alt="Casinha 23 photo 2" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/joao-demo/images/3.jpg" target="_blank" rel="noopener"><img src="/clients/joao-demo/images/3.jpg" alt="Casinha 23 photo 3" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/joao-demo/images/4.jpg" target="_blank" rel="noopener"><img src="/clients/joao-demo/images/4.jpg" alt="Casinha 23 photo 4" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/joao-demo/images/5.jpg" target="_blank" rel="noopener"><img src="/clients/joao-demo/images/5.jpg" alt="Casinha 23 photo 5" loading="lazy"></a>
           </div>
         </div>
       </div>
@@ -332,10 +332,11 @@
           <li class="info-item"><span class="info-label">Pharmacy / ATM</span><span class="info-value" data-key="pharmacy_atm"></span></li>
           <li class="info-item"><span class="info-label">Hospital</span><span class="info-value" data-key="hospital"></span></li>
         </ul>
-        <div class="card" style="margin-top: 16px;">
-          <div class="card-label">Supermarkets</div>
-          <div class="card-value long" data-key="supermarkets"></div>
-        </div>
+      </div>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">Supermarkets</h3>
+        <div data-list="supermarkets"></div>
       </div>
 
       <div class="subgroup">
