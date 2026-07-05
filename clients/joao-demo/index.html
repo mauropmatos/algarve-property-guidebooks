@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>[Property Name] — Guest Information</title>
+  <title>Casinha 23 — Guest Information</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -159,14 +159,10 @@
     <p style="font-size:18px;font-weight:600;color:var(--navy);line-height:1.6;">Esta página expirou,<br>contacte o seu anfitrião.</p>
   </div>
 
-  <!-- STEP 1: Update property_name, hero-location text, and page <title> above -->
-  <!-- STEP 2: Replace YOUR_SHEET_ID in the script below -->
-  <!-- STEP 3: Replace hardcoded arrival steps, restaurants, beaches, rules, checkout, and help contacts -->
-
   <header class="hero">
     <p class="hero-eyebrow">Guest Information</p>
-    <h1 class="hero-title" data-key="property_name">[Property Name]</h1>
-    <p class="hero-location">[Location, City, Algarve]</p>
+    <h1 class="hero-title" data-key="property_name">Casinha 23</h1>
+    <p class="hero-location">Lagos, Algarve</p>
   </header>
 
   <nav class="tab-nav" aria-label="Page sections">
@@ -189,6 +185,10 @@
 
     <section class="section" id="quick-info">
       <h2 class="section-heading">Quick Info</h2>
+      <a class="card" id="address-link" href="#" target="_blank" rel="noopener" style="display:block;text-decoration:none;">
+        <div class="card-label">Address &mdash; tap to open in Maps</div>
+        <div class="card-value" id="address-text" style="color:var(--primary);"></div>
+      </a>
       <div class="card-grid">
         <div class="card">
           <div class="card-label">Check-in</div>
@@ -200,35 +200,36 @@
         </div>
       </div>
       <div class="card">
-        <div class="card-label">Wi-Fi Network</div>
-        <div class="card-value" data-key="wifi_name"></div>
-      </div>
-      <div class="card">
-        <div class="card-label">Wi-Fi Password</div>
-        <div class="card-value" data-key="wifi_password"></div>
+        <div class="card-label">Wi-Fi Network / Password</div>
+        <div class="card-value"><span data-key="wifi_name"></span> &nbsp;/&nbsp; <span data-key="wifi_password"></span></div>
       </div>
       <div class="card">
         <div class="card-label">Parking</div>
         <div class="card-value" data-key="parking"></div>
       </div>
+      <div class="card">
+        <div class="card-label">Bins</div>
+        <div class="card-value" data-key="bins_location"></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Tap Water</div>
+        <div class="card-value" data-key="tap_water"></div>
+      </div>
     </section>
 
     <section class="section" id="arrival">
       <h2 class="section-heading">Arrival</h2>
-      <ol class="step-list">
-        <!-- Replace with property-specific arrival steps -->
-        <li class="step-item"><span class="step-num">1</span><span class="step-text">Step one</span></li>
-        <li class="step-item"><span class="step-num">2</span><span class="step-text">Step two</span></li>
-      </ol>
+      <div class="card">
+        <div class="card-label">Check-in Instructions</div>
+        <div class="card-value long" data-key="checkin_steps"></div>
+      </div>
     </section>
 
     <section class="section" id="access">
       <h2 class="section-heading">Access</h2>
       <div class="card"><div class="card-label">Gate Code</div><div class="card-value" data-key="gate_code"></div></div>
       <div class="card"><div class="card-label">Building Code</div><div class="card-value" data-key="building_code"></div></div>
-      <div class="card"><div class="card-label">Keysafe Code</div><div class="card-value" data-key="keysafe_code"></div></div>
-      <div class="card"><div class="card-label">Address</div><div class="card-value" data-key="address"></div></div>
-      <div class="card"><div class="card-label">GPS Coordinates</div><div class="card-value" data-key="gps"></div></div>
+      <div class="card"><div class="card-label">Keysafe Location</div><div class="card-value" data-key="keysafe_location"></div></div>
     </section>
 
     <section class="section" id="property">
@@ -241,17 +242,17 @@
         <li class="prop-item"><div class="prop-label">Oven</div><div class="prop-value" data-key="oven"></div></li>
         <li class="prop-item"><div class="prop-label">Coffee</div><div class="prop-value" data-key="coffee_machine"></div></li>
         <li class="prop-item"><div class="prop-label">Hot Water</div><div class="prop-value" data-key="hot_water"></div></li>
-        <li class="prop-item"><div class="prop-label">Fuse Box</div><div class="prop-value" data-key="fuse_box"></div></li>
-        <li class="prop-item"><div class="prop-label">Bins</div><div class="prop-value" data-key="bins_location"></div></li>
+        <li class="prop-item"><div class="prop-label">TV</div><div class="prop-value" data-key="tv_info"></div></li>
       </ul>
     </section>
 
     <section class="section" id="local-info">
       <h2 class="section-heading">Local Info</h2>
       <ul class="info-list">
-        <li class="info-item"><span class="info-label">Tap water</span><span class="info-value" data-key="tap_water"></span></li>
         <li class="info-item"><span class="info-label">Town centre</span><span class="info-value" data-key="distance_centre"></span></li>
         <li class="info-item"><span class="info-label">Getting around</span><span class="info-value" data-key="getting_around"></span></li>
+        <li class="info-item"><span class="info-label">Pharmacy / ATM</span><span class="info-value" data-key="pharmacy_atm"></span></li>
+        <li class="info-item"><span class="info-label">Hospital</span><span class="info-value" data-key="hospital"></span></li>
       </ul>
       <div class="card" style="margin-top: 16px;">
         <div class="card-label">Supermarkets</div>
@@ -261,30 +262,17 @@
 
     <section class="section" id="beaches">
       <h2 class="section-heading">Beaches</h2>
-      <!-- Replace with property-specific beach recommendations -->
-      <div class="place-card">
-        <div class="place-name">Beach Name</div>
-        <div class="place-desc">X min walk/drive &mdash; Description.</div>
-      </div>
+      <div data-list="beaches"></div>
     </section>
 
     <section class="section" id="eat-drink">
       <h2 class="section-heading">Eat &amp; Drink</h2>
-      <!-- Replace with property-specific restaurant recommendations -->
-      <div class="place-card">
-        <div class="place-name">Restaurant Name</div>
-        <div class="place-desc">Cuisine type &mdash; X min walk/drive</div>
-        <a class="place-link" href="https://maps.app.goo.gl/REPLACE" target="_blank" rel="noopener">View on Maps &rarr;</a>
-      </div>
+      <div data-list="restaurants"></div>
     </section>
 
     <section class="section" id="explore">
       <h2 class="section-heading">Explore</h2>
-      <!-- Replace with property-specific activities -->
-      <div class="place-card">
-        <div class="place-name">Activity Name</div>
-        <div class="place-desc">Description.</div>
-      </div>
+      <div data-list="activities"></div>
     </section>
 
     <section class="section" id="rules">
@@ -313,21 +301,13 @@
 
     <section class="section" id="help">
       <h2 class="section-heading">Help</h2>
-      <!-- Replace phone numbers with property-specific contacts -->
-      <a class="contact-card" href="tel:+351000000000">
-        <span class="contact-name">Host 24/7</span>
-        <span class="contact-num">+351 000 000 000</span>
-      </a>
-      <a class="contact-card" href="tel:112">
-        <span class="contact-name">Emergency Services</span>
-        <span class="contact-num">112</span>
-      </a>
+      <div id="help-contacts"></div>
     </section>
 
   </main>
 
   <script>
-    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1g8n0rmvyKgQg9mC3IDrL1mfmRSCPhDgx_lHW9dlBzeQ/export?format=csv';
+    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1CJYNGix5KJXlEa2acyAfOYqY-PTwoMbhw6VF6nY_Tps/export?format=csv';
 
     function parseCSVLine(line) {
       const fields = [];
@@ -385,6 +365,120 @@
       });
     }
 
+    // Address → tap-to-open Google Maps link (uses gps as the URL)
+    function renderAddress(data) {
+      const el = document.getElementById('address-link');
+      const txt = document.getElementById('address-text');
+      if (!el || !txt) return;
+      const label = (data['address'] || '').split(' — Open in Google Maps')[0].trim();
+      const href = (data['gps'] || '').trim() ||
+        (label ? 'https://maps.google.com/?q=' + encodeURIComponent(label) : '');
+      if (label) {
+        txt.textContent = label;
+        if (href) el.href = href;
+      } else {
+        txt.textContent = 'Not provided';
+        txt.classList.add('empty');
+        el.removeAttribute('href');
+      }
+    }
+
+    // restaurants / beaches / activities: " | "-separated items → place cards.
+    // Each item optionally splits once on " — " into a bold name + description.
+    function renderLists(data) {
+      document.querySelectorAll('[data-list]').forEach(container => {
+        const raw = (data[container.getAttribute('data-list')] || '').trim();
+        container.innerHTML = '';
+        if (!raw) {
+          const c = document.createElement('div');
+          c.className = 'place-card';
+          c.innerHTML = '<div class="place-desc empty">Not provided</div>';
+          container.appendChild(c);
+          return;
+        }
+        raw.split(' | ').forEach(item => {
+          item = item.trim();
+          if (!item) return;
+          const card = document.createElement('div');
+          card.className = 'place-card';
+          const dash = item.indexOf(' — ');
+          if (dash !== -1) {
+            const name = document.createElement('div');
+            name.className = 'place-name';
+            name.textContent = item.slice(0, dash).trim();
+            const desc = document.createElement('div');
+            desc.className = 'place-desc';
+            desc.textContent = item.slice(dash + 3).trim();
+            card.appendChild(name);
+            card.appendChild(desc);
+          } else {
+            const desc = document.createElement('div');
+            desc.className = 'place-desc';
+            desc.textContent = item;
+            card.appendChild(desc);
+          }
+          container.appendChild(card);
+        });
+      });
+    }
+
+    // Help: primary + owner contacts, then " | "-separated taxi and emergency items.
+    function renderHelp(data) {
+      const wrap = document.getElementById('help-contacts');
+      if (!wrap) return;
+      wrap.innerHTML = '';
+
+      const digits = s => (s.match(/\d/g) || []).length;
+      const extractPhone = str => {
+        const runs = str.match(/\d[\d\s]*\d|\d/g) || [];
+        if (!runs.length) return null;
+        return runs.reduce((a, b) => digits(b) > digits(a) ? b : a).trim();
+      };
+      const addCard = (name, num) => {
+        const tel = num ? num.replace(/\s/g, '') : '';
+        const el = document.createElement(tel ? 'a' : 'div');
+        el.className = 'contact-card';
+        if (tel) el.href = 'tel:' + tel;
+        const n = document.createElement('span');
+        n.className = 'contact-name';
+        n.textContent = name || 'Contact';
+        const v = document.createElement('span');
+        v.className = 'contact-num';
+        v.textContent = num || '';
+        el.appendChild(n);
+        el.appendChild(v);
+        wrap.appendChild(el);
+      };
+      const addPair = (nameKey, phoneKey, fallback) => {
+        const nm = (data[nameKey] || '').trim();
+        const ph = (data[phoneKey] || '').trim();
+        if (nm || ph) addCard(nm || fallback, ph);
+      };
+      const addList = key => {
+        const raw = (data[key] || '').trim();
+        if (!raw) return;
+        raw.split(' | ').forEach(item => {
+          item = item.trim();
+          if (!item) return;
+          const num = extractPhone(item);
+          let name = item;
+          if (num) name = item.replace(num, '').replace(/[:\-–—]\s*$/, '').replace(/\s{2,}/g, ' ').trim();
+          addCard(name || item, num);
+        });
+      };
+
+      addPair('contact_primary_name', 'contact_primary_phone', 'Host');
+      addPair('contact_owner_name', 'contact_owner_phone', 'Owner');
+      addList('contact_taxi');
+      addList('emergency');
+    }
+
+    function applyDynamic(data) {
+      renderAddress(data);
+      renderLists(data);
+      renderHelp(data);
+    }
+
     function checkExpiry(data) {
       const raw = (data['expiry_date'] || '').trim();
       if (!raw) return;
@@ -408,6 +502,7 @@
         const data = parseCSV(await res.text());
         checkExpiry(data);
         injectData(data);
+        applyDynamic(data);
       } catch (err) {
         console.warn('Sheet load failed:', err);
         document.querySelectorAll('[data-key]').forEach(el => {
