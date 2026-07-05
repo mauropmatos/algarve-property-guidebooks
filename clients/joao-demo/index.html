@@ -131,6 +131,9 @@
     .place-desc { font-size: 13px; color: var(--grey); line-height: 1.55; }
     .place-link { display: inline-block; margin-top: 9px; font-size: 12px; font-weight: 700; color: var(--primary); text-decoration: none; letter-spacing: 0.03em; }
     .place-link:hover { text-decoration: underline; }
+    .place-pin { display: inline-flex; align-items: center; gap: 4px; margin-top: 9px; font-size: 12px; font-weight: 700; color: var(--primary); text-decoration: none; letter-spacing: 0.03em; }
+    .place-pin:hover { text-decoration: underline; }
+    .place-pin svg { flex-shrink: 0; }
 
     .rule-list { list-style: none; }
     .rule-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); }
@@ -168,8 +171,7 @@
   <nav class="tab-nav" aria-label="Page sections">
     <div class="tab-list">
       <button class="tab-btn active" data-target="quick-info">Quick Info</button>
-      <button class="tab-btn" data-target="arrival">Arrival</button>
-      <button class="tab-btn" data-target="access">Access</button>
+      <button class="tab-btn" data-target="arrival-access">Arrival &amp; Access</button>
       <button class="tab-btn" data-target="property">Property</button>
       <button class="tab-btn" data-target="local-info">Local Info</button>
       <button class="tab-btn" data-target="beaches">Beaches</button>
@@ -217,19 +219,12 @@
       </div>
     </section>
 
-    <section class="section" id="arrival">
-      <h2 class="section-heading">Arrival</h2>
-      <div class="card">
-        <div class="card-label">Check-in Instructions</div>
-        <div class="card-value long" data-key="checkin_steps"></div>
-      </div>
-    </section>
-
-    <section class="section" id="access">
-      <h2 class="section-heading">Access</h2>
+    <section class="section" id="arrival-access">
+      <h2 class="section-heading">Arrival &amp; Access</h2>
+      <ol class="step-list" data-steps="checkin_steps" style="margin-bottom: 16px;"></ol>
+      <div class="card"><div class="card-label">Keysafe Location</div><div class="card-value" data-key="keysafe_location"></div></div>
       <div class="card"><div class="card-label">Gate Code</div><div class="card-value" data-key="gate_code"></div></div>
       <div class="card"><div class="card-label">Building Code</div><div class="card-value" data-key="building_code"></div></div>
-      <div class="card"><div class="card-label">Keysafe Location</div><div class="card-value" data-key="keysafe_location"></div></div>
     </section>
 
     <section class="section" id="property">
@@ -297,7 +292,7 @@
   </main>
 
   <script>
-    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1CJYNGix5KJXlEa2acyAfOYqY-PTwoMbhw6VF6nY_Tps/export?format=csv';
+    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1egz_dVjreBlVF6EfrHvPZGGA9d-oZ_pVgAIky22l_Jc/export?format=csv';
 
     function parseCSVLine(line) {
       const fields = [];
@@ -341,16 +336,24 @@
       return data;
     }
 
+    // Hide an empty field: hide its single-field card/row if it lives in one,
+    // otherwise hide just the element. Show it again when it has a value.
+    function setFieldVisible(el, visible) {
+      const box = el.closest('.card, .prop-item, .info-item');
+      const target = (box && box.querySelectorAll('[data-key]').length === 1) ? box : el;
+      target.style.display = visible ? '' : 'none';
+    }
+
     function injectData(data) {
       document.querySelectorAll('[data-key]').forEach(el => {
-        const key = el.getAttribute('data-key');
-        const value = data[key];
+        const value = data[el.getAttribute('data-key')];
         if (value && value.trim()) {
           el.textContent = value;
           el.classList.remove('empty');
+          setFieldVisible(el, true);
         } else {
-          el.textContent = 'Not provided';
-          el.classList.add('empty');
+          el.textContent = '';
+          setFieldVisible(el, false);
         }
       });
     }
@@ -366,46 +369,58 @@
       if (label) {
         txt.textContent = label;
         if (href) el.href = href;
+        el.style.display = 'block';
       } else {
-        txt.textContent = 'Not provided';
-        txt.classList.add('empty');
-        el.removeAttribute('href');
+        el.style.display = 'none';
       }
     }
 
     // restaurants / beaches / activities: " | "-separated items → place cards.
-    // Each item optionally splits once on " — " into a bold name + description.
+    // Each item splits on " — " into name, description and an optional trailing
+    // URL segment, which renders as a small map-pin link rather than as text.
+    const PIN_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+
     function renderLists(data) {
       document.querySelectorAll('[data-list]').forEach(container => {
+        const section = container.closest('section');
         const raw = (data[container.getAttribute('data-list')] || '').trim();
         container.innerHTML = '';
-        if (!raw) {
-          const c = document.createElement('div');
-          c.className = 'place-card';
-          c.innerHTML = '<div class="place-desc empty">Not provided</div>';
-          container.appendChild(c);
-          return;
-        }
+        if (!raw) { if (section) section.style.display = 'none'; return; }
+        if (section) section.style.display = '';
         raw.split(' | ').forEach(item => {
           item = item.trim();
           if (!item) return;
+          const segs = item.split(' — ').map(s => s.trim());
+          let url = null;
+          if (segs.length && /^https?:\/\//i.test(segs[segs.length - 1])) url = segs.pop();
+          let name = '', desc = '';
+          if (segs.length >= 2) { name = segs[0]; desc = segs.slice(1).join(' — '); }
+          else if (segs.length === 1) { if (url) name = segs[0]; else desc = segs[0]; }
+
           const card = document.createElement('div');
           card.className = 'place-card';
-          const dash = item.indexOf(' — ');
-          if (dash !== -1) {
-            const name = document.createElement('div');
-            name.className = 'place-name';
-            name.textContent = item.slice(0, dash).trim();
-            const desc = document.createElement('div');
-            desc.className = 'place-desc';
-            desc.textContent = item.slice(dash + 3).trim();
-            card.appendChild(name);
-            card.appendChild(desc);
-          } else {
-            const desc = document.createElement('div');
-            desc.className = 'place-desc';
-            desc.textContent = item;
-            card.appendChild(desc);
+          if (name) {
+            const n = document.createElement('div');
+            n.className = 'place-name';
+            n.textContent = name;
+            card.appendChild(n);
+          }
+          if (desc) {
+            const d = document.createElement('div');
+            d.className = 'place-desc';
+            d.textContent = desc;
+            card.appendChild(d);
+          }
+          if (url) {
+            const a = document.createElement('a');
+            a.className = 'place-pin';
+            a.href = url;
+            a.target = '_blank';
+            a.rel = 'noopener';
+            a.setAttribute('aria-label', 'Open in Google Maps');
+            a.innerHTML = PIN_SVG;
+            a.appendChild(document.createTextNode(' Map'));
+            card.appendChild(a);
           }
           container.appendChild(card);
         });
@@ -465,18 +480,15 @@
 
     // house_rules / checkout_checklist: comma-separated → list items.
     // attr = data attribute holding the field key; itemClass/leadHTML style each row.
+    // Hides the containing section when the field is empty.
     function renderCommaList(attr, itemClass, leadHTML, data) {
       document.querySelectorAll('[' + attr + ']').forEach(list => {
+        const section = list.closest('section');
         const raw = (data[list.getAttribute(attr)] || '').trim();
         list.innerHTML = '';
         const items = raw ? raw.split(/,\s*/).map(s => s.trim()).filter(Boolean) : [];
-        if (!items.length) {
-          const li = document.createElement('li');
-          li.className = itemClass;
-          li.innerHTML = leadHTML + '<span class="empty">Not provided</span>';
-          list.appendChild(li);
-          return;
-        }
+        if (!items.length) { if (section) section.style.display = 'none'; return; }
+        if (section) section.style.display = '';
         items.forEach(text => {
           const li = document.createElement('li');
           li.className = itemClass;
@@ -487,8 +499,33 @@
       });
     }
 
+    // checkin_steps: a single string numbered "1. ... 2. ..." → numbered <ol>.
+    function renderSteps(data) {
+      document.querySelectorAll('[data-steps]').forEach(ol => {
+        const raw = (data[ol.getAttribute('data-steps')] || '').trim();
+        ol.innerHTML = '';
+        let steps = raw ? raw.split(/\s*\d+\.\s+/).map(s => s.trim()).filter(Boolean) : [];
+        if (raw && steps.length < 2) steps = [raw];
+        ol.style.display = steps.length ? '' : 'none';
+        steps.forEach((text, i) => {
+          const li = document.createElement('li');
+          li.className = 'step-item';
+          const num = document.createElement('span');
+          num.className = 'step-num';
+          num.textContent = String(i + 1);
+          const t = document.createElement('span');
+          t.className = 'step-text';
+          t.textContent = text;
+          li.appendChild(num);
+          li.appendChild(t);
+          ol.appendChild(li);
+        });
+      });
+    }
+
     function applyDynamic(data) {
       renderAddress(data);
+      renderSteps(data);
       renderLists(data);
       renderHelp(data);
       renderCommaList('data-rulelist', 'rule-item', '<span class="rule-dot"></span>', data);
@@ -521,9 +558,9 @@
         applyDynamic(data);
       } catch (err) {
         console.warn('Sheet load failed:', err);
-        document.querySelectorAll('[data-key]').forEach(el => {
-          if (!el.textContent.trim()) { el.textContent = 'Not provided'; el.classList.add('empty'); }
-        });
+        // No data: hide empty fields/sections rather than showing placeholders.
+        injectData({});
+        applyDynamic({});
       }
     }
 
