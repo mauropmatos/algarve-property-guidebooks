@@ -30,13 +30,34 @@
     }
 
     .hero {
+      position: relative;
       background-color: var(--navy);
       min-height: 230px;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
       padding: 32px 20px 26px;
+      overflow: hidden;
     }
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 0;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.1) 100%);
+      z-index: 1;
+    }
+    .hero-eyebrow,
+    .hero-title,
+    .hero-location { position: relative; z-index: 2; }
     .hero-eyebrow {
       font-size: 10px;
       font-weight: 700;
@@ -135,6 +156,11 @@
     .place-pin:hover { text-decoration: underline; }
     .place-pin svg { flex-shrink: 0; }
 
+    .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .gallery-item { display: block; border-radius: 10px; overflow: hidden; aspect-ratio: 4 / 3; background: var(--card); border: 1px solid var(--border); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.25s; }
+    .gallery-item:hover img { transform: scale(1.04); }
+
     .rule-list { list-style: none; }
     .rule-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); }
     .rule-item:last-child { border-bottom: none; }
@@ -163,6 +189,7 @@
   </div>
 
   <header class="hero">
+    <img src="images/hero.jpg" alt="Casinha 23" class="hero-img">
     <p class="hero-eyebrow">Guest Information</p>
     <h1 class="hero-title" data-key="property_name">Casinha 23</h1>
     <p class="hero-location">Lagos, Algarve</p>
@@ -171,6 +198,7 @@
   <nav class="tab-nav" aria-label="Page sections">
     <div class="tab-list">
       <button class="tab-btn active" data-target="quick-info">Quick Info</button>
+      <button class="tab-btn" data-target="gallery">Gallery</button>
       <button class="tab-btn" data-target="arrival-access">Arrival &amp; Access</button>
       <button class="tab-btn" data-target="property">Property</button>
       <button class="tab-btn" data-target="local-info">Local Info</button>
@@ -216,6 +244,17 @@
       <div class="card">
         <div class="card-label">Tap Water</div>
         <div class="card-value" data-key="tap_water"></div>
+      </div>
+    </section>
+
+    <section class="section" id="gallery">
+      <h2 class="section-heading">Gallery</h2>
+      <div class="gallery-grid">
+        <a class="gallery-item" href="images/1.jpg" target="_blank" rel="noopener"><img src="images/1.jpg" alt="Casinha 23 photo 1" loading="lazy"></a>
+        <a class="gallery-item" href="images/2.jpg" target="_blank" rel="noopener"><img src="images/2.jpg" alt="Casinha 23 photo 2" loading="lazy"></a>
+        <a class="gallery-item" href="images/3.jpg" target="_blank" rel="noopener"><img src="images/3.jpg" alt="Casinha 23 photo 3" loading="lazy"></a>
+        <a class="gallery-item" href="images/4.jpg" target="_blank" rel="noopener"><img src="images/4.jpg" alt="Casinha 23 photo 4" loading="lazy"></a>
+        <a class="gallery-item" href="images/5.jpg" target="_blank" rel="noopener"><img src="images/5.jpg" alt="Casinha 23 photo 5" loading="lazy"></a>
       </div>
     </section>
 
