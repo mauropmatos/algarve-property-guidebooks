@@ -161,6 +161,21 @@
     .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.25s; }
     .gallery-item:hover img { transform: scale(1.04); }
 
+    .gallery-toggle { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 13px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; color: var(--navy); }
+    .gallery-chevron { color: var(--grey); display: flex; align-items: center; transition: transform 0.25s ease; }
+    .gallery-toggle.open .gallery-chevron { transform: rotate(180deg); }
+    .gallery-collapse { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+    .gallery-collapse.open { max-height: 3000px; }
+    .gallery-collapse .gallery-grid { margin-top: 10px; }
+
+    .subsection-heading { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--grey); margin: 26px 0 14px; }
+    .section > .subgroup:first-of-type > .subsection-heading:first-child { margin-top: 0; }
+
+    .inclusion-list { list-style: none; }
+    .inclusion-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); line-height: 1.5; }
+    .inclusion-item:last-child { border-bottom: none; }
+    .inclusion-check { flex-shrink: 0; color: var(--primary); font-size: 13px; font-weight: 700; margin-top: 1px; }
+
     .rule-list { list-style: none; }
     .rule-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); }
     .rule-item:last-child { border-bottom: none; }
@@ -197,64 +212,55 @@
 
   <nav class="tab-nav" aria-label="Page sections">
     <div class="tab-list">
-      <button class="tab-btn active" data-target="quick-info">Quick Info</button>
-      <button class="tab-btn" data-target="gallery">Gallery</button>
+      <button class="tab-btn active" data-target="welcome">Welcome</button>
       <button class="tab-btn" data-target="arrival-access">Arrival &amp; Access</button>
-      <button class="tab-btn" data-target="property">Property</button>
-      <button class="tab-btn" data-target="local-info">Local Info</button>
-      <button class="tab-btn" data-target="beaches">Beaches</button>
-      <button class="tab-btn" data-target="eat-drink">Eat &amp; Drink</button>
+      <button class="tab-btn" data-target="the-house">The House</button>
       <button class="tab-btn" data-target="explore">Explore</button>
-      <button class="tab-btn" data-target="rules">Rules</button>
-      <button class="tab-btn" data-target="checkout">Checkout</button>
+      <button class="tab-btn" data-target="rules-checkout">Rules &amp; Checkout</button>
       <button class="tab-btn" data-target="help">Help</button>
     </div>
   </nav>
 
   <main class="main">
 
-    <section class="section" id="quick-info">
-      <h2 class="section-heading">Quick Info</h2>
-      <a class="card" id="address-link" href="#" target="_blank" rel="noopener" style="display:block;text-decoration:none;">
-        <div class="card-label">Address &mdash; tap to open in Maps</div>
-        <div class="card-value" id="address-text" style="color:var(--primary);"></div>
-      </a>
-      <div class="card-grid">
-        <div class="card">
-          <div class="card-label">Check-in</div>
-          <div class="card-value" data-key="checkin_time"></div>
+    <section class="section" id="welcome">
+      <h2 class="section-heading">Welcome</h2>
+      <div class="card" id="welcome-note-card">
+        <div class="card-label">A note from your host</div>
+        <div class="card-value long" data-key="welcome_note"></div>
+      </div>
+      <div class="subgroup">
+        <h3 class="subsection-heading">Quick Info</h3>
+        <a class="card" id="address-link" href="#" target="_blank" rel="noopener" style="display:block;text-decoration:none;">
+          <div class="card-label">Address &mdash; tap to open in Maps</div>
+          <div class="card-value" id="address-text" style="color:var(--primary);"></div>
+        </a>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-label">Check-in</div>
+            <div class="card-value" data-key="checkin_time"></div>
+          </div>
+          <div class="card">
+            <div class="card-label">Checkout</div>
+            <div class="card-value" data-key="checkout_time"></div>
+          </div>
         </div>
         <div class="card">
-          <div class="card-label">Checkout</div>
-          <div class="card-value" data-key="checkout_time"></div>
+          <div class="card-label">Wi-Fi Network / Password</div>
+          <div class="card-value"><span data-key="wifi_name"></span> &nbsp;/&nbsp; <span data-key="wifi_password"></span></div>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-label">Wi-Fi Network / Password</div>
-        <div class="card-value"><span data-key="wifi_name"></span> &nbsp;/&nbsp; <span data-key="wifi_password"></span></div>
-      </div>
-      <div class="card">
-        <div class="card-label">Parking</div>
-        <div class="card-value" data-key="parking"></div>
-      </div>
-      <div class="card">
-        <div class="card-label">Bins</div>
-        <div class="card-value" data-key="bins_location"></div>
-      </div>
-      <div class="card">
-        <div class="card-label">Tap Water</div>
-        <div class="card-value" data-key="tap_water"></div>
-      </div>
-    </section>
-
-    <section class="section" id="gallery">
-      <h2 class="section-heading">Gallery</h2>
-      <div class="gallery-grid">
-        <a class="gallery-item" href="images/1.jpg" target="_blank" rel="noopener"><img src="images/1.jpg" alt="Casinha 23 photo 1" loading="lazy"></a>
-        <a class="gallery-item" href="images/2.jpg" target="_blank" rel="noopener"><img src="images/2.jpg" alt="Casinha 23 photo 2" loading="lazy"></a>
-        <a class="gallery-item" href="images/3.jpg" target="_blank" rel="noopener"><img src="images/3.jpg" alt="Casinha 23 photo 3" loading="lazy"></a>
-        <a class="gallery-item" href="images/4.jpg" target="_blank" rel="noopener"><img src="images/4.jpg" alt="Casinha 23 photo 4" loading="lazy"></a>
-        <a class="gallery-item" href="images/5.jpg" target="_blank" rel="noopener"><img src="images/5.jpg" alt="Casinha 23 photo 5" loading="lazy"></a>
+        <div class="card">
+          <div class="card-label">Parking</div>
+          <div class="card-value" data-key="parking"></div>
+        </div>
+        <div class="card">
+          <div class="card-label">Bins</div>
+          <div class="card-value" data-key="bins_location"></div>
+        </div>
+        <div class="card">
+          <div class="card-label">Tap Water</div>
+          <div class="card-value" data-key="tap_water"></div>
+        </div>
       </div>
     </section>
 
@@ -266,61 +272,95 @@
       <div class="card"><div class="card-label">Building Code</div><div class="card-value" data-key="building_code"></div></div>
     </section>
 
-    <section class="section" id="property">
-      <h2 class="section-heading">Property</h2>
-      <ul class="prop-list">
-        <li class="prop-item"><div class="prop-label">Air Conditioning</div><div class="prop-value" data-key="ac_info"></div></li>
-        <li class="prop-item"><div class="prop-label">Heating</div><div class="prop-value" data-key="heating_info"></div></li>
-        <li class="prop-item"><div class="prop-label">Washing Machine</div><div class="prop-value" data-key="washing_machine"></div></li>
-        <li class="prop-item"><div class="prop-label">Dishwasher</div><div class="prop-value" data-key="dishwasher"></div></li>
-        <li class="prop-item"><div class="prop-label">Oven</div><div class="prop-value" data-key="oven"></div></li>
-        <li class="prop-item"><div class="prop-label">Coffee</div><div class="prop-value" data-key="coffee_machine"></div></li>
-        <li class="prop-item"><div class="prop-label">Hot Water</div><div class="prop-value" data-key="hot_water"></div></li>
-        <li class="prop-item"><div class="prop-label">TV</div><div class="prop-value" data-key="tv_info"></div></li>
-      </ul>
-    </section>
+    <section class="section" id="the-house">
+      <h2 class="section-heading">The House</h2>
 
-    <section class="section" id="local-info">
-      <h2 class="section-heading">Local Info</h2>
-      <ul class="info-list">
-        <li class="info-item"><span class="info-label">Town centre</span><span class="info-value" data-key="distance_centre"></span></li>
-        <li class="info-item"><span class="info-label">Getting around</span><span class="info-value" data-key="getting_around"></span></li>
-        <li class="info-item"><span class="info-label">Pharmacy / ATM</span><span class="info-value" data-key="pharmacy_atm"></span></li>
-        <li class="info-item"><span class="info-label">Hospital</span><span class="info-value" data-key="hospital"></span></li>
-      </ul>
-      <div class="card" style="margin-top: 16px;">
-        <div class="card-label">Supermarkets</div>
-        <div class="card-value long" data-key="supermarkets"></div>
+      <div class="subgroup">
+        <h3 class="subsection-heading">What's Included</h3>
+        <ul class="inclusion-list" data-inclusion="included_items"></ul>
       </div>
-    </section>
 
-    <section class="section" id="beaches">
-      <h2 class="section-heading">Beaches</h2>
-      <div data-list="beaches"></div>
-    </section>
+      <div class="subgroup">
+        <h3 class="subsection-heading">Appliances &amp; Amenities</h3>
+        <ul class="prop-list">
+          <li class="prop-item"><div class="prop-label">Air Conditioning</div><div class="prop-value" data-key="ac_info"></div></li>
+          <li class="prop-item"><div class="prop-label">Heating</div><div class="prop-value" data-key="heating_info"></div></li>
+          <li class="prop-item"><div class="prop-label">Washing Machine</div><div class="prop-value" data-key="washing_machine"></div></li>
+          <li class="prop-item"><div class="prop-label">Dishwasher</div><div class="prop-value" data-key="dishwasher"></div></li>
+          <li class="prop-item"><div class="prop-label">Oven</div><div class="prop-value" data-key="oven"></div></li>
+          <li class="prop-item"><div class="prop-label">Coffee</div><div class="prop-value" data-key="coffee_machine"></div></li>
+          <li class="prop-item"><div class="prop-label">Hot Water</div><div class="prop-value" data-key="hot_water"></div></li>
+          <li class="prop-item"><div class="prop-label">TV</div><div class="prop-value" data-key="tv_info"></div></li>
+        </ul>
+      </div>
 
-    <section class="section" id="eat-drink">
-      <h2 class="section-heading">Eat &amp; Drink</h2>
-      <div data-list="restaurants"></div>
+      <div class="subgroup">
+        <h3 class="subsection-heading">Photos</h3>
+        <button class="gallery-toggle" id="gallery-toggle" aria-expanded="false" aria-controls="gallery-collapse">
+          <span>View photos</span>
+          <span class="gallery-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="gallery-collapse" id="gallery-collapse">
+          <div class="gallery-grid">
+            <a class="gallery-item" href="images/1.jpg" target="_blank" rel="noopener"><img src="images/1.jpg" alt="Casinha 23 photo 1" loading="lazy"></a>
+            <a class="gallery-item" href="images/2.jpg" target="_blank" rel="noopener"><img src="images/2.jpg" alt="Casinha 23 photo 2" loading="lazy"></a>
+            <a class="gallery-item" href="images/3.jpg" target="_blank" rel="noopener"><img src="images/3.jpg" alt="Casinha 23 photo 3" loading="lazy"></a>
+            <a class="gallery-item" href="images/4.jpg" target="_blank" rel="noopener"><img src="images/4.jpg" alt="Casinha 23 photo 4" loading="lazy"></a>
+            <a class="gallery-item" href="images/5.jpg" target="_blank" rel="noopener"><img src="images/5.jpg" alt="Casinha 23 photo 5" loading="lazy"></a>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="section" id="explore">
       <h2 class="section-heading">Explore</h2>
-      <div data-list="activities"></div>
-    </section>
 
-    <section class="section" id="rules">
-      <h2 class="section-heading">Rules</h2>
-      <ul class="rule-list" data-rulelist="house_rules"></ul>
-    </section>
-
-    <section class="section" id="checkout">
-      <h2 class="section-heading">Checkout</h2>
-      <div class="card" style="margin-bottom: 18px;">
-        <div class="card-label">Checkout by</div>
-        <div class="card-value" data-key="checkout_time"></div>
+      <div class="subgroup">
+        <h3 class="subsection-heading">Local Info</h3>
+        <ul class="info-list">
+          <li class="info-item"><span class="info-label">Town centre</span><span class="info-value" data-key="distance_centre"></span></li>
+          <li class="info-item"><span class="info-label">Getting around</span><span class="info-value" data-key="getting_around"></span></li>
+          <li class="info-item"><span class="info-label">Pharmacy / ATM</span><span class="info-value" data-key="pharmacy_atm"></span></li>
+          <li class="info-item"><span class="info-label">Hospital</span><span class="info-value" data-key="hospital"></span></li>
+        </ul>
+        <div class="card" style="margin-top: 16px;">
+          <div class="card-label">Supermarkets</div>
+          <div class="card-value long" data-key="supermarkets"></div>
+        </div>
       </div>
-      <ul class="checklist" data-checklist="checkout_checklist"></ul>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">Beaches</h3>
+        <div data-list="beaches"></div>
+      </div>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">Eat &amp; Drink</h3>
+        <div data-list="restaurants"></div>
+      </div>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">Things to Do</h3>
+        <div data-list="activities"></div>
+      </div>
+    </section>
+
+    <section class="section" id="rules-checkout">
+      <h2 class="section-heading">Rules &amp; Checkout</h2>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">House Rules</h3>
+        <ul class="rule-list" data-rulelist="house_rules"></ul>
+      </div>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">Checkout</h3>
+        <div class="card" style="margin-bottom: 14px;">
+          <div class="card-label">Checkout by</div>
+          <div class="card-value" data-key="checkout_time"></div>
+        </div>
+        <ul class="checklist" data-checklist="checkout_checklist"></ul>
+      </div>
     </section>
 
     <section class="section" id="help">
@@ -331,7 +371,7 @@
   </main>
 
   <script>
-    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1lHHuFt0Ilh3-7NIhXjTZGUsvZ9KU1XnRee2bhvIg7JI/export?format=csv';
+    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1Zg-luIXr9Czvml0l_CHzPiAh04yDltWhtklgK7VpnUA/export?format=csv';
 
     function parseCSVLine(line) {
       const fields = [];
@@ -421,11 +461,11 @@
 
     function renderLists(data) {
       document.querySelectorAll('[data-list]').forEach(container => {
-        const section = container.closest('section');
+        const group = container.closest('.subgroup') || container.closest('section');
         const raw = (data[container.getAttribute('data-list')] || '').trim();
         container.innerHTML = '';
-        if (!raw) { if (section) section.style.display = 'none'; return; }
-        if (section) section.style.display = '';
+        if (!raw) { if (group) group.style.display = 'none'; return; }
+        if (group) group.style.display = '';
         raw.split(' | ').forEach(item => {
           item = item.trim();
           if (!item) return;
@@ -522,12 +562,12 @@
     // Hides the containing section when the field is empty.
     function renderCommaList(attr, itemClass, leadHTML, data) {
       document.querySelectorAll('[' + attr + ']').forEach(list => {
-        const section = list.closest('section');
+        const group = list.closest('.subgroup') || list.closest('section');
         const raw = (data[list.getAttribute(attr)] || '').trim();
         list.innerHTML = '';
         const items = raw ? raw.split(/,\s*/).map(s => s.trim()).filter(Boolean) : [];
-        if (!items.length) { if (section) section.style.display = 'none'; return; }
-        if (section) section.style.display = '';
+        if (!items.length) { if (group) group.style.display = 'none'; return; }
+        if (group) group.style.display = '';
         items.forEach(text => {
           const li = document.createElement('li');
           li.className = itemClass;
@@ -567,6 +607,7 @@
       renderSteps(data);
       renderLists(data);
       renderHelp(data);
+      renderCommaList('data-inclusion', 'inclusion-item', '<span class="inclusion-check">&#10003;</span>', data);
       renderCommaList('data-rulelist', 'rule-item', '<span class="rule-dot"></span>', data);
       renderCommaList('data-checklist', 'checklist-item', '<span class="check-box"></span>', data);
     }
@@ -604,6 +645,17 @@
     }
 
     loadSheet();
+
+    // Gallery accordion — collapsed by default, expands on tap.
+    const galToggle = document.getElementById('gallery-toggle');
+    const galCollapse = document.getElementById('gallery-collapse');
+    if (galToggle && galCollapse) {
+      galToggle.addEventListener('click', () => {
+        const open = galToggle.classList.toggle('open');
+        galCollapse.classList.toggle('open', open);
+        galToggle.setAttribute('aria-expanded', String(open));
+      });
+    }
 
     const tabBtns = document.querySelectorAll('.tab-btn');
     const sections = document.querySelectorAll('.section');
