@@ -9,13 +9,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #1AA3DC;
-      --navy:    #1C1C5C;
-      --bg:      #FFFFFF;
-      --card:    #F8F9FB;
-      --border:  #E8EAEC;
-      --grey:    #9BA3AB;
-      --text:    #2D2D3A;
+      --primary:   #2E6E7E;
+      --secondary: #C08A3E;
+      --navy:      #2B2926;
+      --bg:        #FAF7F2;
+      --card:      #EFE7DB;
+      --border:    #E2D6C4;
+      --grey:      #6A6357;
+      --text:      #33322E;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -82,7 +83,8 @@
       position: sticky;
       top: 0;
       z-index: 200;
-      background: var(--navy);
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
@@ -93,7 +95,7 @@
       background: none;
       border: none;
       border-bottom: 3px solid transparent;
-      color: rgba(255,255,255,0.45);
+      color: var(--grey);
       font-family: 'Montserrat', sans-serif;
       font-size: 10px;
       font-weight: 700;
@@ -103,8 +105,8 @@
       cursor: pointer;
       transition: color 0.15s, border-color 0.15s;
     }
-    .tab-btn:hover  { color: rgba(255,255,255,0.8); }
-    .tab-btn.active { color: #fff; border-bottom-color: var(--primary); }
+    .tab-btn:hover  { color: var(--navy); }
+    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
 
     .main { padding-bottom: 60px; }
     .section { padding: 26px 20px 30px; border-bottom: 8px solid var(--card); }
@@ -174,12 +176,19 @@
     .inclusion-list { list-style: none; }
     .inclusion-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); line-height: 1.5; }
     .inclusion-item:last-child { border-bottom: none; }
-    .inclusion-check { flex-shrink: 0; color: var(--primary); font-size: 13px; font-weight: 700; margin-top: 1px; }
+    .inclusion-check { flex-shrink: 0; color: var(--secondary); font-size: 13px; font-weight: 700; margin-top: 1px; }
+
+    .welcome-body p { font-size: 14px; line-height: 1.65; color: var(--text); margin-bottom: 12px; }
+    .welcome-body p:last-child { margin-bottom: 0; }
+    .welcome-schedule { list-style: none; margin: 14px 0; padding: 12px 14px; background: #EAF1F1; border-left: 3px solid var(--primary); border-radius: 8px; }
+    .welcome-schedule:last-child { margin-bottom: 0; }
+    .welcome-schedule li { position: relative; padding: 4px 0 4px 16px; font-size: 14px; line-height: 1.5; font-weight: 600; color: var(--navy); }
+    .welcome-schedule li::before { content: '•'; position: absolute; left: 0; color: var(--secondary); font-weight: 700; }
 
     .rule-list { list-style: none; }
     .rule-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); }
     .rule-item:last-child { border-bottom: none; }
-    .rule-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
+    .rule-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--secondary); flex-shrink: 0; }
 
     .checklist { list-style: none; }
     .checklist-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); line-height: 1.5; }
@@ -188,7 +197,7 @@
 
     a.contact-card { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 13px 16px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; text-decoration: none; transition: background 0.15s; }
     a.contact-card:last-child { margin-bottom: 0; }
-    a.contact-card:hover { background: #edf6fb; }
+    a.contact-card:hover { background: #E7DDCE; }
     .contact-name { font-size: 13px; font-weight: 600; color: var(--navy); }
     .contact-num { font-size: 13px; font-weight: 700; color: var(--primary); }
 
@@ -227,7 +236,7 @@
       <h2 class="section-heading">Welcome</h2>
       <div class="card" id="welcome-note-card">
         <div class="card-label">A note from your host</div>
-        <div class="card-value long" data-key="welcome_note"></div>
+        <div class="welcome-body" id="welcome-body"></div>
       </div>
       <div class="subgroup">
         <h3 class="subsection-heading">Quick Info</h3>
@@ -602,7 +611,36 @@
       });
     }
 
+    // welcome_note: " | "-separated segments rendered in order. Segments
+    // starting with "- " become items of a distinct bullet schedule; every
+    // other segment becomes its own paragraph. Consecutive "- " segments group
+    // into one schedule block.
+    function renderWelcome(data) {
+      const card = document.getElementById('welcome-note-card');
+      const body = document.getElementById('welcome-body');
+      if (!card || !body) return;
+      const raw = (data['welcome_note'] || '').trim();
+      body.innerHTML = '';
+      if (!raw) { card.style.display = 'none'; return; }
+      card.style.display = '';
+      let ul = null;
+      raw.split(' | ').map(s => s.trim()).filter(Boolean).forEach(seg => {
+        if (seg.startsWith('- ')) {
+          if (!ul) { ul = document.createElement('ul'); ul.className = 'welcome-schedule'; body.appendChild(ul); }
+          const li = document.createElement('li');
+          li.textContent = seg.slice(2).trim();
+          ul.appendChild(li);
+        } else {
+          ul = null;
+          const p = document.createElement('p');
+          p.textContent = seg;
+          body.appendChild(p);
+        }
+      });
+    }
+
     function applyDynamic(data) {
+      renderWelcome(data);
       renderAddress(data);
       renderSteps(data);
       renderLists(data);
