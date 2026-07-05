@@ -277,12 +277,7 @@
 
     <section class="section" id="rules">
       <h2 class="section-heading">Rules</h2>
-      <ul class="rule-list">
-        <!-- Replace with property-specific house rules -->
-        <li class="rule-item"><span class="rule-dot"></span>No smoking inside</li>
-        <li class="rule-item"><span class="rule-dot"></span>No parties</li>
-        <li class="rule-item"><span class="rule-dot"></span>Quiet hours 22:00 to 08:00</li>
-      </ul>
+      <ul class="rule-list" data-rulelist="house_rules"></ul>
     </section>
 
     <section class="section" id="checkout">
@@ -291,12 +286,7 @@
         <div class="card-label">Checkout by</div>
         <div class="card-value" data-key="checkout_time"></div>
       </div>
-      <ul class="checklist">
-        <!-- Replace with property-specific checkout steps -->
-        <li class="checklist-item"><span class="check-box"></span>Leave keys in keysafe and scramble the code</li>
-        <li class="checklist-item"><span class="check-box"></span>Close all windows and doors</li>
-        <li class="checklist-item"><span class="check-box"></span>Turn off all lights and air conditioning</li>
-      </ul>
+      <ul class="checklist" data-checklist="checkout_checklist"></ul>
     </section>
 
     <section class="section" id="help">
@@ -473,10 +463,36 @@
       addList('emergency');
     }
 
+    // house_rules / checkout_checklist: comma-separated → list items.
+    // attr = data attribute holding the field key; itemClass/leadHTML style each row.
+    function renderCommaList(attr, itemClass, leadHTML, data) {
+      document.querySelectorAll('[' + attr + ']').forEach(list => {
+        const raw = (data[list.getAttribute(attr)] || '').trim();
+        list.innerHTML = '';
+        const items = raw ? raw.split(/,\s*/).map(s => s.trim()).filter(Boolean) : [];
+        if (!items.length) {
+          const li = document.createElement('li');
+          li.className = itemClass;
+          li.innerHTML = leadHTML + '<span class="empty">Not provided</span>';
+          list.appendChild(li);
+          return;
+        }
+        items.forEach(text => {
+          const li = document.createElement('li');
+          li.className = itemClass;
+          li.innerHTML = leadHTML;
+          li.appendChild(document.createTextNode(text));
+          list.appendChild(li);
+        });
+      });
+    }
+
     function applyDynamic(data) {
       renderAddress(data);
       renderLists(data);
       renderHelp(data);
+      renderCommaList('data-rulelist', 'rule-item', '<span class="rule-dot"></span>', data);
+      renderCommaList('data-checklist', 'checklist-item', '<span class="check-box"></span>', data);
     }
 
     function checkExpiry(data) {
