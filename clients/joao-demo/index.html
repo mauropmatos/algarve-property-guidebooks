@@ -78,6 +78,19 @@
       color: rgba(255,255,255,0.5);
       margin-top: 6px;
     }
+    .hero-brand {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      z-index: 2;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #1AA3DC;
+      opacity: 0.92;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.45);
+    }
 
     .tab-nav {
       position: sticky;
@@ -170,6 +183,21 @@
     .gallery-collapse { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
     .gallery-collapse.open { max-height: 3000px; }
     .gallery-collapse .gallery-grid { margin-top: 10px; }
+    .postal-body { padding: 2px 16px 14px; font-size: 14px; line-height: 1.6; color: var(--text); }
+
+    .site-footer {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      z-index: 300;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 9px 12px;
+      font-size: 11px;
+      color: var(--grey);
+    }
+    .site-footer a { color: #1AA3DC; text-decoration: none; font-weight: 600; }
+    .site-footer a:hover { text-decoration: underline; }
 
     .subsection-heading { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--grey); margin: 26px 0 14px; }
     .section > .subgroup:first-of-type > .subsection-heading:first-child { margin-top: 0; }
@@ -215,6 +243,7 @@
 
   <header class="hero">
     <img src="/clients/joao-demo/images/hero.jpg" alt="Casinha 23" class="hero-img">
+    <span class="hero-brand">GuestPage Algarve</span>
     <p class="hero-eyebrow">Guest Information</p>
     <h1 class="hero-title" data-key="property_name">Casinha 23</h1>
     <p class="hero-location">Lagos, Algarve</p>
@@ -270,6 +299,15 @@
         <div class="card">
           <div class="card-label">Tap Water</div>
           <div class="card-value" data-key="tap_water"></div>
+        </div>
+        <div id="postal-row" style="display:none;">
+          <button class="gallery-toggle" id="postal-toggle" aria-expanded="false" aria-controls="postal-collapse">
+            <span>Receiving mail &amp; parcels</span>
+            <span class="gallery-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="gallery-collapse" id="postal-collapse">
+            <div class="postal-body" id="postal-text"></div>
+          </div>
         </div>
       </div>
     </section>
@@ -380,6 +418,8 @@
     </section>
 
   </main>
+
+  <footer class="site-footer">Powered by <a href="https://guestpagealgarve.com" target="_blank" rel="noopener">GuestPage Algarve</a></footer>
 
   <script>
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1Zg-luIXr9Czvml0l_CHzPiAh04yDltWhtklgK7VpnUA/export?format=csv';
@@ -641,8 +681,20 @@
       });
     }
 
+    // postal_info: fills the "Receiving mail & parcels" accordion; the whole
+    // row stays hidden when the field is empty/absent.
+    function renderPostal(data) {
+      const row = document.getElementById('postal-row');
+      const txt = document.getElementById('postal-text');
+      if (!row || !txt) return;
+      const v = (data['postal_info'] || '').trim();
+      if (v) { txt.textContent = v; row.style.display = ''; }
+      else { row.style.display = 'none'; }
+    }
+
     function applyDynamic(data) {
       renderWelcome(data);
+      renderPostal(data);
       renderAddress(data);
       renderSteps(data);
       renderLists(data);
@@ -686,16 +738,19 @@
 
     loadSheet();
 
-    // Gallery accordion — collapsed by default, expands on tap.
-    const galToggle = document.getElementById('gallery-toggle');
-    const galCollapse = document.getElementById('gallery-collapse');
-    if (galToggle && galCollapse) {
-      galToggle.addEventListener('click', () => {
-        const open = galToggle.classList.toggle('open');
-        galCollapse.classList.toggle('open', open);
-        galToggle.setAttribute('aria-expanded', String(open));
+    // Collapsible accordions (Photos, postal info) — collapsed by default.
+    function wireAccordion(toggleId, collapseId) {
+      const toggle = document.getElementById(toggleId);
+      const collapse = document.getElementById(collapseId);
+      if (!toggle || !collapse) return;
+      toggle.addEventListener('click', () => {
+        const open = toggle.classList.toggle('open');
+        collapse.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', String(open));
       });
     }
+    wireAccordion('gallery-toggle', 'gallery-collapse');
+    wireAccordion('postal-toggle', 'postal-collapse');
 
     const tabBtns = document.querySelectorAll('.tab-btn');
     const sections = document.querySelectorAll('.section');
