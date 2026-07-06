@@ -963,17 +963,36 @@
       });
     });
 
+    let activeId = document.querySelector('.tab-btn.active') ?
+      document.querySelector('.tab-btn.active').dataset.target : null;
+    function setActive(id) {
+      if (!id || id === activeId) return;
+      activeId = id;
+      tabBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.target === id));
+      const activeBtn = document.querySelector('.tab-btn[data-target="' + id + '"]');
+      if (activeBtn) activeBtn.scrollIntoView({ block: 'nearest', inline: 'center' });
+    }
+
+    // A short final section (Help) can never reach the centre band, so once the
+    // page is scrolled to the bottom we force the last tab active.
+    const lastId = sections.length ? sections[sections.length - 1].id : null;
+    function atPageBottom() {
+      const doc = document.documentElement;
+      return doc.scrollHeight > window.innerHeight + 40 &&
+        window.innerHeight + window.scrollY >= doc.scrollHeight - 24;
+    }
+
     const observer = new IntersectionObserver(entries => {
+      if (atPageBottom()) { setActive(lastId); return; }
       entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        const id = entry.target.id;
-        tabBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.target === id));
-        const activeBtn = document.querySelector('.tab-btn[data-target="' + id + '"]');
-        if (activeBtn) activeBtn.scrollIntoView({ block: 'nearest', inline: 'center' });
+        if (entry.isIntersecting) setActive(entry.target.id);
       });
     }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
-
     sections.forEach(s => observer.observe(s));
+
+    window.addEventListener('scroll', () => {
+      if (atPageBottom()) setActive(lastId);
+    }, { passive: true });
   </script>
 
 </body>
