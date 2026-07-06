@@ -954,11 +954,12 @@
       const txt = document.getElementById('postal-text');
       if (!row || !txt) return;
       const v = (data['postal_info'] || '').trim();
-      const addr = (data['address'] || '').trim();
+      const addr = (data['delivery_address'] || data['address'] || '').trim();
       const block = document.getElementById('copy-address-block');
       const addrEl = document.getElementById('copy-address-text');
       // The section shows when there's postal_info to display; the tap-to-copy
-      // delivery address is added from the address field when available.
+      // delivery address uses the delivery_address field, falling back to the
+      // address field when delivery_address is empty.
       if (v) {
         txt.textContent = v;
         txt.style.display = '';
