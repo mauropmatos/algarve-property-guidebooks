@@ -78,20 +78,6 @@
       color: rgba(255,255,255,0.5);
       margin-top: 6px;
     }
-    .hero-brand {
-      position: absolute;
-      top: 14px;
-      right: 16px;
-      z-index: 2;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      color: #1AA3DC;
-      opacity: 0.92;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.45);
-    }
-
     .tab-nav {
       position: sticky;
       top: 0;
@@ -192,12 +178,12 @@
       background: var(--bg);
       border-top: 1px solid var(--border);
       text-align: center;
-      padding: 9px 12px;
+      padding: 10px 12px;
       font-size: 11px;
       color: var(--grey);
     }
-    .site-footer a { color: #1AA3DC; text-decoration: none; font-weight: 600; }
-    .site-footer a:hover { text-decoration: underline; }
+    .site-footer a { display: inline-block; line-height: 0; }
+    .footer-logo { width: 120px; height: auto; display: block; margin: 0 auto; }
 
     .subsection-heading { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--grey); margin: 26px 0 14px; }
     .section > .subgroup:first-of-type > .subsection-heading:first-child { margin-top: 0; }
@@ -220,9 +206,20 @@
     .rule-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--secondary); flex-shrink: 0; }
 
     .checklist { list-style: none; }
-    .checklist-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); line-height: 1.5; }
+    .checklist-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); line-height: 1.5; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
     .checklist-item:last-child { border-bottom: none; }
-    .check-box { flex-shrink: 0; width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 5px; margin-top: 1px; }
+    .check-box { flex-shrink: 0; width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 5px; margin-top: 1px; display: flex; align-items: center; justify-content: center; color: #fff; transition: background 0.15s, border-color 0.15s; }
+    .check-box svg { opacity: 0; transition: opacity 0.15s; }
+    .checklist-item.checked .check-box { background: var(--primary); border-color: var(--primary); }
+    .checklist-item.checked .check-box svg { opacity: 1; }
+    .checklist-item.checked .checklist-text { color: var(--grey); text-decoration: line-through; }
+
+    .accordion { margin-bottom: 10px; }
+    .accordion:last-child { margin-bottom: 0; }
+    .acc-summary { display: flex; flex-direction: column; gap: 3px; text-align: left; flex: 1; min-width: 0; }
+    .acc-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); }
+    .acc-preview { font-size: 13px; font-weight: 500; color: var(--navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .gallery-toggle.open .acc-preview { display: none; }
 
     a.contact-card { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 13px 16px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; text-decoration: none; transition: background 0.15s; }
     a.contact-card:last-child { margin-bottom: 0; }
@@ -243,7 +240,6 @@
 
   <header class="hero">
     <img src="/clients/joao-demo/images/hero.jpg" alt="Casinha 23" class="hero-img">
-    <span class="hero-brand">GuestPage Algarve</span>
     <p class="hero-eyebrow">Guest Information</p>
     <h1 class="hero-title" data-key="property_name">Casinha 23</h1>
     <p class="hero-location">Lagos, Algarve</p>
@@ -288,10 +284,7 @@
           <div class="card-label">Wi-Fi Network / Password</div>
           <div class="card-value"><span data-key="wifi_name"></span> &nbsp;/&nbsp; <span data-key="wifi_password"></span></div>
         </div>
-        <div class="card">
-          <div class="card-label">Parking</div>
-          <div class="card-value" data-key="parking"></div>
-        </div>
+        <div class="accordion" data-accordion-text="parking" data-accordion-label="Parking"></div>
         <div class="card">
           <div class="card-label">Bins</div>
           <div class="card-value" data-key="bins_location"></div>
@@ -318,6 +311,7 @@
       <div class="card"><div class="card-label">Keysafe Location</div><div class="card-value" data-key="keysafe_location"></div></div>
       <div class="card"><div class="card-label">Gate Code</div><div class="card-value" data-key="gate_code"></div></div>
       <div class="card"><div class="card-label">Building Code</div><div class="card-value" data-key="building_code"></div></div>
+      <div class="accordion" data-accordion-text="luggage_storage" data-accordion-label="Luggage storage" style="margin-top:10px;"></div>
     </section>
 
     <section class="section" id="the-house">
@@ -333,13 +327,13 @@
         <ul class="prop-list">
           <li class="prop-item"><div class="prop-label">Air Conditioning</div><div class="prop-value" data-key="ac_info"></div></li>
           <li class="prop-item"><div class="prop-label">Heating</div><div class="prop-value" data-key="heating_info"></div></li>
-          <li class="prop-item"><div class="prop-label">Washing Machine</div><div class="prop-value" data-key="washing_machine"></div></li>
           <li class="prop-item"><div class="prop-label">Dishwasher</div><div class="prop-value" data-key="dishwasher"></div></li>
           <li class="prop-item"><div class="prop-label">Oven</div><div class="prop-value" data-key="oven"></div></li>
           <li class="prop-item"><div class="prop-label">Coffee</div><div class="prop-value" data-key="coffee_machine"></div></li>
           <li class="prop-item"><div class="prop-label">Hot Water</div><div class="prop-value" data-key="hot_water"></div></li>
           <li class="prop-item"><div class="prop-label">TV</div><div class="prop-value" data-key="tv_info"></div></li>
         </ul>
+        <div class="accordion" data-accordion-text="washing_machine" data-accordion-label="Washing machine" style="margin-top:10px;"></div>
       </div>
 
       <div class="subgroup">
@@ -367,10 +361,18 @@
         <h3 class="subsection-heading">Local Info</h3>
         <ul class="info-list">
           <li class="info-item"><span class="info-label">Town centre</span><span class="info-value" data-key="distance_centre"></span></li>
-          <li class="info-item"><span class="info-label">Getting around</span><span class="info-value" data-key="getting_around"></span></li>
-          <li class="info-item"><span class="info-label">Pharmacy / ATM</span><span class="info-value" data-key="pharmacy_atm"></span></li>
-          <li class="info-item"><span class="info-label">Hospital</span><span class="info-value" data-key="hospital"></span></li>
         </ul>
+        <div class="accordion" data-accordion-list="getting_around" data-accordion-label="Getting around" style="margin-top:10px;"></div>
+      </div>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">Pharmacy / ATM</h3>
+        <div data-list="pharmacy_atm"></div>
+      </div>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">Hospital</h3>
+        <div data-list="hospital"></div>
       </div>
 
       <div class="subgroup">
@@ -419,10 +421,14 @@
 
   </main>
 
-  <footer class="site-footer">Powered by <a href="https://guestpagealgarve.com" target="_blank" rel="noopener">GuestPage Algarve</a></footer>
+  <footer class="site-footer">
+    <a href="https://guestpagealgarve.com" target="_blank" rel="noopener" aria-label="GuestPage Algarve">
+      <img src="/clients/joao-demo/images/wordmark-horizontal.png" alt="GuestPage Algarve" class="footer-logo">
+    </a>
+  </footer>
 
   <script>
-    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1Zg-luIXr9Czvml0l_CHzPiAh04yDltWhtklgK7VpnUA/export?format=csv';
+    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1VMTvBMFMyeuxf4zUGwaZI-NhF1ffzk4ahdT6rTyyaLg/export?format=csv';
 
     function parseCSVLine(line) {
       const fields = [];
@@ -509,6 +515,52 @@
     // Each item splits on " — " into name, description and an optional trailing
     // URL segment, which renders as a small map-pin link rather than as text.
     const PIN_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+    const CHEVRON_SVG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+    const CHECK_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+    // Fill a container with place cards from a " | "-separated raw string.
+    // Each item splits on " — " into name, description and an optional trailing
+    // URL segment, which renders as a small map-pin link rather than as text.
+    function buildPlaceCards(container, raw) {
+      container.innerHTML = '';
+      raw.split(' | ').forEach(item => {
+        item = item.trim();
+        if (!item) return;
+        const segs = item.split(' — ').map(s => s.trim());
+        let url = null;
+        if (segs.length && /^https?:\/\//i.test(segs[segs.length - 1])) url = segs.pop();
+        let name = '', desc = '';
+        if (segs.length >= 2) { name = segs[0]; desc = segs.slice(1).join(' — '); }
+        else if (segs.length === 1) { if (url) name = segs[0]; else desc = segs[0]; }
+
+        const card = document.createElement('div');
+        card.className = 'place-card';
+        if (name) {
+          const n = document.createElement('div');
+          n.className = 'place-name';
+          n.textContent = name;
+          card.appendChild(n);
+        }
+        if (desc) {
+          const d = document.createElement('div');
+          d.className = 'place-desc';
+          d.textContent = desc;
+          card.appendChild(d);
+        }
+        if (url) {
+          const a = document.createElement('a');
+          a.className = 'place-pin';
+          a.href = url;
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.setAttribute('aria-label', 'Open in Google Maps');
+          a.innerHTML = PIN_SVG;
+          a.appendChild(document.createTextNode(' Map'));
+          card.appendChild(a);
+        }
+        container.appendChild(card);
+      });
+    }
 
     function renderLists(data) {
       document.querySelectorAll('[data-list]').forEach(container => {
@@ -517,42 +569,112 @@
         container.innerHTML = '';
         if (!raw) { if (group) group.style.display = 'none'; return; }
         if (group) group.style.display = '';
-        raw.split(' | ').forEach(item => {
-          item = item.trim();
-          if (!item) return;
-          const segs = item.split(' — ').map(s => s.trim());
-          let url = null;
-          if (segs.length && /^https?:\/\//i.test(segs[segs.length - 1])) url = segs.pop();
-          let name = '', desc = '';
-          if (segs.length >= 2) { name = segs[0]; desc = segs.slice(1).join(' — '); }
-          else if (segs.length === 1) { if (url) name = segs[0]; else desc = segs[0]; }
+        buildPlaceCards(container, raw);
+      });
+    }
 
-          const card = document.createElement('div');
-          card.className = 'place-card';
-          if (name) {
-            const n = document.createElement('div');
-            n.className = 'place-name';
-            n.textContent = name;
-            card.appendChild(n);
-          }
-          if (desc) {
-            const d = document.createElement('div');
-            d.className = 'place-desc';
-            d.textContent = desc;
-            card.appendChild(d);
-          }
-          if (url) {
-            const a = document.createElement('a');
-            a.className = 'place-pin';
-            a.href = url;
-            a.target = '_blank';
-            a.rel = 'noopener';
-            a.setAttribute('aria-label', 'Open in Google Maps');
-            a.innerHTML = PIN_SVG;
-            a.appendChild(document.createTextNode(' Map'));
-            card.appendChild(a);
-          }
-          container.appendChild(card);
+    // Collapsible accordions ("View photos" style) driven by data attributes:
+    //   data-accordion-text — collapsed toggle shows the label + first ~60 chars,
+    //     expands to the full value. For long single-value fields (parking, etc).
+    //   data-accordion-list — collapsed toggle shows the label; expands to the
+    //     same place-card list used elsewhere (getting_around).
+    // The whole accordion is hidden when its field is empty.
+    function makeToggle(labelNode) {
+      const toggle = document.createElement('button');
+      toggle.className = 'gallery-toggle';
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.appendChild(labelNode);
+      const chevron = document.createElement('span');
+      chevron.className = 'gallery-chevron';
+      chevron.innerHTML = CHEVRON_SVG;
+      toggle.appendChild(chevron);
+      const collapse = document.createElement('div');
+      collapse.className = 'gallery-collapse';
+      toggle.addEventListener('click', () => {
+        const open = toggle.classList.toggle('open');
+        collapse.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+      return { toggle, collapse };
+    }
+
+    function renderAccordions(data) {
+      document.querySelectorAll('[data-accordion-text]').forEach(acc => {
+        const val = (data[acc.getAttribute('data-accordion-text')] || '').trim();
+        const label = acc.getAttribute('data-accordion-label') || '';
+        acc.innerHTML = '';
+        if (!val) { acc.style.display = 'none'; return; }
+        acc.style.display = '';
+        const summary = document.createElement('span');
+        summary.className = 'acc-summary';
+        const l = document.createElement('span');
+        l.className = 'acc-label';
+        l.textContent = label;
+        const p = document.createElement('span');
+        p.className = 'acc-preview';
+        p.textContent = val.length > 60 ? val.slice(0, 60).trim() + '…' : val;
+        summary.appendChild(l);
+        summary.appendChild(p);
+        const { toggle, collapse } = makeToggle(summary);
+        const body = document.createElement('div');
+        body.className = 'postal-body';
+        body.textContent = val;
+        collapse.appendChild(body);
+        acc.appendChild(toggle);
+        acc.appendChild(collapse);
+      });
+
+      document.querySelectorAll('[data-accordion-list]').forEach(acc => {
+        const raw = (data[acc.getAttribute('data-accordion-list')] || '').trim();
+        const label = acc.getAttribute('data-accordion-label') || '';
+        acc.innerHTML = '';
+        if (!raw) { acc.style.display = 'none'; return; }
+        acc.style.display = '';
+        const l = document.createElement('span');
+        l.textContent = label;
+        const { toggle, collapse } = makeToggle(l);
+        const body = document.createElement('div');
+        body.style.paddingTop = '10px';
+        buildPlaceCards(body, raw);
+        collapse.appendChild(body);
+        acc.appendChild(toggle);
+        acc.appendChild(collapse);
+      });
+    }
+
+    // checkout_checklist: comma-separated → tappable tick boxes. State lives only
+    // in the DOM (the .checked class) and resets on reload — no persistence.
+    function renderChecklist(data) {
+      document.querySelectorAll('[data-checklist]').forEach(list => {
+        const group = list.closest('.subgroup') || list.closest('section');
+        const raw = (data[list.getAttribute('data-checklist')] || '').trim();
+        list.innerHTML = '';
+        const items = raw ? raw.split(/,\s*/).map(s => s.trim()).filter(Boolean) : [];
+        if (!items.length) { if (group) group.style.display = 'none'; return; }
+        if (group) group.style.display = '';
+        items.forEach(text => {
+          const li = document.createElement('li');
+          li.className = 'checklist-item';
+          li.setAttribute('role', 'checkbox');
+          li.setAttribute('aria-checked', 'false');
+          li.tabIndex = 0;
+          const box = document.createElement('span');
+          box.className = 'check-box';
+          box.innerHTML = CHECK_SVG;
+          const t = document.createElement('span');
+          t.className = 'checklist-text';
+          t.textContent = text;
+          li.appendChild(box);
+          li.appendChild(t);
+          const toggle = () => {
+            const on = li.classList.toggle('checked');
+            li.setAttribute('aria-checked', String(on));
+          };
+          li.addEventListener('click', toggle);
+          li.addEventListener('keydown', e => {
+            if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(); }
+          });
+          list.appendChild(li);
         });
       });
     }
@@ -698,10 +820,11 @@
       renderAddress(data);
       renderSteps(data);
       renderLists(data);
+      renderAccordions(data);
       renderHelp(data);
       renderCommaList('data-inclusion', 'inclusion-item', '<span class="inclusion-check">&#10003;</span>', data);
       renderCommaList('data-rulelist', 'rule-item', '<span class="rule-dot"></span>', data);
-      renderCommaList('data-checklist', 'checklist-item', '<span class="check-box"></span>', data);
+      renderChecklist(data);
     }
 
     function checkExpiry(data) {
