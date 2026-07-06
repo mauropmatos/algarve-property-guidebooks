@@ -194,6 +194,14 @@
     .body-link:hover { text-decoration: underline; }
     .body-link svg { flex-shrink: 0; }
 
+    .copy-block { padding: 4px 16px 14px; }
+    .copy-address { display: block; font-size: var(--fs-body); font-weight: 600; line-height: 1.5; color: var(--navy); margin-bottom: 10px; }
+    .copy-btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 14px; background: var(--primary); color: #fff; border: none; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: var(--fs-label); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background 0.15s ease; }
+    .copy-btn:hover { background: #26606e; }
+    .copy-btn:active { transform: scale(0.98); }
+    .copy-btn.copied { background: #3E7D53; }
+    .copy-icon { flex-shrink: 0; }
+
     .site-footer {
       background: var(--bg);
       border-top: 1px solid var(--border);
@@ -356,6 +364,13 @@
           </button>
           <div class="gallery-collapse" id="postal-collapse">
             <div class="postal-body" id="postal-text"></div>
+            <div class="copy-block" id="copy-address-block" style="display:none;">
+              <span class="copy-address" id="copy-address-text"></span>
+              <button class="copy-btn" type="button" id="copy-address-btn">
+                <svg class="copy-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span class="copy-btn-label">Copy address</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -939,8 +954,20 @@
       const txt = document.getElementById('postal-text');
       if (!row || !txt) return;
       const v = (data['postal_info'] || '').trim();
-      if (v) { txt.textContent = v; row.style.display = ''; }
-      else { row.style.display = 'none'; }
+      const addr = (data['address'] || '').trim();
+      const block = document.getElementById('copy-address-block');
+      const addrEl = document.getElementById('copy-address-text');
+      // The section shows when there's postal_info to display; the tap-to-copy
+      // delivery address is added from the address field when available.
+      if (v) {
+        txt.textContent = v;
+        txt.style.display = '';
+        if (addr && block && addrEl) { addrEl.textContent = addr; block.style.display = ''; }
+        else if (block) { block.style.display = 'none'; }
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
     }
 
     function applyDynamic(data) {
@@ -1005,6 +1032,42 @@
     wireAccordion('postal-toggle', 'postal-collapse');
     wireAccordion('welcome-toggle', 'welcome-collapse');
     wireAccordion('checkin-toggle', 'checkin-collapse');
+
+    // Tap-to-copy delivery address, with a brief "Copied" confirmation.
+    (function wireCopyAddress() {
+      const btn = document.getElementById('copy-address-btn');
+      const addrEl = document.getElementById('copy-address-text');
+      if (!btn || !addrEl) return;
+      const label = btn.querySelector('.copy-btn-label');
+      let resetTimer = null;
+      btn.addEventListener('click', async () => {
+        const text = addrEl.textContent.trim();
+        if (!text) return;
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+          } else {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+          }
+          btn.classList.add('copied');
+          if (label) label.textContent = 'Copied ✓';
+        } catch (err) {
+          if (label) label.textContent = 'Press and hold to copy';
+        }
+        clearTimeout(resetTimer);
+        resetTimer = setTimeout(() => {
+          btn.classList.remove('copied');
+          if (label) label.textContent = 'Copy address';
+        }, 2000);
+      });
+    })();
 
     const tabBtns = document.querySelectorAll('.tab-btn');
     const sections = document.querySelectorAll('.section');
