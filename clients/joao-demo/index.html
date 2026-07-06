@@ -84,28 +84,54 @@
       z-index: 200;
       background: var(--card);
       border-bottom: 1px solid var(--border);
+    }
+    /* Right-edge fade hints that more tabs scroll off-screen; hidden at the end. */
+    .tab-nav::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 40px;
+      background: linear-gradient(to right, rgba(247,246,244,0), var(--card) 75%);
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.2s ease;
+    }
+    .tab-nav.at-end::after { opacity: 0; }
+    .tab-scroll {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
     }
-    .tab-nav::-webkit-scrollbar { display: none; }
-    .tab-list { display: flex; padding: 0 8px; white-space: nowrap; }
+    .tab-scroll::-webkit-scrollbar { display: none; }
+    .tab-list { display: flex; gap: 5px; padding: 7px 12px; white-space: nowrap; }
     .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 15px;
       background: none;
       border: none;
-      border-bottom: 3px solid transparent;
+      border-radius: 999px;
       color: var(--grey);
       font-family: 'Montserrat', sans-serif;
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 13px 9px;
       cursor: pointer;
-      transition: color 0.15s, border-color 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      transition: color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
     }
-    .tab-btn:hover  { color: var(--navy); }
-    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .tab-btn:hover:not(.active) { color: var(--navy); background: rgba(46,110,126,0.09); }
+    .tab-btn:active:not(.active) { background: rgba(46,110,126,0.16); }
+    .tab-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+    .tab-btn.active {
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 2px 6px rgba(46,110,126,0.30);
+    }
 
     .main { padding-bottom: 60px; }
     .section { padding: 26px 20px 30px; border-bottom: 8px solid var(--card); }
@@ -265,13 +291,15 @@
   </header>
 
   <nav class="tab-nav" aria-label="Page sections">
-    <div class="tab-list">
-      <button class="tab-btn active" data-target="welcome">Welcome</button>
-      <button class="tab-btn" data-target="arrival-access">Arrival &amp; Access</button>
-      <button class="tab-btn" data-target="the-house">The House</button>
-      <button class="tab-btn" data-target="explore">Explore</button>
-      <button class="tab-btn" data-target="rules-checkout">Rules &amp; Checkout</button>
-      <button class="tab-btn" data-target="help">Help</button>
+    <div class="tab-scroll" id="tab-scroll">
+      <div class="tab-list">
+        <button class="tab-btn active" data-target="welcome">Welcome</button>
+        <button class="tab-btn" data-target="arrival-access">Arrival &amp; Access</button>
+        <button class="tab-btn" data-target="the-house">The House</button>
+        <button class="tab-btn" data-target="explore">Explore</button>
+        <button class="tab-btn" data-target="rules-checkout">Rules &amp; Checkout</button>
+        <button class="tab-btn" data-target="help">Help</button>
+      </div>
     </div>
   </nav>
 
@@ -915,6 +943,18 @@
 
     const tabBtns = document.querySelectorAll('.tab-btn');
     const sections = document.querySelectorAll('.section');
+
+    // Show the right-edge fade only while more tabs remain off-screen.
+    const tabNav = document.querySelector('.tab-nav');
+    const tabScroll = document.getElementById('tab-scroll');
+    function updateTabFade() {
+      if (!tabNav || !tabScroll) return;
+      const atEnd = tabScroll.scrollLeft + tabScroll.clientWidth >= tabScroll.scrollWidth - 1;
+      tabNav.classList.toggle('at-end', atEnd);
+    }
+    if (tabScroll) tabScroll.addEventListener('scroll', updateTabFade, { passive: true });
+    window.addEventListener('resize', updateTabFade);
+    updateTabFade();
 
     tabBtns.forEach(btn => {
       btn.addEventListener('click', () => {
