@@ -973,26 +973,36 @@
       if (activeBtn) activeBtn.scrollIntoView({ block: 'nearest', inline: 'center' });
     }
 
-    // A short final section (Help) can never reach the centre band, so once the
-    // page is scrolled to the bottom we force the last tab active.
+    // Position-based scroll-spy: the active section is the last one whose top has
+    // passed a reference line ~42% down the viewport. A short final section (Help)
+    // never reaches that line, so when the page bottoms out we pick the last tab.
+    // (An IntersectionObserver only fires on boundary crossings, which left Help
+    // stuck when scrolling back up; recomputing on every scroll avoids that.)
     const lastId = sections.length ? sections[sections.length - 1].id : null;
     function atPageBottom() {
       const doc = document.documentElement;
       return doc.scrollHeight > window.innerHeight + 40 &&
         window.innerHeight + window.scrollY >= doc.scrollHeight - 24;
     }
-
-    const observer = new IntersectionObserver(entries => {
-      if (atPageBottom()) { setActive(lastId); return; }
-      entries.forEach(entry => {
-        if (entry.isIntersecting) setActive(entry.target.id);
-      });
-    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
-    sections.forEach(s => observer.observe(s));
-
-    window.addEventListener('scroll', () => {
-      if (atPageBottom()) setActive(lastId);
-    }, { passive: true });
+    function currentSectionId() {
+      if (atPageBottom()) return lastId;
+      const ref = window.innerHeight * 0.42;
+      let id = sections.length ? sections[0].id : null;
+      for (let i = 0; i < sections.length; i++) {
+        if (sections[i].getBoundingClientRect().top <= ref) id = sections[i].id;
+        else break;
+      }
+      return id;
+    }
+    let spyTicking = false;
+    function onScrollSpy() {
+      if (spyTicking) return;
+      spyTicking = true;
+      requestAnimationFrame(() => { setActive(currentSectionId()); spyTicking = false; });
+    }
+    window.addEventListener('scroll', onScrollSpy, { passive: true });
+    window.addEventListener('resize', onScrollSpy);
+    onScrollSpy();
   </script>
 
 </body>
