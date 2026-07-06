@@ -196,6 +196,9 @@
     .gallery-collapse.open { max-height: 3000px; }
     .gallery-collapse .gallery-grid { margin-top: 10px; }
     .postal-body { padding: 2px 16px 14px; font-size: 14px; line-height: 1.6; color: var(--text); }
+    .body-link { display: inline-flex; align-items: center; gap: 4px; color: var(--primary); font-weight: 700; text-decoration: none; white-space: nowrap; }
+    .body-link:hover { text-decoration: underline; }
+    .body-link svg { flex-shrink: 0; }
 
     .site-footer {
       position: fixed;
@@ -487,7 +490,7 @@
   </a>
 
   <script>
-    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1BUUBC9x-DLFs4xkJDAjyGcx1PAL-tA0M6GQueFu2w44/export?format=csv';
+    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1HJXaf1J_0kqgxk5IekrjL8SnUOywF-6DpCfHwzGFGiY/export?format=csv';
 
     function parseCSVLine(line) {
       const fields = [];
@@ -638,6 +641,29 @@
     //   data-accordion-list — collapsed toggle shows the label; expands to the
     //     same place-card list used elsewhere (getting_around).
     // The whole accordion is hidden when its field is empty.
+    // Render plain text into a container, turning any bare http(s) URL into a
+    // tappable pin link ("Open in Maps" for map URLs, else "Open link") rather
+    // than showing the raw URL.
+    function appendLinkified(container, text) {
+      const re = /https?:\/\/[^\s]+/g;
+      let last = 0, m;
+      while ((m = re.exec(text)) !== null) {
+        const url = m[0].replace(/[.,;:!?)\]]+$/, '');
+        if (m.index > last) container.appendChild(document.createTextNode(text.slice(last, m.index)));
+        const a = document.createElement('a');
+        a.className = 'body-link';
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.innerHTML = PIN_SVG;
+        const isMap = /maps\.google|google\.[^/]+\/maps|maps\.app|goo\.gl\/maps/i.test(url);
+        a.appendChild(document.createTextNode(isMap ? ' Open in Maps' : ' Open link'));
+        container.appendChild(a);
+        last = m.index + url.length;
+      }
+      if (last < text.length) container.appendChild(document.createTextNode(text.slice(last)));
+    }
+
     function makeToggle(labelNode) {
       const toggle = document.createElement('button');
       toggle.className = 'gallery-toggle';
@@ -677,7 +703,7 @@
         const { toggle, collapse } = makeToggle(summary);
         const body = document.createElement('div');
         body.className = 'postal-body';
-        body.textContent = val;
+        appendLinkified(body, val);
         collapse.appendChild(body);
         acc.appendChild(toggle);
         acc.appendChild(collapse);
@@ -815,7 +841,14 @@
       document.querySelectorAll('[data-steps]').forEach(ol => {
         const raw = (data[ol.getAttribute('data-steps')] || '').trim();
         ol.innerHTML = '';
-        let steps = raw ? raw.split(/\s*\d+\.\s+/).map(s => s.trim()).filter(Boolean) : [];
+        // Break only on a step number 1-9 followed by ". " at the very start of
+        // the text or right after sentence-ending punctuation. This prevents
+        // tokens like "Nº23." or "Casinha 23" from being read as step markers.
+        let steps = [];
+        if (raw) {
+          const marked = raw.replace(/(^|[.!?]\s+)[1-9]\.\s+/g, (m, pre) => pre.trim() + '\n');
+          steps = marked.split('\n').map(s => s.trim()).filter(Boolean);
+        }
         if (raw && steps.length < 2) steps = [raw];
         ol.style.display = steps.length ? '' : 'none';
         steps.forEach((text, i) => {
