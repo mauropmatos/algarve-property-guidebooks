@@ -17,6 +17,12 @@
       --border:    #E7E5E1;
       --grey:      #6A6660;
       --text:      #33322E;
+
+      /* Strict type scale — every text element uses one of these four sizes. */
+      --fs-display: 30px;  /* hero title only */
+      --fs-body:    14px;  /* all body text, values, descriptions, list items */
+      --fs-caption: 12px;  /* small link affordances (map pins) */
+      --fs-label:   11px;  /* all uppercase micro-labels + accordion/tab labels */
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,7 +31,8 @@
       font-family: 'Montserrat', sans-serif;
       background: var(--bg);
       color: var(--text);
-      font-size: 15px;
+      font-size: var(--fs-body);
+      font-weight: 400;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
@@ -59,14 +66,15 @@
     .hero-title,
     .hero-location { position: relative; z-index: 2; }
     .hero-title {
-      font-size: 32px;
+      font-size: var(--fs-display);
       font-weight: 700;
       color: #fff;
       line-height: 1.15;
     }
     .hero-location {
-      font-size: 14px;
-      color: rgba(255,255,255,0.5);
+      font-size: var(--fs-body);
+      font-weight: 500;
+      color: rgba(255,255,255,0.6);
       margin-top: 6px;
     }
     .tab-nav {
@@ -107,9 +115,9 @@
       border-bottom: 2px solid transparent;
       color: var(--grey);
       font-family: 'Montserrat', sans-serif;
-      font-size: 11px;
+      font-size: var(--fs-label);
       font-weight: 600;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
@@ -123,7 +131,7 @@
     .section { padding: 26px 20px 30px; border-bottom: 8px solid var(--card); }
     .section:last-child { border-bottom: none; }
     .section-heading {
-      font-size: 10px;
+      font-size: var(--fs-label);
       font-weight: 700;
       letter-spacing: 0.16em;
       text-transform: uppercase;
@@ -134,9 +142,9 @@
     .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; transition: border-color 0.15s ease; }
     .card:hover, .place-card:hover, .gallery-toggle:hover { border-color: var(--secondary); }
     .card:last-child { margin-bottom: 0; }
-    .card-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 5px; }
-    .card-value { font-size: 15px; font-weight: 600; color: var(--navy); }
-    .card-value.long { font-size: 13px; font-weight: 500; line-height: 1.7; color: var(--text); }
+    .card-label { font-size: var(--fs-label); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 6px; }
+    .card-value { font-size: var(--fs-body); font-weight: 600; line-height: 1.5; color: var(--navy); }
+    .card-value.long { font-size: var(--fs-body); font-weight: 500; line-height: 1.6; color: var(--text); }
     .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
     .card-grid .card { margin-bottom: 0; }
 
@@ -145,28 +153,28 @@
     .step-list { list-style: none; }
     .step-item { display: flex; gap: 14px; align-items: flex-start; padding: 13px 0; border-bottom: 1px solid var(--border); }
     .step-item:last-child { border-bottom: none; }
-    .step-num { flex-shrink: 0; width: 28px; height: 28px; background: var(--primary); color: #fff; border-radius: 50%; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
-    .step-text { font-size: 14px; line-height: 1.55; color: var(--text); padding-top: 4px; }
+    .step-num { flex-shrink: 0; width: 28px; height: 28px; background: var(--primary); color: #fff; border-radius: 50%; font-size: var(--fs-caption); font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .step-text { font-size: var(--fs-body); font-weight: 500; line-height: 1.55; color: var(--text); padding-top: 4px; }
 
     .prop-list { list-style: none; }
     .prop-item { padding: 13px 0; border-bottom: 1px solid var(--border); }
     .prop-item:last-child { border-bottom: none; }
-    .prop-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 4px; }
-    .prop-value { font-size: 14px; font-weight: 500; color: var(--navy); line-height: 1.5; }
+    .prop-label { font-size: var(--fs-label); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 5px; }
+    .prop-value { font-size: var(--fs-body); font-weight: 500; color: var(--text); line-height: 1.55; }
 
     .info-list { list-style: none; }
     .info-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--border); }
     .info-item:last-child { border-bottom: none; }
-    .info-label { font-size: 13px; font-weight: 500; color: var(--grey); flex-shrink: 0; }
-    .info-value { font-size: 13px; font-weight: 600; color: var(--navy); text-align: left; flex: 1; }
+    .info-label { font-size: var(--fs-body); font-weight: 500; color: var(--grey); flex-shrink: 0; }
+    .info-value { font-size: var(--fs-body); font-weight: 600; color: var(--navy); text-align: left; flex: 1; }
 
     .place-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; transition: border-color 0.15s ease; }
     .place-card:last-child { margin-bottom: 0; }
-    .place-name { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
-    .place-desc { font-size: 13px; color: var(--grey); line-height: 1.55; }
-    .place-link { display: inline-block; margin-top: 9px; font-size: 12px; font-weight: 700; color: var(--primary); text-decoration: none; letter-spacing: 0.03em; }
+    .place-name { font-size: var(--fs-body); font-weight: 600; color: var(--navy); margin-bottom: 3px; }
+    .place-desc { font-size: var(--fs-body); font-weight: 400; color: var(--grey); line-height: 1.55; }
+    .place-link { display: inline-block; margin-top: 9px; font-size: var(--fs-caption); font-weight: 600; color: var(--primary); text-decoration: none; letter-spacing: 0.03em; }
     .place-link:hover { text-decoration: underline; }
-    .place-pin { display: inline-flex; align-items: center; gap: 4px; margin-top: 9px; font-size: 12px; font-weight: 700; color: var(--primary); text-decoration: none; letter-spacing: 0.03em; }
+    .place-pin { display: inline-flex; align-items: center; gap: 4px; margin-top: 9px; font-size: var(--fs-caption); font-weight: 600; color: var(--primary); text-decoration: none; letter-spacing: 0.03em; }
     .place-pin:hover { text-decoration: underline; }
     .place-pin svg { flex-shrink: 0; }
 
@@ -175,14 +183,14 @@
     .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.25s; }
     .gallery-item:hover img { transform: scale(1.04); }
 
-    .gallery-toggle { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 13px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; color: var(--navy); transition: border-color 0.15s ease; }
+    .gallery-toggle { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 13px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: var(--fs-label); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); transition: border-color 0.15s ease; }
     .gallery-chevron { color: var(--secondary); display: flex; align-items: center; transition: transform 0.25s ease; }
     .gallery-toggle.open .gallery-chevron { transform: rotate(180deg); }
     .gallery-collapse { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
     .gallery-collapse.open { max-height: 3000px; }
     .gallery-collapse .gallery-grid { margin-top: 10px; }
-    .postal-body { padding: 2px 16px 14px; font-size: 14px; line-height: 1.6; color: var(--text); }
-    .body-link { display: inline-flex; align-items: center; gap: 4px; color: var(--primary); font-weight: 700; text-decoration: none; white-space: nowrap; }
+    .postal-body { padding: 2px 16px 14px; font-size: var(--fs-body); font-weight: 500; line-height: 1.6; color: var(--text); }
+    .body-link { display: inline-flex; align-items: center; gap: 4px; font-size: var(--fs-body); color: var(--primary); font-weight: 600; text-decoration: none; white-space: nowrap; }
     .body-link:hover { text-decoration: underline; }
     .body-link svg { flex-shrink: 0; }
 
@@ -196,11 +204,11 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
+      gap: 9px;
       text-decoration: none;
     }
-    .footer-logo { width: 180px; max-width: 100%; height: auto; display: block; }
-    .footer-tagline { font-size: 13px; font-weight: 600; letter-spacing: 0.03em; color: var(--grey); }
+    .footer-logo { width: 176px; max-width: 62%; height: auto; display: block; }
+    .footer-sub { font-size: var(--fs-label); font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey); }
 
     .whatsapp-fab {
       position: fixed;
@@ -221,28 +229,28 @@
     .whatsapp-fab:hover { transform: scale(1.07); }
     .whatsapp-fab:active { transform: scale(0.95); }
 
-    .subsection-heading { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--grey); margin: 26px 0 14px; }
+    .subsection-heading { font-size: var(--fs-label); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--grey); margin: 26px 0 14px; }
     .section > .subgroup:first-of-type > .subsection-heading:first-child { margin-top: 0; }
 
     .inclusion-list { list-style: none; }
-    .inclusion-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); line-height: 1.5; }
+    .inclusion-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: var(--fs-body); font-weight: 500; color: var(--text); line-height: 1.5; }
     .inclusion-item:last-child { border-bottom: none; }
-    .inclusion-check { flex-shrink: 0; color: var(--secondary); font-size: 13px; font-weight: 700; margin-top: 1px; }
+    .inclusion-check { flex-shrink: 0; color: var(--secondary); font-size: var(--fs-body); font-weight: 700; margin-top: 1px; }
 
-    .welcome-body p { font-size: 14px; line-height: 1.65; color: var(--text); margin-bottom: 12px; }
+    .welcome-body p { font-size: var(--fs-body); font-weight: 500; line-height: 1.65; color: var(--text); margin-bottom: 12px; }
     .welcome-body p:last-child { margin-bottom: 0; }
     .welcome-schedule { list-style: none; margin: 14px 0; padding: 12px 14px; background: #EAF1F1; border-left: 3px solid var(--primary); border-radius: 8px; }
     .welcome-schedule:last-child { margin-bottom: 0; }
-    .welcome-schedule li { position: relative; padding: 4px 0 4px 16px; font-size: 14px; line-height: 1.5; font-weight: 600; color: var(--navy); }
+    .welcome-schedule li { position: relative; padding: 4px 0 4px 16px; font-size: var(--fs-body); line-height: 1.5; font-weight: 600; color: var(--navy); }
     .welcome-schedule li::before { content: '•'; position: absolute; left: 0; color: var(--secondary); font-weight: 700; }
 
     .rule-list { list-style: none; }
-    .rule-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); }
+    .rule-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: var(--fs-body); font-weight: 500; color: var(--text); }
     .rule-item:last-child { border-bottom: none; }
     .rule-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--secondary); flex-shrink: 0; }
 
     .checklist { list-style: none; }
-    .checklist-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); line-height: 1.5; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .checklist-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: var(--fs-body); font-weight: 500; color: var(--text); line-height: 1.5; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
     .checklist-item:last-child { border-bottom: none; }
     .check-box { flex-shrink: 0; width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 5px; margin-top: 1px; display: flex; align-items: center; justify-content: center; color: #fff; transition: background 0.15s, border-color 0.15s; }
     .check-box svg { opacity: 0; transition: opacity 0.15s; }
@@ -252,19 +260,23 @@
 
     .accordion { margin-bottom: 10px; }
     .accordion:last-child { margin-bottom: 0; }
-    .acc-summary { display: flex; flex-direction: column; gap: 3px; text-align: left; flex: 1; min-width: 0; }
-    .acc-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); }
-    .acc-preview { font-size: 13px; font-weight: 500; color: var(--navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .acc-summary { display: flex; flex-direction: column; gap: 4px; text-align: left; flex: 1; min-width: 0; }
+    .acc-label { font-size: var(--fs-label); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); }
+    .acc-preview { font-size: var(--fs-body); font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .gallery-toggle.open .acc-preview { display: none; }
 
     a.contact-card { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 13px 16px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; text-decoration: none; transition: background 0.15s; }
     a.contact-card:last-child { margin-bottom: 0; }
     a.contact-card:hover { border-color: var(--secondary); background: #fff; }
-    .contact-name { font-size: 13px; font-weight: 600; color: var(--navy); }
-    .contact-num { font-size: 13px; font-weight: 700; color: var(--primary); }
+    a.contact-card { flex-wrap: wrap; }
+    .contact-name { font-size: var(--fs-body); font-weight: 600; color: var(--navy); }
+    .contact-role { font-weight: 500; color: var(--grey); }
+    .contact-num { font-size: var(--fs-body); font-weight: 600; color: var(--primary); white-space: nowrap; }
+
+    .help-availability { font-size: var(--fs-body); font-weight: 500; line-height: 1.55; color: var(--text); background: #EAF1F1; border-left: 3px solid var(--primary); border-radius: 8px; padding: 12px 14px; margin-bottom: 14px; }
 
     .manager-area { padding: 44px 20px 24px; text-align: center; }
-    .manager-area a { font-size: 11px; color: var(--border); text-decoration: none; letter-spacing: 0.05em; }
+    .manager-area a { font-size: var(--fs-label); color: var(--border); text-decoration: none; letter-spacing: 0.05em; }
     .manager-area a:hover { color: var(--grey); }
   </style>
 </head>
@@ -352,7 +364,15 @@
 
     <section class="section" id="arrival-access">
       <h2 class="section-heading">Arrival &amp; Access</h2>
-      <ol class="step-list" data-steps="checkin_steps" style="margin-bottom: 16px;"></ol>
+      <div class="accordion" style="margin-bottom: 12px;">
+        <button class="gallery-toggle" id="checkin-toggle" aria-expanded="false" aria-controls="checkin-collapse">
+          <span class="acc-label">Check-In Steps</span>
+          <span class="gallery-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="gallery-collapse" id="checkin-collapse">
+          <ol class="step-list" data-steps="checkin_steps" style="padding: 6px 16px 12px;"></ol>
+        </div>
+      </div>
       <div class="card"><div class="card-label">Keysafe Location</div><div class="card-value" data-key="keysafe_location"></div></div>
       <div class="card"><div class="card-label">Gate Code</div><div class="card-value" data-key="gate_code"></div></div>
       <div class="card"><div class="card-label">Building Code</div><div class="card-value" data-key="building_code"></div></div>
@@ -413,10 +433,8 @@
 
       <div class="subgroup">
         <h3 class="subsection-heading">Local Info</h3>
-        <ul class="info-list">
-          <li class="info-item"><span class="info-label">Town Centre</span><span class="info-value" data-key="distance_centre"></span></li>
-        </ul>
-        <div class="accordion" data-accordion-list="getting_around" data-accordion-label="Getting around" style="margin-top:10px;"></div>
+        <div class="accordion" data-accordion-text="distance_centre" data-accordion-label="Town Centre"></div>
+        <div class="accordion" data-accordion-list="getting_around" data-accordion-label="Getting Around" style="margin-top:10px;"></div>
       </div>
 
       <div class="subgroup">
@@ -476,9 +494,9 @@
   </main>
 
   <footer class="site-footer">
-    <a class="footer-link" href="https://guestpagealgarve.com" target="_blank" rel="noopener" aria-label="GuestPage Algarve — Lagos, Portugal">
-      <img src="/clients/joao-demo/images/wordmark-horizontal.png" alt="GuestPage Algarve" class="footer-logo">
-      <span class="footer-tagline">Lagos &middot; Portugal</span>
+    <a class="footer-link" href="https://guestpagealgarve.com" target="_blank" rel="noopener" aria-label="GuestPage — Algarve, Portugal">
+      <img src="/clients/joao-demo/images/wordmark-mark.png" alt="GuestPage" class="footer-logo">
+      <span class="footer-sub">Algarve &middot; Portugal</span>
     </a>
   </footer>
 
@@ -487,7 +505,7 @@
   </a>
 
   <script>
-    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1N1MRxlMGYUjFrHyGh34Ais6eyX-pvV5BIuJ4osRXv9k/export?format=csv';
+    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1lAxYm7OLSQZKBtPbD2cLCwk5d1_EP1u36gFKxCYYPgA/export?format=csv';
 
     function parseCSVLine(line) {
       const fields = [];
@@ -767,6 +785,15 @@
       if (!wrap) return;
       wrap.innerHTML = '';
 
+      // host_availability renders as the first line, hidden when empty.
+      const avail = (data['host_availability'] || '').trim();
+      if (avail) {
+        const note = document.createElement('p');
+        note.className = 'help-availability';
+        note.textContent = avail;
+        wrap.appendChild(note);
+      }
+
       const digits = s => (s.match(/\d/g) || []).length;
       const extractPhone = str => {
         const runs = str.match(/\d[\d\s]*\d|\d/g) || [];
@@ -780,7 +807,15 @@
         if (tel) el.href = 'tel:' + tel;
         const n = document.createElement('span');
         n.className = 'contact-name';
-        n.textContent = name || 'Contact';
+        // "Name — role" → name bold, role lighter.
+        const parts = (name || 'Contact').split(' — ');
+        n.textContent = parts[0];
+        if (parts.length > 1) {
+          const role = document.createElement('span');
+          role.className = 'contact-role';
+          role.textContent = ' — ' + parts.slice(1).join(' — ');
+          n.appendChild(role);
+        }
         const v = document.createElement('span');
         v.className = 'contact-num';
         v.textContent = num || '';
@@ -970,6 +1005,7 @@
     wireAccordion('gallery-toggle', 'gallery-collapse');
     wireAccordion('postal-toggle', 'postal-collapse');
     wireAccordion('welcome-toggle', 'welcome-collapse');
+    wireAccordion('checkin-toggle', 'checkin-collapse');
 
     const tabBtns = document.querySelectorAll('.tab-btn');
     const sections = document.querySelectorAll('.section');
