@@ -268,10 +268,9 @@
     a.contact-card { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 13px 16px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; text-decoration: none; transition: background 0.15s; }
     a.contact-card:last-child { margin-bottom: 0; }
     a.contact-card:hover { border-color: var(--secondary); background: #fff; }
-    a.contact-card { flex-wrap: wrap; }
-    .contact-name { font-size: var(--fs-body); font-weight: 600; color: var(--navy); }
+    .contact-name { font-size: var(--fs-body); font-weight: 600; color: var(--navy); flex: 1; min-width: 0; line-height: 1.4; }
     .contact-role { font-weight: 500; color: var(--grey); }
-    .contact-num { font-size: var(--fs-body); font-weight: 600; color: var(--primary); white-space: nowrap; }
+    .contact-num { font-size: var(--fs-body); font-weight: 600; color: var(--primary); white-space: nowrap; flex-shrink: 0; }
 
     .help-availability { font-size: var(--fs-body); font-weight: 500; line-height: 1.55; color: var(--text); background: #EAF1F1; border-left: 3px solid var(--primary); border-radius: 8px; padding: 12px 14px; margin-bottom: 14px; }
 
