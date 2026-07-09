@@ -62,11 +62,13 @@
       top: 0;
       z-index: 200;
       background: var(--navy);
+    }
+    .tab-scroll {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
     }
-    .tab-nav::-webkit-scrollbar { display: none; }
+    .tab-scroll::-webkit-scrollbar { display: none; }
     .tab-list { display: flex; padding: 0 8px; white-space: nowrap; }
     .tab-btn {
       background: none;
@@ -241,6 +243,7 @@
   </header>
 
   <nav class="tab-nav" aria-label="Page sections">
+    <div class="tab-scroll">
     <div class="tab-list">
       <button class="tab-btn active" data-target="welcome">Welcome</button>
       <button class="tab-btn" data-target="quick-info">Quick Info</button>
@@ -255,6 +258,7 @@
       <button class="tab-btn" data-target="rules">Rules</button>
       <button class="tab-btn" data-target="checkout">Checkout</button>
       <button class="tab-btn" data-target="help">Help</button>
+    </div>
     </div>
   </nav>
 
@@ -934,7 +938,7 @@
 
     const tabBtns = document.querySelectorAll('.tab-btn');
     const sections = document.querySelectorAll('.section');
-    const tabScroll = document.querySelector('.tab-nav');
+    const tabScroll = document.querySelector('.tab-scroll');
 
     // Hide a tab whose section was emptied/hidden by the dynamic render.
     function syncTabs() {
