@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O Marafado · Guest Information</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary:   #2E6E7E;
+      --secondary: #B8813C;
+      --navy:      #2B2926;
+      --bg:        #FFFFFF;
+      --card:      #F7F6F4;
+      --border:    #E7E5E1;
+      --grey:      #6A6660;
+      --text:      #33322E;
+
+      /* Strict type scale — every text element uses one of these four sizes. */
+      --fs-display: 30px;  /* hero title only */
+      --fs-body:    14px;  /* all body text, values, descriptions, list items */
+      --fs-caption: 12px;  /* small link affordances (map pins) */
+      --fs-label:   11px;  /* all uppercase micro-labels + accordion/tab labels */
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: var(--fs-body);
+      font-weight: 400;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .hero {
+      position: relative;
+      background-color: var(--navy);
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 32px 20px 26px;
+      overflow: hidden;
+    }
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 0;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.1) 100%);
+      z-index: 1;
+    }
+    .hero-title,
+    .hero-location { position: relative; z-index: 2; }
+    .hero-title {
+      font-size: var(--fs-display);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.15;
+    }
+    .hero-location {
+      font-size: var(--fs-body);
+      font-weight: 500;
+      color: rgba(255,255,255,0.6);
+      margin-top: 6px;
+    }
+    .tab-nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+    }
+    /* Right-edge fade hints that more tabs scroll off-screen; hidden at the end. */
+    .tab-nav::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 40px;
+      background: linear-gradient(to right, rgba(247,246,244,0), var(--card) 75%);
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.2s ease;
+    }
+    .tab-nav.at-end::after { opacity: 0; }
+    .tab-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .tab-scroll::-webkit-scrollbar { display: none; }
+    .tab-list { display: flex; gap: 2px; padding: 0 10px; white-space: nowrap; }
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 12px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--grey);
+      font-family: 'Montserrat', sans-serif;
+      font-size: var(--fs-label);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+    .tab-btn:hover:not(.active) { color: var(--navy); }
+    .tab-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: -4px; border-radius: 2px; }
+    .tab-btn.active { color: var(--primary); font-weight: 700; border-bottom-color: var(--primary); }
+
+    .main { padding-bottom: 0; }
+    .section { padding: 26px 20px 30px; border-bottom: 8px solid var(--card); }
+    .section:last-child { border-bottom: none; }
+    .section-heading {
+      font-size: var(--fs-label);
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #8F6A24;
+      margin-bottom: 18px;
+    }
+
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; transition: border-color 0.15s ease; }
+    .card:hover, .place-card:hover, .gallery-toggle:hover { border-color: var(--secondary); }
+    .card:last-child { margin-bottom: 0; }
+    .card-label { font-size: var(--fs-label); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 6px; }
+    .card-value { font-size: var(--fs-body); font-weight: 600; line-height: 1.5; color: var(--navy); }
+    .card-value.long { font-size: var(--fs-body); font-weight: 500; line-height: 1.6; color: var(--text); }
+    .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .card-grid .card { margin-bottom: 0; }
+
+    .empty { color: var(--grey) !important; font-style: italic; font-weight: 400 !important; }
+
+    .step-list { list-style: none; }
+    .step-item { display: flex; gap: 14px; align-items: flex-start; padding: 13px 0; border-bottom: 1px solid var(--border); }
+    .step-item:last-child { border-bottom: none; }
+    .step-num { flex-shrink: 0; width: 28px; height: 28px; background: var(--primary); color: #fff; border-radius: 50%; font-size: var(--fs-caption); font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .step-text { font-size: var(--fs-body); font-weight: 500; line-height: 1.55; color: var(--text); padding-top: 4px; }
+
+    .prop-list { list-style: none; }
+    .prop-item { padding: 13px 0; border-bottom: 1px solid var(--border); }
+    .prop-item:last-child { border-bottom: none; }
+    .prop-label { font-size: var(--fs-label); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 5px; }
+    .prop-value { font-size: var(--fs-body); font-weight: 500; color: var(--text); line-height: 1.55; }
+
+    .info-list { list-style: none; }
+    .info-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--border); }
+    .info-item:last-child { border-bottom: none; }
+    .info-label { font-size: var(--fs-body); font-weight: 500; color: var(--grey); flex-shrink: 0; }
+    .info-value { font-size: var(--fs-body); font-weight: 600; color: var(--navy); text-align: left; flex: 1; }
+
+    .place-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; transition: border-color 0.15s ease; }
+    .place-card:last-child { margin-bottom: 0; }
+    .place-name { font-size: var(--fs-body); font-weight: 600; color: var(--navy); margin-bottom: 3px; }
+    .place-desc { font-size: var(--fs-body); font-weight: 400; color: var(--grey); line-height: 1.55; }
+    .place-link { display: inline-block; margin-top: 9px; font-size: var(--fs-caption); font-weight: 600; color: var(--primary); text-decoration: none; letter-spacing: 0.03em; }
+    .place-link:hover { text-decoration: underline; }
+    .place-pin { display: inline-flex; align-items: center; gap: 4px; margin-top: 9px; font-size: var(--fs-caption); font-weight: 600; color: var(--primary); text-decoration: none; letter-spacing: 0.03em; }
+    .place-pin:hover { text-decoration: underline; }
+    .place-pin svg { flex-shrink: 0; }
+
+    .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .gallery-item { display: block; border-radius: 10px; overflow: hidden; aspect-ratio: 4 / 3; background: var(--card); border: 1px solid var(--border); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.25s; }
+    .gallery-item:hover img { transform: scale(1.04); }
+
+    .gallery-toggle { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 13px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: var(--fs-label); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); transition: border-color 0.15s ease; }
+    .gallery-chevron { color: var(--secondary); display: flex; align-items: center; transition: transform 0.25s ease; }
+    .gallery-toggle.open .gallery-chevron { transform: rotate(180deg); }
+    .gallery-collapse { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+    .gallery-collapse.open { max-height: 3000px; }
+    .gallery-collapse .gallery-grid { margin-top: 10px; }
+    .postal-body { padding: 2px 16px 14px; font-size: var(--fs-body); font-weight: 500; line-height: 1.6; color: var(--text); }
+    .body-link { display: inline-flex; align-items: center; gap: 4px; font-size: var(--fs-body); color: var(--primary); font-weight: 600; text-decoration: none; white-space: nowrap; }
+    .body-link:hover { text-decoration: underline; }
+    .body-link svg { flex-shrink: 0; }
+
+    .copy-block { padding: 4px 16px 14px; }
+    .copy-address { display: block; font-size: var(--fs-body); font-weight: 600; line-height: 1.5; color: var(--navy); margin-bottom: 10px; }
+    .copy-btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 14px; background: var(--primary); color: #fff; border: none; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: var(--fs-label); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background 0.15s ease; }
+    .copy-btn:hover { background: #26606e; }
+    .copy-btn:active { transform: scale(0.98); }
+    .copy-btn.copied { background: #3E7D53; }
+    .copy-icon { flex-shrink: 0; }
+
+    .site-footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 30px 20px 34px;
+    }
+    .footer-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+    }
+    .footer-logo { width: 176px; max-width: 62%; height: auto; display: block; }
+    .footer-sub { font-size: var(--fs-label); font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey); }
+
+    .whatsapp-fab {
+      position: fixed;
+      right: 18px;
+      bottom: 20px;
+      z-index: 400;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: #25D366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+      text-decoration: none;
+      transition: transform 0.15s;
+    }
+    .whatsapp-fab:hover { transform: scale(1.07); }
+    .whatsapp-fab:active { transform: scale(0.95); }
+
+    .subsection-heading { font-size: var(--fs-label); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--grey); margin: 26px 0 14px; }
+    .section > .subgroup:first-of-type > .subsection-heading:first-child { margin-top: 0; }
+
+    .inclusion-list { list-style: none; }
+    .inclusion-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: var(--fs-body); font-weight: 500; color: var(--text); line-height: 1.5; }
+    .inclusion-item:last-child { border-bottom: none; }
+    .inclusion-check { flex-shrink: 0; color: var(--secondary); font-size: var(--fs-body); font-weight: 700; margin-top: 1px; }
+
+    .welcome-body p { font-size: var(--fs-body); font-weight: 500; line-height: 1.65; color: var(--text); margin-bottom: 12px; }
+    .welcome-body p:last-child { margin-bottom: 0; }
+    .welcome-schedule { list-style: none; margin: 14px 0; padding: 12px 14px; background: #EAF1F1; border-left: 3px solid var(--primary); border-radius: 8px; }
+    .welcome-schedule:last-child { margin-bottom: 0; }
+    .welcome-schedule li { position: relative; padding: 4px 0 4px 16px; font-size: var(--fs-body); line-height: 1.5; font-weight: 600; color: var(--navy); }
+    .welcome-schedule li::before { content: '•'; position: absolute; left: 0; color: var(--secondary); font-weight: 700; }
+
+    .rule-list { list-style: none; }
+    .rule-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: var(--fs-body); font-weight: 500; color: var(--text); }
+    .rule-item:last-child { border-bottom: none; }
+    .rule-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--secondary); flex-shrink: 0; }
+
+    .checklist { list-style: none; }
+    .checklist-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: var(--fs-body); font-weight: 500; color: var(--text); line-height: 1.5; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .checklist-item:last-child { border-bottom: none; }
+    .check-box { flex-shrink: 0; width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 5px; margin-top: 1px; display: flex; align-items: center; justify-content: center; color: #fff; transition: background 0.15s, border-color 0.15s; }
+    .check-box svg { opacity: 0; transition: opacity 0.15s; }
+    .checklist-item.checked .check-box { background: var(--primary); border-color: var(--primary); }
+    .checklist-item.checked .check-box svg { opacity: 1; }
+    .checklist-item.checked .checklist-text { color: var(--grey); text-decoration: line-through; }
+
+    .accordion { margin-bottom: 10px; }
+    .accordion:last-child { margin-bottom: 0; }
+    .acc-summary { display: flex; flex-direction: column; gap: 4px; text-align: left; flex: 1; min-width: 0; }
+    .acc-label { font-size: var(--fs-label); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); }
+    .acc-preview { font-size: var(--fs-body); font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .gallery-toggle.open .acc-preview { display: none; }
+
+    a.contact-card { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 13px 16px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; text-decoration: none; transition: background 0.15s; }
+    a.contact-card:last-child { margin-bottom: 0; }
+    a.contact-card:hover { border-color: var(--secondary); background: #fff; }
+    .contact-name { font-size: var(--fs-body); font-weight: 600; color: var(--navy); flex: 1; min-width: 0; line-height: 1.4; }
+    .contact-role { font-weight: 500; color: var(--grey); }
+    .contact-num { font-size: var(--fs-body); font-weight: 600; color: var(--primary); white-space: nowrap; flex-shrink: 0; }
+
+    .help-availability { font-size: var(--fs-body); font-weight: 500; line-height: 1.55; color: var(--text); background: #EAF1F1; border-left: 3px solid var(--primary); border-radius: 8px; padding: 12px 14px; margin-bottom: 14px; }
+
+    .manager-area { padding: 44px 20px 24px; text-align: center; }
+    .manager-area a { font-size: var(--fs-label); color: var(--border); text-decoration: none; letter-spacing: 0.05em; }
+    .manager-area a:hover { color: var(--grey); }
+  </style>
+</head>
+<body>
+
+  <div id="expiry-screen" style="display:none;min-height:100vh;align-items:center;justify-content:center;padding:40px 24px;text-align:center;flex-direction:column;">
+    <p style="font-size:18px;font-weight:600;color:var(--navy);line-height:1.6;">Esta página expirou,<br>contacte o seu anfitrião.</p>
+  </div>
+
+  <header class="hero">
+    <img src="/clients/omarafado/assets/images/hero.jpg" alt="O Marafado" class="hero-img">
+    <h1 class="hero-title" data-key="property_name">O Marafado</h1>
+    <p class="hero-location">Lagos, Algarve</p>
+  </header>
+
+  <nav class="tab-nav" aria-label="Page sections">
+    <div class="tab-scroll" id="tab-scroll">
+      <div class="tab-list">
+        <button class="tab-btn active" data-target="welcome">Welcome</button>
+        <button class="tab-btn" data-target="arrival-access">Arrival &amp; Access</button>
+        <button class="tab-btn" data-target="the-house">The House</button>
+        <button class="tab-btn" data-target="explore">Explore</button>
+        <button class="tab-btn" data-target="rules-checkout">Rules &amp; Checkout</button>
+        <button class="tab-btn" data-target="help">Help</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <section class="section" id="welcome">
+      <h2 class="section-heading">Welcome</h2>
+      <div class="accordion" id="welcome-accordion">
+        <button class="gallery-toggle" id="welcome-toggle" aria-expanded="false" aria-controls="welcome-collapse">
+          <span class="acc-summary">
+            <span class="acc-label">A Note from Your Host</span>
+            <span class="acc-preview" id="welcome-preview"></span>
+          </span>
+          <span class="gallery-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="gallery-collapse" id="welcome-collapse">
+          <div class="welcome-body" id="welcome-body" style="padding: 2px 16px 16px;"></div>
+        </div>
+      </div>
+      <div class="subgroup">
+        <h3 class="subsection-heading">Quick Info</h3>
+        <a class="card" id="address-link" href="#" target="_blank" rel="noopener" style="display:block;text-decoration:none;">
+          <div class="card-label">Address &middot; Tap to Open in Maps</div>
+          <div class="card-value" id="address-text" style="color:var(--primary);"></div>
+        </a>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-label">Check-In</div>
+            <div class="card-value" data-key="checkin_time"></div>
+          </div>
+          <div class="card">
+            <div class="card-label">Checkout</div>
+            <div class="card-value" data-key="checkout_time"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-label">Wi-Fi Network / Password</div>
+          <div class="card-value"><span data-key="wifi_name"></span> &nbsp;/&nbsp; <span data-key="wifi_password"></span></div>
+        </div>
+        <div class="accordion" data-accordion-text="parking" data-accordion-label="Parking"></div>
+        <div class="card">
+          <div class="card-label">Bins</div>
+          <div class="card-value" data-key="bins_location"></div>
+        </div>
+        <div class="card">
+          <div class="card-label">Tap Water</div>
+          <div class="card-value" data-key="tap_water"></div>
+        </div>
+        <div id="postal-row" style="display:none;">
+          <button class="gallery-toggle" id="postal-toggle" aria-expanded="false" aria-controls="postal-collapse">
+            <span>Deliveries &amp; mail</span>
+            <span class="gallery-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="gallery-collapse" id="postal-collapse">
+            <div class="postal-body" id="postal-text"></div>
+            <div class="copy-block" id="copy-address-block" style="display:none;">
+              <span class="copy-address" id="copy-address-text"></span>
+              <button class="copy-btn" type="button" id="copy-address-btn">
+                <svg class="copy-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span class="copy-btn-label">Copy address</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="arrival-access">
+      <h2 class="section-heading">Arrival &amp; Access</h2>
+      <div class="accordion" style="margin-bottom: 12px;">
+        <button class="gallery-toggle" id="checkin-toggle" aria-expanded="false" aria-controls="checkin-collapse">
+          <span class="acc-label">Check-In Steps</span>
+          <span class="gallery-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="gallery-collapse" id="checkin-collapse">
+          <ol class="step-list" data-steps="checkin_steps" style="padding: 6px 16px 12px;"></ol>
+        </div>
+      </div>
+      <div class="card"><div class="card-label">Keysafe Location</div><div class="card-value" data-key="keysafe_location"></div></div>
+      <div class="card"><div class="card-label">Gate Code</div><div class="card-value" data-key="gate_code"></div></div>
+      <div class="card"><div class="card-label">Building Code</div><div class="card-value" data-key="building_code"></div></div>
+      <div class="card"><div class="card-label">Keys</div><div class="card-value long" data-key="keys_info"></div></div>
+      <div class="accordion" data-accordion-text="luggage_storage" data-accordion-label="Luggage Storage" style="margin-top:10px;"></div>
+    </section>
+
+    <section class="section" id="the-house">
+      <h2 class="section-heading">The House</h2>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">What's Included</h3>
+        <ul class="inclusion-list" data-inclusion="included_items"></ul>
+      </div>
+
+      <div class="card" id="kitchen-card">
+        <div class="card-label">Kitchen</div>
+        <div class="card-value long" data-key="kitchen_info"></div>
+      </div>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">Appliances &amp; Amenities</h3>
+        <ul class="prop-list">
+          <li class="prop-item"><div class="prop-label">Air Conditioning</div><div class="prop-value" data-key="ac_info"></div></li>
+          <li class="prop-item"><div class="prop-label">Heating</div><div class="prop-value" data-key="heating_info"></div></li>
+          <li class="prop-item"><div class="prop-label">Oven</div><div class="prop-value" data-key="oven"></div></li>
+          <li class="prop-item"><div class="prop-label">Coffee</div><div class="prop-value" data-key="coffee_machine"></div></li>
+          <li class="prop-item"><div class="prop-label">Hot Water</div><div class="prop-value" data-key="hot_water"></div></li>
+          <li class="prop-item"><div class="prop-label">TV</div><div class="prop-value" data-key="tv_info"></div></li>
+        </ul>
+        <div class="card" style="margin-top:10px;">
+          <div class="card-label">Dishwasher</div>
+          <div class="card-value long" data-key="dishwasher"></div>
+        </div>
+        <div class="accordion" data-accordion-text="washing_machine" data-accordion-label="Washing Machine" style="margin-top:10px;"></div>
+      </div>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">Photos</h3>
+        <button class="gallery-toggle" id="gallery-toggle" aria-expanded="false" aria-controls="gallery-collapse">
+          <span>View photos</span>
+          <span class="gallery-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+        <div class="gallery-collapse" id="gallery-collapse">
+          <div class="gallery-grid">
+            <a class="gallery-item" href="/clients/omarafado/assets/images/exterior.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/exterior.jpg" alt="O Marafado — Exterior, front door" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/omarafado/assets/images/living-room.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/living-room.jpg" alt="O Marafado — Living room" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/omarafado/assets/images/living-room-2.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/living-room-2.jpg" alt="O Marafado — Living room" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/omarafado/assets/images/kitchen.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/kitchen.jpg" alt="O Marafado — Kitchen" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/omarafado/assets/images/dining.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/dining.jpg" alt="O Marafado — Dining area" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/omarafado/assets/images/dining-2.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/dining-2.jpg" alt="O Marafado — Dining area" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/omarafado/assets/images/kitchen-detail.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/kitchen-detail.jpg" alt="O Marafado — Kitchen detail" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/omarafado/assets/images/bedroom.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/bedroom.jpg" alt="O Marafado — Bedroom" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/omarafado/assets/images/bedroom-storage.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/bedroom-storage.jpg" alt="O Marafado — Bedroom storage" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/omarafado/assets/images/bathroom.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/bathroom.jpg" alt="O Marafado — Bathroom" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/omarafado/assets/images/bathroom-2.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/bathroom-2.jpg" alt="O Marafado — Bathroom" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/omarafado/assets/images/shower.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/shower.jpg" alt="O Marafado — Shower" loading="lazy"></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="explore">
+      <h2 class="section-heading">Explore</h2>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">Local Info</h3>
+        <div class="accordion" data-accordion-text="distance_centre" data-accordion-label="Town Centre"></div>
+        <div class="accordion" data-accordion-list="getting_around" data-accordion-label="Getting Around" style="margin-top:10px;"></div>
+      </div>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">Pharmacy / ATM</h3>
+        <div data-list="pharmacy_atm"></div>
+      </div>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">Hospital</h3>
+        <div data-list="hospital"></div>
+      </div>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">Supermarkets</h3>
+        <div data-list="supermarkets"></div>
+      </div>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">Beaches</h3>
+        <div data-list="beaches"></div>
+      </div>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">Eat &amp; Drink</h3>
+        <div data-list="restaurants"></div>
+      </div>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">Things to Do</h3>
+        <div data-list="activities"></div>
+      </div>
+    </section>
+
+    <section class="section" id="rules-checkout">
+      <h2 class="section-heading">Rules &amp; Checkout</h2>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">House Rules</h3>
+        <ul class="rule-list" data-rulelist="house_rules"></ul>
+      </div>
+
+      <div class="subgroup">
+        <h3 class="subsection-heading">Checkout</h3>
+        <div class="card" style="margin-bottom: 14px;">
+          <div class="card-label">Checkout by</div>
+          <div class="card-value" data-key="checkout_time"></div>
+        </div>
+        <ul class="checklist" data-checklist="checkout_checklist"></ul>
+      </div>
+    </section>
+
+    <section class="section" id="help">
+      <h2 class="section-heading">Help</h2>
+      <div id="help-contacts"></div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <a class="footer-link" href="https://guestpagealgarve.com" target="_blank" rel="noopener" aria-label="GuestPage — Algarve, Portugal">
+      <img src="/clients/omarafado/images/wordmark-mark.png" alt="GuestPage" class="footer-logo">
+      <span class="footer-sub">Algarve &middot; Portugal</span>
+    </a>
+  </footer>
+
+  <a class="whatsapp-fab" href="https://wa.me/351916568537" target="_blank" rel="noopener" aria-label="Message host Edna on WhatsApp">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+  </a>
+
+  <script>
+    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/17kroVxSmPStba5IqQxSnJuIF9ntqhX3tqDUmfm5z5L8/export?format=csv';
+
+    function parseCSVLine(line) {
+      const fields = [];
+      let i = 0;
+      while (i < line.length) {
+        if (line[i] === '"') {
+          let field = '';
+          i++;
+          while (i < line.length) {
+            if (line[i] === '"' && line[i + 1] === '"') {
+              field += '"'; i += 2;
+            } else if (line[i] === '"') {
+              i++; break;
+            } else {
+              field += line[i++];
+            }
+          }
+          fields.push(field);
+        } else {
+          let field = '';
+          while (i < line.length && line[i] !== ',') field += line[i++];
+          fields.push(field);
+        }
+        if (i < line.length && line[i] === ',') i++;
+      }
+      return fields;
+    }
+
+    function parseCSV(text) {
+      const data = {};
+      const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim().split('\n');
+      lines.forEach(line => {
+        if (!line.trim()) return;
+        const fields = parseCSVLine(line);
+        if (fields.length >= 2) {
+          const key = fields[0].trim();
+          const value = fields[1].trim();
+          if (key) data[key] = value;
+        }
+      });
+      return data;
+    }
+
+    // Hide an empty field: hide its single-field card/row if it lives in one,
+    // otherwise hide just the element. Show it again when it has a value.
+    function setFieldVisible(el, visible) {
+      const box = el.closest('.card, .prop-item, .info-item');
+      const target = (box && box.querySelectorAll('[data-key]').length === 1) ? box : el;
+      target.style.display = visible ? '' : 'none';
+    }
+
+    function injectData(data) {
+      document.querySelectorAll('[data-key]').forEach(el => {
+        const value = data[el.getAttribute('data-key')];
+        if (value && value.trim()) {
+          el.textContent = value;
+          el.classList.remove('empty');
+          setFieldVisible(el, true);
+        } else {
+          el.textContent = '';
+          setFieldVisible(el, false);
+        }
+      });
+    }
+
+    // Address → tap-to-open Google Maps link (uses gps as the URL)
+    function renderAddress(data) {
+      const el = document.getElementById('address-link');
+      const txt = document.getElementById('address-text');
+      if (!el || !txt) return;
+      const label = (data['address'] || '').split(' — Open in Google Maps')[0].trim();
+      const href = (data['gps'] || '').trim() ||
+        (label ? 'https://maps.google.com/?q=' + encodeURIComponent(label) : '');
+      if (label) {
+        txt.textContent = label;
+        if (href) el.href = href;
+        el.style.display = 'block';
+      } else {
+        el.style.display = 'none';
+      }
+    }
+
+    // restaurants / beaches / activities: " | "-separated items → place cards.
+    // Each item splits on " — " into name, description and an optional trailing
+    // URL segment, which renders as a small map-pin link rather than as text.
+    const PIN_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+    const CHEVRON_SVG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+    const CHECK_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+    // Fill a container with place cards from a " | "-separated raw string.
+    // Each item splits on " — " into name, description and an optional trailing
+    // URL segment, which renders as a small map-pin link rather than as text.
+    function buildPlaceCards(container, raw) {
+      container.innerHTML = '';
+      raw.split(' | ').forEach(item => {
+        item = item.trim();
+        if (!item) return;
+        const segs = item.split(' — ').map(s => s.trim());
+        let url = null;
+        if (segs.length && /^https?:\/\//i.test(segs[segs.length - 1])) url = segs.pop();
+        let name = '', desc = '';
+        if (segs.length >= 2) { name = segs[0]; desc = segs.slice(1).join(' — '); }
+        else if (segs.length === 1) { if (url) name = segs[0]; else desc = segs[0]; }
+
+        const card = document.createElement('div');
+        card.className = 'place-card';
+        if (name) {
+          const n = document.createElement('div');
+          n.className = 'place-name';
+          n.textContent = name;
+          card.appendChild(n);
+        }
+        if (desc) {
+          const d = document.createElement('div');
+          d.className = 'place-desc';
+          d.textContent = desc;
+          card.appendChild(d);
+        }
+        if (url) {
+          const a = document.createElement('a');
+          a.className = 'place-pin';
+          a.href = url;
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.setAttribute('aria-label', 'Open in Google Maps');
+          a.innerHTML = PIN_SVG;
+          a.appendChild(document.createTextNode(' Map'));
+          card.appendChild(a);
+        }
+        container.appendChild(card);
+      });
+    }
+
+    function renderLists(data) {
+      document.querySelectorAll('[data-list]').forEach(container => {
+        const group = container.closest('.subgroup') || container.closest('section');
+        const raw = (data[container.getAttribute('data-list')] || '').trim();
+        container.innerHTML = '';
+        if (!raw) { if (group) group.style.display = 'none'; return; }
+        if (group) group.style.display = '';
+        buildPlaceCards(container, raw);
+      });
+    }
+
+    // Collapsible accordions ("View photos" style) driven by data attributes:
+    //   data-accordion-text — collapsed toggle shows the label + first ~60 chars,
+    //     expands to the full value. For long single-value fields (parking, etc).
+    //   data-accordion-list — collapsed toggle shows the label; expands to the
+    //     same place-card list used elsewhere (getting_around).
+    // The whole accordion is hidden when its field is empty.
+    // Render plain text into a container, turning any bare http(s) URL into a
+    // tappable pin link ("Open in Maps" for map URLs, else "Open link") rather
+    // than showing the raw URL.
+    function appendLinkified(container, text) {
+      const re = /https?:\/\/[^\s]+/g;
+      let last = 0, m;
+      while ((m = re.exec(text)) !== null) {
+        const url = m[0].replace(/[.,;:!?)\]]+$/, '');
+        if (m.index > last) container.appendChild(document.createTextNode(text.slice(last, m.index)));
+        const a = document.createElement('a');
+        a.className = 'body-link';
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.innerHTML = PIN_SVG;
+        const isMap = /maps\.google|google\.[^/]+\/maps|maps\.app|goo\.gl\/maps/i.test(url);
+        a.appendChild(document.createTextNode(isMap ? ' Open in Maps' : ' Open link'));
+        container.appendChild(a);
+        last = m.index + url.length;
+      }
+      if (last < text.length) container.appendChild(document.createTextNode(text.slice(last)));
+    }
+
+    function makeToggle(labelNode) {
+      const toggle = document.createElement('button');
+      toggle.className = 'gallery-toggle';
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.appendChild(labelNode);
+      const chevron = document.createElement('span');
+      chevron.className = 'gallery-chevron';
+      chevron.innerHTML = CHEVRON_SVG;
+      toggle.appendChild(chevron);
+      const collapse = document.createElement('div');
+      collapse.className = 'gallery-collapse';
+      toggle.addEventListener('click', () => {
+        const open = toggle.classList.toggle('open');
+        collapse.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+      return { toggle, collapse };
+    }
+
+    function renderAccordions(data) {
+      document.querySelectorAll('[data-accordion-text]').forEach(acc => {
+        const val = (data[acc.getAttribute('data-accordion-text')] || '').trim();
+        const label = acc.getAttribute('data-accordion-label') || '';
+        acc.innerHTML = '';
+        if (!val) { acc.style.display = 'none'; return; }
+        acc.style.display = '';
+        const summary = document.createElement('span');
+        summary.className = 'acc-summary';
+        const l = document.createElement('span');
+        l.className = 'acc-label';
+        l.textContent = label;
+        const p = document.createElement('span');
+        p.className = 'acc-preview';
+        p.textContent = val.length > 60 ? val.slice(0, 60).trim() + '…' : val;
+        summary.appendChild(l);
+        summary.appendChild(p);
+        const { toggle, collapse } = makeToggle(summary);
+        const body = document.createElement('div');
+        body.className = 'postal-body';
+        appendLinkified(body, val);
+        collapse.appendChild(body);
+        acc.appendChild(toggle);
+        acc.appendChild(collapse);
+      });
+
+      document.querySelectorAll('[data-accordion-list]').forEach(acc => {
+        const raw = (data[acc.getAttribute('data-accordion-list')] || '').trim();
+        const label = acc.getAttribute('data-accordion-label') || '';
+        acc.innerHTML = '';
+        if (!raw) { acc.style.display = 'none'; return; }
+        acc.style.display = '';
+        const l = document.createElement('span');
+        l.textContent = label;
+        const { toggle, collapse } = makeToggle(l);
+        const body = document.createElement('div');
+        body.style.paddingTop = '10px';
+        buildPlaceCards(body, raw);
+        collapse.appendChild(body);
+        acc.appendChild(toggle);
+        acc.appendChild(collapse);
+      });
+    }
+
+    // checkout_checklist: comma-separated → tappable tick boxes. State lives only
+    // in the DOM (the .checked class) and resets on reload — no persistence.
+    function renderChecklist(data) {
+      document.querySelectorAll('[data-checklist]').forEach(list => {
+        const group = list.closest('.subgroup') || list.closest('section');
+        const raw = (data[list.getAttribute('data-checklist')] || '').trim();
+        list.innerHTML = '';
+        const items = raw ? raw.split(/,\s*/).map(s => s.trim()).filter(Boolean) : [];
+        if (!items.length) { if (group) group.style.display = 'none'; return; }
+        if (group) group.style.display = '';
+        items.forEach(text => {
+          const li = document.createElement('li');
+          li.className = 'checklist-item';
+          li.setAttribute('role', 'checkbox');
+          li.setAttribute('aria-checked', 'false');
+          li.tabIndex = 0;
+          const box = document.createElement('span');
+          box.className = 'check-box';
+          box.innerHTML = CHECK_SVG;
+          const t = document.createElement('span');
+          t.className = 'checklist-text';
+          t.textContent = text;
+          li.appendChild(box);
+          li.appendChild(t);
+          const toggle = () => {
+            const on = li.classList.toggle('checked');
+            li.setAttribute('aria-checked', String(on));
+          };
+          li.addEventListener('click', toggle);
+          li.addEventListener('keydown', e => {
+            if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(); }
+          });
+          list.appendChild(li);
+        });
+      });
+    }
+
+    // Help: primary + owner contacts, then " | "-separated taxi and emergency items.
+    function renderHelp(data) {
+      const wrap = document.getElementById('help-contacts');
+      if (!wrap) return;
+      wrap.innerHTML = '';
+
+      // host_availability renders as the first line, hidden when empty.
+      const avail = (data['host_availability'] || '').trim();
+      if (avail) {
+        const note = document.createElement('p');
+        note.className = 'help-availability';
+        note.textContent = avail;
+        wrap.appendChild(note);
+      }
+
+      const digits = s => (s.match(/\d/g) || []).length;
+      const extractPhone = str => {
+        const runs = str.match(/\d[\d\s]*\d|\d/g) || [];
+        if (!runs.length) return null;
+        return runs.reduce((a, b) => digits(b) > digits(a) ? b : a).trim();
+      };
+      const addCard = (name, num) => {
+        const tel = num ? num.replace(/\s/g, '') : '';
+        const el = document.createElement(tel ? 'a' : 'div');
+        el.className = 'contact-card';
+        if (tel) el.href = 'tel:' + tel;
+        const n = document.createElement('span');
+        n.className = 'contact-name';
+        // "Name — role" → name bold, role lighter.
+        const parts = (name || 'Contact').split(' — ');
+        n.textContent = parts[0];
+        if (parts.length > 1) {
+          const role = document.createElement('span');
+          role.className = 'contact-role';
+          role.textContent = ' — ' + parts.slice(1).join(' — ');
+          n.appendChild(role);
+        }
+        const v = document.createElement('span');
+        v.className = 'contact-num';
+        v.textContent = num || '';
+        el.appendChild(n);
+        el.appendChild(v);
+        wrap.appendChild(el);
+      };
+      const addPair = (nameKey, phoneKey, fallback) => {
+        const nm = (data[nameKey] || '').trim();
+        const ph = (data[phoneKey] || '').trim();
+        if (nm || ph) addCard(nm || fallback, ph);
+      };
+      const addList = key => {
+        const raw = (data[key] || '').trim();
+        if (!raw) return;
+        raw.split(' | ').forEach(item => {
+          item = item.trim();
+          if (!item) return;
+          const num = extractPhone(item);
+          let name = item;
+          if (num) name = item.replace(num, '').replace(/[:\-–—]\s*$/, '').replace(/\s{2,}/g, ' ').trim();
+          addCard(name || item, num);
+        });
+      };
+
+      addPair('contact_primary_name', 'contact_primary_phone', 'Host');
+      addPair('contact_owner_name', 'contact_owner_phone', 'Owner');
+      addList('contact_taxi');
+      addList('emergency');
+    }
+
+    // house_rules / checkout_checklist: comma-separated → list items.
+    // attr = data attribute holding the field key; itemClass/leadHTML style each row.
+    // Hides the containing section when the field is empty.
+    function renderCommaList(attr, itemClass, leadHTML, data) {
+      document.querySelectorAll('[' + attr + ']').forEach(list => {
+        const group = list.closest('.subgroup') || list.closest('section');
+        const raw = (data[list.getAttribute(attr)] || '').trim();
+        list.innerHTML = '';
+        const items = raw ? raw.split(/,\s*/).map(s => s.trim()).filter(Boolean) : [];
+        if (!items.length) { if (group) group.style.display = 'none'; return; }
+        if (group) group.style.display = '';
+        items.forEach(text => {
+          const li = document.createElement('li');
+          li.className = itemClass;
+          li.innerHTML = leadHTML;
+          li.appendChild(document.createTextNode(text));
+          list.appendChild(li);
+        });
+      });
+    }
+
+    // checkin_steps: a single string numbered "1. ... 2. ..." → numbered <ol>.
+    function renderSteps(data) {
+      document.querySelectorAll('[data-steps]').forEach(ol => {
+        const raw = (data[ol.getAttribute('data-steps')] || '').trim();
+        ol.innerHTML = '';
+        // Break only on a step number 1-9 followed by ". " at the very start of
+        // the text or right after sentence-ending punctuation. This prevents
+        // tokens like "Nº23." or "Apt 23" from being read as step markers.
+        let steps = [];
+        if (raw) {
+          const marked = raw.replace(/(^|[.!?]\s+)[1-9]\.\s+/g, (m, pre) => pre.trim() + '\n');
+          steps = marked.split('\n').map(s => s.trim()).filter(Boolean);
+        }
+        if (raw && steps.length < 2) steps = [raw];
+        ol.style.display = steps.length ? '' : 'none';
+        steps.forEach((text, i) => {
+          const li = document.createElement('li');
+          li.className = 'step-item';
+          const num = document.createElement('span');
+          num.className = 'step-num';
+          num.textContent = String(i + 1);
+          const t = document.createElement('span');
+          t.className = 'step-text';
+          t.textContent = text;
+          li.appendChild(num);
+          li.appendChild(t);
+          ol.appendChild(li);
+        });
+      });
+    }
+
+    // welcome_note: " | "-separated segments rendered in order. Segments
+    // starting with "- " become items of a distinct bullet schedule; every
+    // other segment becomes its own paragraph. Consecutive "- " segments group
+    // into one schedule block.
+    function renderWelcome(data) {
+      const acc = document.getElementById('welcome-accordion');
+      const body = document.getElementById('welcome-body');
+      const preview = document.getElementById('welcome-preview');
+      if (!acc || !body) return;
+      const raw = (data['welcome_note'] || '').trim();
+      body.innerHTML = '';
+      if (!raw) { acc.style.display = 'none'; return; }
+      acc.style.display = '';
+      const segs = raw.split(' | ').map(s => s.trim()).filter(Boolean);
+      if (preview) {
+        const firstText = segs.find(s => !s.startsWith('- ')) || segs[0] || '';
+        preview.textContent = firstText.length > 60 ? firstText.slice(0, 60).trim() + '…' : firstText;
+      }
+      let ul = null;
+      segs.forEach(seg => {
+        if (seg.startsWith('- ')) {
+          if (!ul) { ul = document.createElement('ul'); ul.className = 'welcome-schedule'; body.appendChild(ul); }
+          const li = document.createElement('li');
+          li.textContent = seg.slice(2).trim();
+          ul.appendChild(li);
+        } else {
+          ul = null;
+          const p = document.createElement('p');
+          p.textContent = seg;
+          body.appendChild(p);
+        }
+      });
+    }
+
+    // postal_info: fills the "Receiving mail & parcels" accordion; the whole
+    // row stays hidden when the field is empty/absent.
+    function renderPostal(data) {
+      const row = document.getElementById('postal-row');
+      const txt = document.getElementById('postal-text');
+      if (!row || !txt) return;
+      const v = (data['postal_info'] || '').trim();
+      const addr = (data['delivery_address'] || data['address'] || '').trim();
+      const block = document.getElementById('copy-address-block');
+      const addrEl = document.getElementById('copy-address-text');
+      // The section shows when there's postal_info to display; the tap-to-copy
+      // delivery address uses the delivery_address field, falling back to the
+      // address field when delivery_address is empty.
+      if (v) {
+        txt.textContent = v;
+        txt.style.display = '';
+        if (addr && block && addrEl) { addrEl.textContent = addr; block.style.display = ''; }
+        else if (block) { block.style.display = 'none'; }
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    }
+
+    function applyDynamic(data) {
+      renderWelcome(data);
+      renderPostal(data);
+      renderAddress(data);
+      renderSteps(data);
+      renderLists(data);
+      renderAccordions(data);
+      renderHelp(data);
+      renderCommaList('data-inclusion', 'inclusion-item', '<span class="inclusion-check">&#10003;</span>', data);
+      renderCommaList('data-rulelist', 'rule-item', '<span class="rule-dot"></span>', data);
+      renderChecklist(data);
+    }
+
+    function checkExpiry(data) {
+      const raw = (data['expiry_date'] || '').trim();
+      if (!raw) return;
+      const parts = raw.split('-').map(Number);
+      if (parts.length < 3 || !parts[0]) return;
+      const expiry = new Date(parts[0], parts[1] - 1, parts[2]);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (today > expiry) {
+        Array.from(document.body.children).forEach(el => {
+          if (el.id !== 'expiry-screen') el.style.display = 'none';
+        });
+        document.getElementById('expiry-screen').style.display = 'flex';
+      }
+    }
+
+    async function loadSheet() {
+      try {
+        const res = await fetch(SHEET_URL);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = parseCSV(await res.text());
+        checkExpiry(data);
+        injectData(data);
+        applyDynamic(data);
+      } catch (err) {
+        console.warn('Sheet load failed:', err);
+        // No data: hide empty fields/sections rather than showing placeholders.
+        injectData({});
+        applyDynamic({});
+      }
+    }
+
+    loadSheet();
+
+    // Collapsible accordions (Photos, postal info) — collapsed by default.
+    function wireAccordion(toggleId, collapseId) {
+      const toggle = document.getElementById(toggleId);
+      const collapse = document.getElementById(collapseId);
+      if (!toggle || !collapse) return;
+      toggle.addEventListener('click', () => {
+        const open = toggle.classList.toggle('open');
+        collapse.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+    }
+    wireAccordion('gallery-toggle', 'gallery-collapse');
+    wireAccordion('postal-toggle', 'postal-collapse');
+    wireAccordion('welcome-toggle', 'welcome-collapse');
+    wireAccordion('checkin-toggle', 'checkin-collapse');
+
+    // Tap-to-copy delivery address, with a brief "Copied" confirmation.
+    (function wireCopyAddress() {
+      const btn = document.getElementById('copy-address-btn');
+      const addrEl = document.getElementById('copy-address-text');
+      if (!btn || !addrEl) return;
+      const label = btn.querySelector('.copy-btn-label');
+      let resetTimer = null;
+      btn.addEventListener('click', async () => {
+        const text = addrEl.textContent.trim();
+        if (!text) return;
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+          } else {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+          }
+          btn.classList.add('copied');
+          if (label) label.textContent = 'Copied ✓';
+        } catch (err) {
+          if (label) label.textContent = 'Press and hold to copy';
+        }
+        clearTimeout(resetTimer);
+        resetTimer = setTimeout(() => {
+          btn.classList.remove('copied');
+          if (label) label.textContent = 'Copy address';
+        }, 2000);
+      });
+    })();
+
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const sections = document.querySelectorAll('.section');
+
+    // Show the right-edge fade only while more tabs remain off-screen.
+    const tabNav = document.querySelector('.tab-nav');
+    const tabScroll = document.getElementById('tab-scroll');
+    function updateTabFade() {
+      if (!tabNav || !tabScroll) return;
+      const atEnd = tabScroll.scrollLeft + tabScroll.clientWidth >= tabScroll.scrollWidth - 1;
+      tabNav.classList.toggle('at-end', atEnd);
+    }
+    if (tabScroll) tabScroll.addEventListener('scroll', updateTabFade, { passive: true });
+    window.addEventListener('resize', updateTabFade);
+    updateTabFade();
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = document.getElementById(btn.dataset.target);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    let activeId = document.querySelector('.tab-btn.active') ?
+      document.querySelector('.tab-btn.active').dataset.target : null;
+    function setActive(id) {
+      if (!id || id === activeId) return;
+      activeId = id;
+      tabBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.target === id));
+      const activeBtn = document.querySelector('.tab-btn[data-target="' + id + '"]');
+      if (activeBtn) activeBtn.scrollIntoView({ block: 'nearest', inline: 'center' });
+    }
+
+    // Position-based scroll-spy: the active section is the last one whose top has
+    // passed a reference line ~42% down the viewport. A short final section (Help)
+    // never reaches that line, so when the page bottoms out we pick the last tab.
+    // (An IntersectionObserver only fires on boundary crossings, which left Help
+    // stuck when scrolling back up; recomputing on every scroll avoids that.)
+    const lastId = sections.length ? sections[sections.length - 1].id : null;
+    function atPageBottom() {
+      const doc = document.documentElement;
+      return doc.scrollHeight > window.innerHeight + 40 &&
+        window.innerHeight + window.scrollY >= doc.scrollHeight - 24;
+    }
+    function currentSectionId() {
+      if (atPageBottom()) return lastId;
+      const ref = window.innerHeight * 0.42;
+      let id = sections.length ? sections[0].id : null;
+      for (let i = 0; i < sections.length; i++) {
+        if (sections[i].getBoundingClientRect().top <= ref) id = sections[i].id;
+        else break;
+      }
+      return id;
+    }
+    let spyTicking = false;
+    function onScrollSpy() {
+      if (spyTicking) return;
+      spyTicking = true;
+      requestAnimationFrame(() => { setActive(currentSectionId()); spyTicking = false; });
+    }
+    window.addEventListener('scroll', onScrollSpy, { passive: true });
+    window.addEventListener('resize', onScrollSpy);
+    onScrollSpy();
+  </script>
+
+</body>
+</html>
