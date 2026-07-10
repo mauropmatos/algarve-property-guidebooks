@@ -294,7 +294,9 @@
   </div>
 
   <header class="hero">
-    <img src="/clients/omarafado/assets/images/hero.jpg" alt="O Marafado" class="hero-img">
+    <!-- Hero photo removed until O Marafado photos arrive; hero falls back to the
+         solid navy .hero background. Re-enable when photos arrive:
+    <img src="/clients/omarafado/assets/images/hero.jpg" alt="O Marafado" class="hero-img"> -->
     <h1 class="hero-title" data-key="property_name">O Marafado</h1>
     <p class="hero-location">Lagos, Algarve</p>
   </header>
@@ -424,6 +426,9 @@
         <div class="accordion" data-accordion-text="washing_machine" data-accordion-label="Washing Machine" style="margin-top:10px;"></div>
       </div>
 
+      <!-- Photos subgroup hidden until O Marafado photos arrive. This is a subsection
+           of "The House" (not a standalone nav tab), so nothing in .tab-nav changes.
+           Re-enable the whole block below when O Marafado photos arrive.
       <div class="subgroup">
         <h3 class="subsection-heading">Photos</h3>
         <button class="gallery-toggle" id="gallery-toggle" aria-expanded="false" aria-controls="gallery-collapse">
@@ -447,6 +452,7 @@
           </div>
         </div>
       </div>
+      -->
     </section>
 
     <section class="section" id="explore">
@@ -1036,7 +1042,7 @@
         toggle.setAttribute('aria-expanded', String(open));
       });
     }
-    wireAccordion('gallery-toggle', 'gallery-collapse');
+    // wireAccordion('gallery-toggle', 'gallery-collapse'); // re-enable when O Marafado photos arrive
     wireAccordion('postal-toggle', 'postal-collapse');
     wireAccordion('welcome-toggle', 'welcome-collapse');
     wireAccordion('checkin-toggle', 'checkin-collapse');
