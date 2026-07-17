@@ -224,6 +224,22 @@
     .copy-btn:active { transform: scale(0.98); }
     .copy-btn.copied { background: #3E7D53; }
     .copy-icon { flex-shrink: 0; }
+
+    .site-footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 30px 20px 34px;
+    }
+    .footer-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+    }
+    .footer-logo { width: 176px; max-width: 62%; height: auto; display: block; }
+    .footer-sub { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey); }
   </style>
 </head>
 <body>
@@ -465,6 +481,13 @@
     </section>
 
   </main>
+
+  <footer class="site-footer">
+    <a class="footer-link" href="https://guestpagealgarve.com" target="_blank" rel="noopener" aria-label="GuestPage — Algarve, Portugal">
+      <img src="/clients/luzbeachhouse/assets/images/wordmark-mark.png" alt="GuestPage" class="footer-logo">
+      <span class="footer-sub">Algarve &middot; Portugal</span>
+    </a>
+  </footer>
 
   <script>
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1lUJ6AQeCmzuvG_UNBxuw-5_OnLIFDOE3XUt-qn53hP8/export?format=csv';
