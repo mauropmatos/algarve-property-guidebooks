@@ -300,27 +300,21 @@
           <div class="card-label">Checkout</div>
           <div class="card-value" data-key="checkout_time"></div>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-label">Wi-Fi Network</div>
-        <div class="card-value" data-key="wifi_name"></div>
-      </div>
-      <div class="card">
-        <div class="card-label">Wi-Fi Password</div>
-        <div class="card-value" data-key="wifi_password"></div>
+        <div class="card">
+          <div class="card-label">Wi-Fi Network</div>
+          <div class="card-value" data-key="wifi_name"></div>
+        </div>
+        <div class="card">
+          <div class="card-label">Wi-Fi Password</div>
+          <div class="card-value" data-key="wifi_password"></div>
+        </div>
       </div>
       <div class="card">
         <div class="card-label">Parking</div>
         <div class="card-value" data-key="parking"></div>
       </div>
-      <div class="card">
-        <div class="card-label">Pool</div>
-        <div class="card-value long" data-key="pool"></div>
-      </div>
-      <div class="card">
-        <div class="card-label">Check-in / Checkout Flexibility</div>
-        <div class="card-value long" data-key="flexibility"></div>
-      </div>
+      <div class="accordion" data-accordion-text="pool" data-accordion-label="Pool" style="margin-top:10px;"></div>
+      <div class="accordion" data-accordion-text="flexibility" data-accordion-label="Check-in / Checkout Flexibility" style="margin-top:10px;"></div>
       <div class="accordion" id="postal-row" style="display:none; margin-top:10px;">
         <button class="gallery-toggle" id="postal-toggle" aria-expanded="false" aria-controls="postal-collapse">
           <span class="acc-label">Deliveries &amp; mail</span>
@@ -373,9 +367,16 @@
       <h2 class="section-heading">Property</h2>
 
       <div class="subgroup">
-        <h3 class="subsection-heading">What's Included</h3>
         <!-- Sheet-driven: included_items (comma-separated) -->
-        <ul class="inclusion-list" data-inclusion="included_items"></ul>
+        <div class="accordion" id="included-accordion">
+          <button class="gallery-toggle" id="included-toggle" aria-expanded="false" aria-controls="included-collapse">
+            <span class="acc-label">What's Included</span>
+            <span class="gallery-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="gallery-collapse" id="included-collapse">
+            <ul class="inclusion-list" data-inclusion="included_items"></ul>
+          </div>
+        </div>
       </div>
 
       <div class="subgroup">
@@ -387,7 +388,12 @@
       </div>
 
       <div class="subgroup">
-        <h3 class="subsection-heading">Appliances &amp; Amenities</h3>
+        <div class="accordion" id="appliances-accordion">
+          <button class="gallery-toggle" id="appliances-toggle" aria-expanded="false" aria-controls="appliances-collapse">
+            <span class="acc-label">Appliances &amp; Amenities</span>
+            <span class="gallery-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="gallery-collapse" id="appliances-collapse">
         <ul class="prop-list">
           <li class="prop-item"><div class="prop-label">Air Conditioning</div><div class="prop-value" data-key="ac_info"></div></li>
           <li class="prop-item"><div class="prop-label">Heating</div><div class="prop-value" data-key="heating_info"></div></li>
@@ -404,6 +410,8 @@
             <a class="place-link" href="/clients/luzbeachhouse/assets/recycling-info.pdf" target="_blank" rel="noopener">See the recycling poster (PDF)</a>
           </li>
         </ul>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -425,8 +433,7 @@
       <div class="accordion" data-accordion-list="getting_around" data-accordion-label="Getting Around" style="margin-top:14px;"></div>
 
       <div class="subgroup">
-        <h3 class="subsection-heading">Supermarkets</h3>
-        <div data-list="supermarkets"></div>
+        <div class="accordion" data-accordion-list="supermarkets" data-accordion-label="Supermarkets"></div>
       </div>
 
       <div class="subgroup">
@@ -1034,6 +1041,8 @@
     }
     wireAccordion('welcome-toggle', 'welcome-collapse');
     wireAccordion('postal-toggle', 'postal-collapse');
+    wireAccordion('included-toggle', 'included-collapse');
+    wireAccordion('appliances-toggle', 'appliances-collapse');
 
     // Deliveries: tap-to-copy address with a brief confirmation.
     (function wireCopyAddress() {
