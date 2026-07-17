@@ -147,8 +147,8 @@
     a.contact-card { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 13px 16px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; text-decoration: none; transition: background 0.15s; }
     a.contact-card:last-child { margin-bottom: 0; }
     a.contact-card:hover { background: #edf6fb; }
-    .contact-name { font-size: 14px; font-weight: 600; color: var(--navy); }
-    .contact-num { font-size: 14px; font-weight: 600; color: var(--primary); }
+    .contact-name { font-size: 14px; font-weight: 600; color: var(--navy); flex: 1; min-width: 0; line-height: 1.4; }
+    .contact-num { font-size: 14px; font-weight: 600; color: var(--primary); white-space: nowrap; flex-shrink: 0; }
 
     .manager-area { padding: 44px 20px 24px; text-align: center; }
     .manager-area a { font-size: 11px; color: var(--border); text-decoration: none; letter-spacing: 0.05em; }
