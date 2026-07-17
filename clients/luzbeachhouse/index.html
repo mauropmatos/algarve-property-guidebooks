@@ -253,7 +253,7 @@
 
   <header class="hero">
     <img src="/clients/luzbeachhouse/assets/images/hero.jpg" alt="Luz Beach House — pool and terrace" class="hero-img">
-    <p class="hero-eyebrow">Welcome to</p>
+    <p class="hero-eyebrow">Your Guide To</p>
     <h1 class="hero-title">Luz Beach House</h1>
     <p class="hero-location">Praia da Luz, Algarve</p>
   </header>
@@ -290,10 +290,8 @@
 
     <section class="section" id="quick-info">
       <h2 class="section-heading">Quick Info</h2>
-      <div class="card">
-        <div class="card-label">Where You're Going</div>
-        <div class="card-value" data-key="address"></div>
-        <a class="body-link" id="location-map-link" target="_blank" rel="noopener" style="margin-top:8px;"></a>
+      <div class="card" id="location-card" style="text-align:center; display:none;">
+        <a class="body-link" id="location-map-link" target="_blank" rel="noopener"></a>
       </div>
       <div class="card-grid">
         <div class="card">
@@ -923,12 +921,12 @@
       }
     }
 
-    // Location card: build the "Open in Maps" link from the gps field (a full
-    // Google Maps URL). The link hides when gps is empty; the card itself hides
-    // via its address data-key when the address is blank.
+    // Location card: a single centered "Open in Maps" link built from the gps
+    // field (a full Google Maps URL). The whole card hides when gps is empty.
     function renderLocationMap(data) {
       const link = document.getElementById('location-map-link');
-      if (!link) return;
+      const card = document.getElementById('location-card');
+      if (!link || !card) return;
       const raw = (data['gps'] || '').trim();
       const m = raw.match(/https?:\/\/[^\s]+/);
       const url = m ? m[0].replace(/[.,;:!?)\]]+$/, '') : '';
@@ -936,9 +934,9 @@
         link.href = url;
         link.innerHTML = PIN_SVG;
         link.appendChild(document.createTextNode(' Open in Maps'));
-        link.style.display = '';
+        card.style.display = '';
       } else {
-        link.style.display = 'none';
+        card.style.display = 'none';
       }
     }
 
