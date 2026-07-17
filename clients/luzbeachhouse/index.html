@@ -300,14 +300,12 @@
           <div class="card-label">Checkout</div>
           <div class="card-value" data-key="checkout_time"></div>
         </div>
-        <div class="card">
-          <div class="card-label">Wi-Fi Network</div>
-          <div class="card-value" data-key="wifi_name"></div>
-        </div>
-        <div class="card">
-          <div class="card-label">Wi-Fi Password</div>
-          <div class="card-value" data-key="wifi_password"></div>
-        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">Wi-Fi Network</div>
+        <div class="card-value" data-key="wifi_name"></div>
+        <div class="card-label" style="margin-top:10px;">Password</div>
+        <div class="card-value" data-key="wifi_password"></div>
       </div>
       <div class="card">
         <div class="card-label">Parking</div>
@@ -548,8 +546,14 @@
     // element itself) when the value is empty instead of showing a placeholder.
     function setFieldVisible(el, visible) {
       const box = el.closest('.card, .prop-item, .info-item');
-      const target = (box && box.querySelectorAll('[data-key]').length === 1) ? box : el;
-      target.style.display = visible ? '' : 'none';
+      const single = box && box.querySelectorAll('[data-key]').length === 1;
+      (single ? box : el).style.display = visible ? '' : 'none';
+      // Multi-key cards hide each value on its own; hide its paired label too so
+      // an empty field doesn't leave an orphaned label.
+      if (box && !single) {
+        const label = el.previousElementSibling;
+        if (label && label.classList.contains('card-label')) label.style.display = visible ? '' : 'none';
+      }
     }
 
     function injectData(data) {
