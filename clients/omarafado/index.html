@@ -346,9 +346,9 @@
             <div class="card-value" data-key="checkout_time"></div>
           </div>
         </div>
-        <div class="card">
+        <div class="card" id="wifi-card">
           <div class="card-label">Wi-Fi Network / Password</div>
-          <div class="card-value"><span data-key="wifi_name"></span> &nbsp;/&nbsp; <span data-key="wifi_password"></span></div>
+          <div class="card-value"><span data-key="wifi_name"></span><span class="wifi-sep">&nbsp;/&nbsp;</span><span data-key="wifi_password"></span></div>
         </div>
         <div class="accordion" data-accordion-text="parking" data-accordion-label="Parking"></div>
         <div class="card">
@@ -580,8 +580,14 @@
     // otherwise hide just the element. Show it again when it has a value.
     function setFieldVisible(el, visible) {
       const box = el.closest('.card, .prop-item, .info-item');
-      const target = (box && box.querySelectorAll('[data-key]').length === 1) ? box : el;
-      target.style.display = visible ? '' : 'none';
+      const single = box && box.querySelectorAll('[data-key]').length === 1;
+      (single ? box : el).style.display = visible ? '' : 'none';
+      // Multi-key cards hide each value on its own; hide its paired label too so
+      // an empty field doesn't leave an orphaned label.
+      if (box && !single) {
+        const label = el.previousElementSibling;
+        if (label && label.classList.contains('card-label')) label.style.display = visible ? '' : 'none';
+      }
     }
 
     function injectData(data) {
@@ -613,6 +619,19 @@
       } else {
         el.style.display = 'none';
       }
+    }
+
+    // Combined Wi-Fi row: the " / " separator only makes sense with both values
+    // present, so hide it when either is blank; hide the whole card (label
+    // included) when both are blank. injectData hides the individual spans.
+    function renderWifi(data) {
+      const card = document.getElementById('wifi-card');
+      if (!card) return;
+      const name = (data['wifi_name'] || '').trim();
+      const pass = (data['wifi_password'] || '').trim();
+      const sep = card.querySelector('.wifi-sep');
+      if (sep) sep.style.display = (name && pass) ? '' : 'none';
+      card.style.display = (name || pass) ? '' : 'none';
     }
 
     // restaurants / beaches / activities: " | "-separated items → place cards.
@@ -864,6 +883,10 @@
           const num = extractPhone(item);
           let name = item;
           if (num) name = item.replace(num, '').replace(/[:\-–—]\s*$/, '').replace(/\s{2,}/g, ' ').trim();
+          // When the number came first ("112 (general emergency)") the leftover
+          // name is a wrapping parenthetical — unwrap it so the phone stays the number.
+          const unwrapped = name.replace(/^\((.*)\)$/, '$1').trim();
+          if (unwrapped !== name) name = unwrapped.charAt(0).toUpperCase() + unwrapped.slice(1);
           addCard(name || item, num);
         });
       };
@@ -988,6 +1011,7 @@
       renderWelcome(data);
       renderPostal(data);
       renderAddress(data);
+      renderWifi(data);
       renderSteps(data);
       renderLists(data);
       renderAccordions(data);
