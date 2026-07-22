@@ -294,9 +294,9 @@
   </div>
 
   <header class="hero">
-    <!-- Hero photo removed until O Marafado photos arrive; hero falls back to the
-         solid navy .hero background. Re-enable when photos arrive:
-    <img src="/clients/omarafado/assets/images/hero.jpg" alt="O Marafado" class="hero-img"> -->
+    <!-- If hero.jpg is missing/fails to load, onerror hides the <img> and the hero
+         falls back to the solid navy .hero background + gradient overlay. -->
+    <img src="/clients/omarafado/assets/images/hero.jpg" alt="O Marafado" class="hero-img" onerror="this.style.display='none'">
     <h1 class="hero-title" data-key="property_name">O Marafado</h1>
     <p class="hero-location">Lagos, Algarve</p>
   </header>
