@@ -426,9 +426,6 @@
         <div class="accordion" data-accordion-text="washing_machine" data-accordion-label="Washing Machine" style="margin-top:10px;"></div>
       </div>
 
-      <!-- Photos subgroup hidden until O Marafado photos arrive. This is a subsection
-           of "The House" (not a standalone nav tab), so nothing in .tab-nav changes.
-           Re-enable the whole block below when O Marafado photos arrive.
       <div class="subgroup">
         <h3 class="subsection-heading">Photos</h3>
         <button class="gallery-toggle" id="gallery-toggle" aria-expanded="false" aria-controls="gallery-collapse">
@@ -437,22 +434,18 @@
         </button>
         <div class="gallery-collapse" id="gallery-collapse">
           <div class="gallery-grid">
-            <a class="gallery-item" href="/clients/omarafado/assets/images/exterior.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/exterior.jpg" alt="O Marafado — Exterior, front door" loading="lazy"></a>
-            <a class="gallery-item" href="/clients/omarafado/assets/images/living-room.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/living-room.jpg" alt="O Marafado — Living room" loading="lazy"></a>
-            <a class="gallery-item" href="/clients/omarafado/assets/images/living-room-2.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/living-room-2.jpg" alt="O Marafado — Living room" loading="lazy"></a>
-            <a class="gallery-item" href="/clients/omarafado/assets/images/kitchen.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/kitchen.jpg" alt="O Marafado — Kitchen" loading="lazy"></a>
-            <a class="gallery-item" href="/clients/omarafado/assets/images/dining.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/dining.jpg" alt="O Marafado — Dining area" loading="lazy"></a>
-            <a class="gallery-item" href="/clients/omarafado/assets/images/dining-2.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/dining-2.jpg" alt="O Marafado — Dining area" loading="lazy"></a>
-            <a class="gallery-item" href="/clients/omarafado/assets/images/kitchen-detail.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/kitchen-detail.jpg" alt="O Marafado — Kitchen detail" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/omarafado/assets/images/terrace.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/terrace.jpg" alt="O Marafado — Covered terrace" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/omarafado/assets/images/exterior.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/exterior.jpg" alt="O Marafado — Exterior and garden" loading="lazy"></a>
             <a class="gallery-item" href="/clients/omarafado/assets/images/bedroom.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/bedroom.jpg" alt="O Marafado — Bedroom" loading="lazy"></a>
-            <a class="gallery-item" href="/clients/omarafado/assets/images/bedroom-storage.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/bedroom-storage.jpg" alt="O Marafado — Bedroom storage" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/omarafado/assets/images/bedroom-storage.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/bedroom-storage.jpg" alt="O Marafado — Bedroom storage detail" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/omarafado/assets/images/kitchen.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/kitchen.jpg" alt="O Marafado — Kitchenette" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/omarafado/assets/images/dining.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/dining.jpg" alt="O Marafado — Dining area" loading="lazy"></a>
             <a class="gallery-item" href="/clients/omarafado/assets/images/bathroom.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/bathroom.jpg" alt="O Marafado — Bathroom" loading="lazy"></a>
-            <a class="gallery-item" href="/clients/omarafado/assets/images/bathroom-2.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/bathroom-2.jpg" alt="O Marafado — Bathroom" loading="lazy"></a>
-            <a class="gallery-item" href="/clients/omarafado/assets/images/shower.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/shower.jpg" alt="O Marafado — Shower" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/omarafado/assets/images/dogs.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/dogs.jpg" alt="O Marafado — Resident dogs" loading="lazy"></a>
+            <a class="gallery-item" href="/clients/omarafado/assets/images/pigs.jpg" target="_blank" rel="noopener"><img src="/clients/omarafado/assets/images/pigs.jpg" alt="O Marafado — Resident pigs" loading="lazy"></a>
           </div>
         </div>
       </div>
-      -->
     </section>
 
     <section class="section" id="explore">
@@ -1066,7 +1059,7 @@
         toggle.setAttribute('aria-expanded', String(open));
       });
     }
-    // wireAccordion('gallery-toggle', 'gallery-collapse'); // re-enable when O Marafado photos arrive
+    wireAccordion('gallery-toggle', 'gallery-collapse');
     wireAccordion('postal-toggle', 'postal-collapse');
     wireAccordion('welcome-toggle', 'welcome-collapse');
     wireAccordion('checkin-toggle', 'checkin-collapse');
