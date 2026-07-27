@@ -102,7 +102,7 @@
     .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
     .card:last-child { margin-bottom: 0; }
     .card-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 5px; }
-    .card-value { font-size: 15px; font-weight: 600; color: var(--navy); }
+    .card-value { font-size: 15px; font-weight: 400; color: var(--navy); }
     .card-value.long { font-size: 14px; font-weight: 400; line-height: 1.7; color: var(--text); }
     .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
     .card-grid .card { margin-bottom: 0; }
@@ -119,13 +119,13 @@
     .prop-item { padding: 13px 0; border-bottom: 1px solid var(--border); }
     .prop-item:last-child { border-bottom: none; }
     .prop-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 4px; }
-    .prop-value { font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.5; }
+    .prop-value { font-size: 14px; font-weight: 400; color: var(--navy); line-height: 1.5; }
 
     .info-list { list-style: none; }
     .info-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--border); }
     .info-item:last-child { border-bottom: none; }
     .info-label { font-size: 14px; font-weight: 400; color: var(--grey); flex-shrink: 0; }
-    .info-value { font-size: 14px; font-weight: 600; color: var(--navy); text-align: right; }
+    .info-value { font-size: 14px; font-weight: 400; color: var(--navy); text-align: right; }
 
     .place-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
     .place-card:last-child { margin-bottom: 0; }
@@ -193,7 +193,7 @@
     .gallery-collapse.open { max-height: 3000px; }
     .acc-summary { display: flex; flex-direction: column; gap: 4px; text-align: left; flex: 1; min-width: 0; }
     .acc-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); }
-    .acc-preview { font-size: 14px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .acc-preview { font-size: 14px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .gallery-toggle.open .acc-preview { display: none; }
 
     /* What's Included */
@@ -400,14 +400,6 @@
       </div>
 
       <div class="subgroup">
-        <h3 class="subsection-heading">Kitchen</h3>
-        <div class="card">
-          <div class="card-label">Kitchen</div>
-          <div class="card-value long" data-key="kitchen_info"></div>
-        </div>
-      </div>
-
-      <div class="subgroup">
         <div class="accordion" id="appliances-accordion">
           <button class="gallery-toggle" id="appliances-toggle" aria-expanded="false" aria-controls="appliances-collapse">
             <span class="acc-label">Appliances &amp; Amenities</span>
@@ -424,6 +416,8 @@
           <li class="prop-item"><div class="prop-label">Hot Water</div><div class="prop-value" data-key="hot_water"></div></li>
           <li class="prop-item"><div class="prop-label">TV</div><div class="prop-value" data-key="tv_info"></div></li>
           <li class="prop-item"><div class="prop-label">Fuse Box</div><div class="prop-value" data-key="fuse_box"></div></li>
+          <li class="prop-item"><div class="prop-label">Electric Shutters</div><div class="prop-value" data-key="electric_shutters"></div></li>
+          <li class="prop-item"><div class="prop-label">Alarm</div><div class="prop-value" data-key="alarm"></div></li>
           <li class="prop-item">
             <div class="prop-label">Bins</div>
             <div class="prop-value" data-key="bins_location"></div>
@@ -449,6 +443,10 @@
         <li class="info-item"><span class="info-label">Tap water</span><span class="info-value" data-key="tap_water"></span></li>
         <li class="info-item"><span class="info-label">Town centre</span><span class="info-value" data-key="distance_centre"></span></li>
       </ul>
+      <div class="card" id="atm-card" style="margin-top:14px;">
+        <div class="card-label">ATMs</div>
+        <div class="card-value long" data-key="atm_info"></div>
+      </div>
       <!-- Sheet-driven: getting_around ( " | "-separated -> place cards in an accordion ) -->
       <div class="accordion" data-accordion-list="getting_around" data-accordion-label="Getting Around" style="margin-top:14px;"></div>
 
@@ -457,8 +455,7 @@
       </div>
 
       <div class="subgroup">
-        <h3 class="subsection-heading">Pharmacy / ATM</h3>
-        <div data-list="pharmacy_atm"></div>
+        <div class="accordion" data-accordion-list="pharmacy_atm" data-accordion-label="Pharmacies"></div>
       </div>
 
       <div class="subgroup">
