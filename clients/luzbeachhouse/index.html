@@ -165,6 +165,7 @@
     .gallery-item { display: block; border-radius: 10px; overflow: hidden; aspect-ratio: 4 / 3; background: var(--card); }
     .gallery-item:first-child { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
     .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gallery-collapse .gallery-grid { margin-top: 10px; }
 
     /* Tappable checkout checklist */
     .checklist-item { cursor: pointer; }
@@ -327,6 +328,7 @@
         <ul class="info-list">
           <li class="info-item"><span class="info-label">Network</span><span class="info-value" data-key="wifi_name"></span></li>
           <li class="info-item"><span class="info-label">Password</span><span class="info-value" data-key="wifi_password"></span></li>
+          <li class="info-item"><span class="info-label">Router</span><span class="info-value" data-key="router_location"></span></li>
         </ul>
       </div>
       <div class="card">
@@ -355,12 +357,18 @@
 
     <section class="section" id="photos">
       <h2 class="section-heading">Photos</h2>
-      <div class="gallery-grid">
-        <a class="gallery-item" href="/clients/luzbeachhouse/assets/images/hero.jpg" target="_blank" rel="noopener"><img src="/clients/luzbeachhouse/assets/images/hero.jpg" alt="Luz Beach House — pool and terrace" loading="lazy"></a>
-        <a class="gallery-item" href="/clients/luzbeachhouse/assets/images/terrace.jpg" target="_blank" rel="noopener"><img src="/clients/luzbeachhouse/assets/images/terrace.jpg" alt="Luz Beach House — sea-view terrace" loading="lazy"></a>
-        <a class="gallery-item" href="/clients/luzbeachhouse/assets/images/living-room.jpg" target="_blank" rel="noopener"><img src="/clients/luzbeachhouse/assets/images/living-room.jpg" alt="Luz Beach House — living room" loading="lazy"></a>
-        <a class="gallery-item" href="/clients/luzbeachhouse/assets/images/dining.jpg" target="_blank" rel="noopener"><img src="/clients/luzbeachhouse/assets/images/dining.jpg" alt="Luz Beach House — dining area" loading="lazy"></a>
-        <a class="gallery-item" href="/clients/luzbeachhouse/assets/images/bedroom.jpg" target="_blank" rel="noopener"><img src="/clients/luzbeachhouse/assets/images/bedroom.jpg" alt="Luz Beach House — bedroom" loading="lazy"></a>
+      <button class="gallery-toggle" id="gallery-toggle" aria-expanded="false" aria-controls="gallery-collapse">
+        <span>View photos</span>
+        <span class="gallery-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </button>
+      <div class="gallery-collapse" id="gallery-collapse">
+        <div class="gallery-grid">
+          <a class="gallery-item" href="/clients/luzbeachhouse/assets/images/hero.jpg" target="_blank" rel="noopener"><img src="/clients/luzbeachhouse/assets/images/hero.jpg" alt="Luz Beach House — pool and terrace" loading="lazy"></a>
+          <a class="gallery-item" href="/clients/luzbeachhouse/assets/images/terrace.jpg" target="_blank" rel="noopener"><img src="/clients/luzbeachhouse/assets/images/terrace.jpg" alt="Luz Beach House — sea-view terrace" loading="lazy"></a>
+          <a class="gallery-item" href="/clients/luzbeachhouse/assets/images/living-room.jpg" target="_blank" rel="noopener"><img src="/clients/luzbeachhouse/assets/images/living-room.jpg" alt="Luz Beach House — living room" loading="lazy"></a>
+          <a class="gallery-item" href="/clients/luzbeachhouse/assets/images/dining.jpg" target="_blank" rel="noopener"><img src="/clients/luzbeachhouse/assets/images/dining.jpg" alt="Luz Beach House — dining area" loading="lazy"></a>
+          <a class="gallery-item" href="/clients/luzbeachhouse/assets/images/bedroom.jpg" target="_blank" rel="noopener"><img src="/clients/luzbeachhouse/assets/images/bedroom.jpg" alt="Luz Beach House — bedroom" loading="lazy"></a>
+        </div>
       </div>
     </section>
 
@@ -385,6 +393,11 @@
 
     <section class="section" id="property">
       <h2 class="section-heading">Property</h2>
+
+      <div class="card" style="margin-bottom:18px;">
+        <div class="card-label">Bedrooms &amp; Capacity</div>
+        <div class="card-value" data-key="bedrooms_capacity"></div>
+      </div>
 
       <div class="subgroup">
         <!-- Sheet-driven: included_items (comma-separated) -->
@@ -426,6 +439,16 @@
         </ul>
           </div>
         </div>
+      </div>
+
+      <!-- Sheet-driven: staff_housekeeper / staff_pool / staff_gardener. Each
+           accordion hides itself when its key is empty; renderStaff() hides the
+           whole subgroup when all three are empty. -->
+      <div class="subgroup" id="staff-group">
+        <h3 class="subsection-heading">House Staff</h3>
+        <div class="accordion" data-accordion-text="staff_housekeeper" data-accordion-label="Housekeeper"></div>
+        <div class="accordion" data-accordion-text="staff_pool" data-accordion-label="Pool Maintenance"></div>
+        <div class="accordion" data-accordion-text="staff_gardener" data-accordion-label="Gardener"></div>
       </div>
     </section>
 
@@ -887,6 +910,16 @@
       });
     }
 
+    // House Staff: the three accordions hide themselves via renderAccordions when
+    // their key is empty; this hides the heading and subgroup when none is filled.
+    const STAFF_KEYS = ['staff_housekeeper', 'staff_pool', 'staff_gardener'];
+    function renderStaff(data) {
+      const group = document.getElementById('staff-group');
+      if (!group) return;
+      const any = STAFF_KEYS.some(k => (data[k] || '').trim());
+      group.style.display = any ? '' : 'none';
+    }
+
     // welcome_note: " | "-separated segments in order. Segments starting with "- "
     // group into a bullet schedule; others become paragraphs.
     function renderWelcome(data) {
@@ -967,6 +1000,7 @@
       renderPostal(data);
       renderSteps(data);
       renderAccordions(data);
+      renderStaff(data);
       renderLists(data);
       renderCommaList('data-inclusion', 'inclusion-item', '<span class="inclusion-check">&#10003;</span>', data);
       renderCommaList('data-rulelist', 'rule-item', '<span class="rule-dot"></span>', data);
@@ -1090,6 +1124,7 @@
     wireAccordion('postal-toggle', 'postal-collapse');
     wireAccordion('included-toggle', 'included-collapse');
     wireAccordion('appliances-toggle', 'appliances-collapse');
+    wireAccordion('gallery-toggle', 'gallery-collapse');
 
     // Deliveries: tap-to-copy address with a brief confirmation.
     (function wireCopyAddress() {
