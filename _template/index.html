@@ -18,6 +18,12 @@
       --border:  #E8EAEC;
       --grey:    #9BA3AB;
       --text:    #2D2D3A;
+      /* Text-only variants of --grey and --primary. The brand tokens above sit
+         at 2.4-2.9:1 on our backgrounds, which fails WCAG AA for text, so any
+         TEXT that wants brand grey or brand blue uses these instead. --grey and
+         --primary stay untouched for fills, borders, icons and the tab rule. */
+      --label:   #646E79;
+      --link:    #0C7099;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -97,19 +103,19 @@
       font-weight: 700;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--primary);
+      color: var(--link);
       margin-bottom: 18px;
     }
 
     .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
     .card:last-child { margin-bottom: 0; }
-    .card-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 5px; }
+    .card-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--label); margin-bottom: 5px; }
     .card-value { font-size: 15px; font-weight: 500; color: var(--navy); }
     .card-value.long { font-size: 14px; font-weight: 500; line-height: 1.7; color: var(--text); }
     .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
     .card-grid .card { margin-bottom: 0; }
 
-    .empty { color: var(--grey) !important; font-style: italic; font-weight: 400 !important; }
+    .empty { color: var(--label) !important; font-style: italic; font-weight: 400 !important; }
 
     .step-list { list-style: none; }
     .step-item { display: flex; gap: 14px; align-items: flex-start; padding: 13px 0; border-bottom: 1px solid var(--border); }
@@ -120,22 +126,22 @@
     .prop-list { list-style: none; }
     .prop-item { padding: 13px 0; border-bottom: 1px solid var(--border); }
     .prop-item:last-child { border-bottom: none; }
-    .prop-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 4px; }
+    .prop-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--label); margin-bottom: 4px; }
     .prop-value { font-size: 14px; font-weight: 500; color: var(--navy); line-height: 1.5; }
 
     .info-list { list-style: none; }
     .info-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--border); }
     .info-item:last-child { border-bottom: none; }
-    .info-label { font-size: 14px; font-weight: 400; color: var(--grey); flex-shrink: 0; }
+    .info-label { font-size: 14px; font-weight: 400; color: var(--label); flex-shrink: 0; }
     .info-value { font-size: 14px; font-weight: 500; color: var(--navy); text-align: right; }
 
     .place-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
     .place-card:last-child { margin-bottom: 0; }
     .place-name { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
     .place-desc { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.55; }
-    .place-link { display: inline-block; margin-top: 9px; font-size: 12px; font-weight: 700; color: var(--primary); text-decoration: none; letter-spacing: 0.03em; }
+    .place-link { display: inline-block; margin-top: 9px; font-size: 12px; font-weight: 700; color: var(--link); text-decoration: none; letter-spacing: 0.03em; }
     .place-link:hover { text-decoration: underline; }
-    .place-pin { display: inline-flex; align-items: center; gap: 4px; margin-top: 9px; font-size: 12px; font-weight: 700; color: var(--primary); text-decoration: none; letter-spacing: 0.03em; }
+    .place-pin { display: inline-flex; align-items: center; gap: 4px; margin-top: 9px; font-size: 12px; font-weight: 700; color: var(--link); text-decoration: none; letter-spacing: 0.03em; }
     .place-pin:hover { text-decoration: underline; }
     .place-pin svg { flex-shrink: 0; }
 
@@ -153,7 +159,7 @@
     a.contact-card:last-child { margin-bottom: 0; }
     a.contact-card:hover { background: #edf6fb; }
     .contact-name { font-size: 14px; font-weight: 600; color: var(--navy); flex: 1; min-width: 0; line-height: 1.4; }
-    .contact-num { font-size: 14px; font-weight: 600; color: var(--primary); white-space: nowrap; flex-shrink: 0; }
+    .contact-num { font-size: 14px; font-weight: 600; color: var(--link); white-space: nowrap; flex-shrink: 0; }
 
     /* Hero photo + legibility overlay */
     .hero { position: relative; overflow: hidden; }
@@ -178,23 +184,23 @@
 
     /* Help contacts */
     .help-availability { font-size: 14px; font-weight: 400; line-height: 1.55; color: var(--text); background: #EDF6FB; border-left: 3px solid var(--primary); border-radius: 8px; padding: 12px 14px; margin-bottom: 14px; }
-    .contact-role { color: var(--grey); font-weight: 500; }
+    .contact-role { color: var(--label); font-weight: 500; }
 
     /* Subgroups within a section */
     .subgroup + .subgroup { margin-top: 24px; }
-    .subsection-heading { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--grey); margin-bottom: 14px; }
+    .subsection-heading { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--label); margin-bottom: 14px; }
 
     /* Accordions */
     .accordion { margin-bottom: 10px; }
     .accordion:last-child { margin-bottom: 0; }
-    .gallery-toggle { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 13px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); transition: border-color 0.15s ease; }
+    .gallery-toggle { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 13px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--label); transition: border-color 0.15s ease; }
     .gallery-toggle:hover { border-color: var(--primary); }
     .gallery-chevron { color: var(--primary); display: flex; align-items: center; transition: transform 0.25s ease; }
     .gallery-toggle.open .gallery-chevron { transform: rotate(180deg); }
     .gallery-collapse { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
     .gallery-collapse.open { max-height: 3000px; }
     .acc-summary { display: flex; flex-direction: column; gap: 4px; text-align: left; flex: 1; min-width: 0; }
-    .acc-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); }
+    .acc-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--label); }
     .acc-preview { font-size: 14px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .gallery-toggle.open .acc-preview { display: none; }
 
@@ -202,7 +208,7 @@
     .inclusion-list { list-style: none; }
     .inclusion-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; font-weight: 400; color: var(--text); line-height: 1.5; }
     .inclusion-item:last-child { border-bottom: none; }
-    .inclusion-check { flex-shrink: 0; color: var(--primary); font-size: 14px; font-weight: 700; margin-top: 1px; }
+    .inclusion-check { flex-shrink: 0; color: var(--link); font-size: 14px; font-weight: 700; margin-top: 1px; }
 
     /* Welcome note body */
     .welcome-body { padding: 2px 16px 16px; }
@@ -214,7 +220,7 @@
 
     /* Accordion / deliveries body text */
     .postal-body { padding: 2px 16px 14px; font-size: 14px; font-weight: 500; line-height: 1.6; color: var(--text); }
-    .body-link { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; color: var(--primary); font-weight: 600; text-decoration: none; white-space: nowrap; }
+    .body-link { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; color: var(--link); font-weight: 600; text-decoration: none; white-space: nowrap; }
     .body-link:hover { text-decoration: underline; }
     .body-link svg { flex-shrink: 0; }
 
@@ -241,7 +247,7 @@
       text-decoration: none;
     }
     .footer-logo { width: 176px; max-width: 62%; height: auto; display: block; }
-    .footer-sub { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey); }
+    .footer-sub { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--label); }
 
     .whatsapp-fab {
       position: fixed;
@@ -415,7 +421,7 @@
       <!-- Sheet-driven: address + gps -> tap-to-open Maps card -->
       <a class="card" id="address-link" href="#" target="_blank" rel="noopener" style="display:none;text-decoration:none;">
         <div class="card-label">Address &middot; Tap to Open in Maps</div>
-        <div class="card-value" id="address-text" style="color:var(--primary);"></div>
+        <div class="card-value" id="address-text" style="color:var(--link);"></div>
       </a>
       <div class="card"><div class="card-label">Keys</div><div class="card-value" data-key="keys_info"></div></div>
       <div class="card"><div class="card-label">Keysafe Location</div><div class="card-value" data-key="keysafe_location"></div></div>
