@@ -239,15 +239,24 @@
       text-align: center;
       padding: 30px 20px 34px;
     }
+    /* Wordmark ported from guestpage-landing .nav-wordmark / .nav-wordmark-text /
+       .nav-wordmark-sub. Two deliberate deviations from that source: centred
+       rather than left-aligned, because this sits in a centred footer and not a
+       nav bar; and the sub uses --label, since the landing's --grey is 2.55:1 on
+       white and would undo the AA fix in 04ed31a. The wordmark itself keeps brand
+       blue — WCAG exempts text that is part of a logo or brand name. */
     .footer-link {
-      display: flex;
+      text-decoration: none;
+      display: inline-flex;
       flex-direction: column;
       align-items: center;
-      gap: 9px;
-      text-decoration: none;
+      line-height: 1;
+      gap: 4px;
     }
-    .footer-logo { width: 176px; max-width: 62%; height: auto; display: block; }
-    .footer-sub { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--label); }
+    .footer-wordmark { font-size: 22px; line-height: 1; }
+    .footer-wordmark .wm-guest { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; color: var(--navy); }
+    .footer-wordmark .wm-page  { font-family: Georgia, 'Times New Roman', serif; font-weight: 700; color: var(--primary); }
+    .footer-sub { font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 400; letter-spacing: 4px; text-transform: uppercase; color: var(--label); }
 
     .whatsapp-fab {
       position: fixed;
@@ -267,6 +276,13 @@
     }
     .whatsapp-fab:hover { transform: scale(1.07); }
     .whatsapp-fab:active { transform: scale(0.95); }
+
+    /* The only media query in this file. Ported from guestpage-landing so the
+       footer wordmark is 18px on a phone and 22px above it, exactly as the
+       landing header behaves at the same widths. */
+    @media (max-width: 480px) {
+      .footer-wordmark { font-size: 18px; }
+    }
   </style>
 </head>
 <body>
@@ -642,8 +658,10 @@
 
   <footer class="site-footer">
     <a class="footer-link" href="https://guestpagealgarve.com" target="_blank" rel="noopener" aria-label="GuestPage — Algarve, Portugal">
-      <!-- REPLACE path only; the wordmark itself is the same file for every client. -->
-      <img src="/clients/cantinhodapraia/assets/images/wordmark-mark.png" alt="GuestPage" class="footer-logo" onerror="this.style.display='none'">
+      <!-- Text wordmark, markup lifted from guestpage-landing .nav-wordmark so the
+           client footer and the landing header render the same lockup. No image,
+           so nothing to swap per client and nothing to scale badly. -->
+      <span class="footer-wordmark"><span class="wm-guest">guest</span><span class="wm-page">page</span></span>
       <span class="footer-sub">Algarve &middot; Portugal</span>
     </a>
   </footer>
