@@ -37,8 +37,8 @@ const NEW_KEYS = [
   'access_floor', 'shutters_windows', 'gas_info', 'plumbing_info', 'pests_info',
   'long_stay_cleaning', 'smoking_areas', 'manuals_location', 'ev_charging',
   'gate_info', 'wood_burner', 'bbq_info', 'bathroom_info', 'security_info',
-  'security_light', 'fire_safety', 'sun_products', 'fruit_trees', 'breakages',
-  'al_licence',
+  'security_light', 'fire_safety', 'outdoor_space', 'sun_products', 'fruit_trees',
+  'breakages', 'al_licence',
 ];
 
 const csvEscape = v => '"' + String(v).replace(/"/g, '""') + '"';
@@ -229,7 +229,7 @@ console.log(`Template reads ${ALL_KEYS.length} sheet keys.\n`);
 
 /* --- 4. Each new key alone, everything else blank ----------------------- */
 {
-  console.log('4. Each new key alone (20 renders)');
+  console.log(`4. Each new key alone (${NEW_KEYS.length} renders)`);
   let bad = [];
   for (const key of NEW_KEYS) {
     const one = Object.fromEntries(ALL_KEYS.map(k => [k, k === key ? sampleValue(k) : '']));
