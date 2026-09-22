@@ -162,6 +162,62 @@
     .search-target { animation: search-flash 1.6s ease-out 1; }
     @keyframes search-flash { 0% { background-color: #EDF6FB; } 100% { background-color: transparent; } }
 
+
+    /* ---- Getting Here: reuses cards + accordions. Only the distance strip is new. ---- */
+    .route-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .route-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+    .route-from { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--label); margin-bottom: 4px; }
+    .route-value { font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.45; }
+
+    /* Tap-to-copy value (Wi-Fi password): the value is the button. */
+    .info-copy { cursor: pointer; border-bottom: 1px dashed var(--border); }
+    .info-copy.copied { color: #3E7D53; }
+    .info-copy-hint { display: block; font-size: 10px; font-weight: 400; color: var(--label); margin-top: 2px; }
+    /* Host row in Essentials: reuses the Help contact card. */
+    #host-row a.contact-card { margin-bottom: 10px; }
+    #host-row .contact-num { font-size: 13px; }
+
+    /* ---- Tips Library (shared sheet). Category accordions, one row per tip. ---- */
+    .tips-note { font-size: 13px; line-height: 1.5; color: var(--label); margin: -8px 0 14px; }
+    .tip-row { width: 100%; background: none; border: none; border-top: 1px solid var(--border); padding: 11px 16px; text-align: left; cursor: pointer; font-family: 'Montserrat', sans-serif; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .tip-row:first-child { border-top: none; }
+    .tip-title { font-size: 14px; font-weight: 500; color: var(--navy); }
+    .tip-row .gallery-chevron svg { width: 14px; height: 14px; }
+    .tip-row.open .gallery-chevron { transform: rotate(180deg); }
+    .tip-answer { display: none; padding: 0 16px 14px; font-size: 14px; font-weight: 400; line-height: 1.6; color: var(--text); }
+    .tip-answer.open { display: block; }
+    .tip-answer .body-link { margin-top: 6px; }
+    /* Tips inside the search list: the row expands in place, nothing to jump to. */
+    .search-result.tip { position: relative; }
+    .search-result.tip .search-result-kicker { color: #3E7D53; }
+    .search-tip-answer { display: none; padding: 0 20px 14px; font-size: 14px; line-height: 1.6; color: var(--text); background: var(--bg); border-bottom: 1px solid var(--border); }
+    .search-tip-answer.open { display: block; }
+    .search-tips-note { font-size: 11px; color: var(--label); padding: 6px 20px 8px; line-height: 1.4; }
+
+    /* ---- Add a note: one quiet button on the hero, a bottom sheet to fill in. ---- */
+    .note-btn { position: relative; z-index: 2; align-self: flex-start; margin-top: 12px; display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.3); color: #fff; border-radius: 999px; padding: 6px 12px 6px 10px; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.03em; cursor: pointer; }
+    .note-btn:hover { background: rgba(255,255,255,0.2); }
+    .note-btn svg { flex-shrink: 0; }
+    .note-overlay { position: fixed; inset: 0; background: rgba(28,28,92,0.45); z-index: 500; display: none; align-items: flex-end; justify-content: center; }
+    .note-overlay.open { display: flex; }
+    .note-sheet { width: 100%; max-width: 560px; background: var(--bg); border-radius: 16px 16px 0 0; padding: 18px 20px calc(20px + env(safe-area-inset-bottom)); box-shadow: 0 -8px 30px rgba(0,0,0,0.18); max-height: 90vh; overflow-y: auto; }
+    .note-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .note-title { font-size: 15px; font-weight: 700; color: var(--navy); }
+    .note-sub { font-size: 13px; color: var(--label); line-height: 1.5; margin-bottom: 14px; }
+    .note-close { background: none; border: none; width: 32px; height: 32px; border-radius: 50%; color: var(--label); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .note-close:hover { background: var(--card); }
+    .note-field { margin-bottom: 12px; }
+    .note-label { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--label); margin-bottom: 6px; }
+    .note-select, .note-text { width: 100%; font-family: 'Montserrat', sans-serif; font-size: 16px; color: var(--navy); background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 11px 12px; outline: none; -webkit-appearance: none; appearance: none; }
+    .note-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231AA3DC' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+    .note-select:focus, .note-text:focus { border-color: var(--primary); }
+    .note-text { min-height: 96px; resize: vertical; line-height: 1.5; }
+    .note-actions { display: flex; gap: 10px; align-items: center; margin-top: 4px; }
+    .note-send { flex: 1; background: var(--navy); color: #fff; border: none; border-radius: 10px; padding: 13px 16px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
+    .note-send:disabled { opacity: 0.5; cursor: default; }
+    .note-done { text-align: center; padding: 18px 0 6px; font-size: 14px; color: var(--navy); font-weight: 600; line-height: 1.5; }
+    .search-empty-btn.tertiary { background: transparent; color: var(--link); border: 1px solid transparent; padding-left: 4px; }
+
     .main { padding-bottom: 60px; }
     .section { padding: 26px 20px 30px; border-bottom: 8px solid var(--card); }
     .section:last-child { border-bottom: none; }
@@ -376,6 +432,8 @@
     <!-- Both filled from the sheet by renderHero(); text below is the pre-load fallback. -->
     <h1 class="hero-title">Guest Information</h1>
     <p class="hero-location"></p>
+    <!-- Add a note. Hidden until NOTES_FORM is configured (see script). -->
+    <button class="note-btn" id="note-open" type="button" style="display:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add a note &middot; Deixar nota</button>
   </header>
 
   <nav class="tab-nav" aria-label="Page sections">
@@ -392,7 +450,7 @@
     </div>
     <div class="tab-scroll">
     <div class="tab-list">
-      <button class="tab-btn active" data-target="welcome">Welcome</button>
+      <button class="tab-btn active" data-target="quick-info">Welcome</button>
       <button class="tab-btn" data-target="arrival">Arrival</button>
       <button class="tab-btn" data-target="property">The House</button>
       <button class="tab-btn" data-target="local-info">Out &amp; About</button>
@@ -404,26 +462,9 @@
 
   <main class="main">
 
-    <!-- ============ WELCOME ============ -->
-    <section class="section" id="welcome">
-      <!-- Sheet-driven: welcome_note -->
-      <div class="accordion" id="welcome-accordion">
-        <button class="gallery-toggle" id="welcome-toggle" aria-expanded="false" aria-controls="welcome-collapse">
-          <span class="acc-summary">
-            <span class="acc-label">A Note from Your Host</span>
-            <span class="acc-preview" id="welcome-preview"></span>
-          </span>
-          <span class="gallery-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
-        </button>
-        <div class="gallery-collapse" id="welcome-collapse">
-          <div class="welcome-body" id="welcome-body"></div>
-        </div>
-      </div>
-    </section>
-
     <!-- ============ QUICK INFO ============ -->
     <section class="section" id="quick-info">
-      <h2 class="section-heading">Quick Info</h2>
+      <h2 class="section-heading">Essentials</h2>
 
       <!-- Sheet-driven: gps (a full Google Maps URL) -->
       <div class="card" id="location-card" style="text-align:center; display:none;">
@@ -447,31 +488,29 @@
         <div class="card-label">Wi-Fi</div>
         <ul class="info-list">
           <li class="info-item"><span class="info-label">Network</span><span class="info-value" data-key="wifi_name"></span></li>
-          <li class="info-item"><span class="info-label">Password</span><span class="info-value" data-key="wifi_password"></span></li>
+          <li class="info-item"><span class="info-label">Password</span><span class="info-value info-copy" data-key="wifi_password"></span></li>
           <li class="info-item"><span class="info-label">Router</span><span class="info-value" data-key="router_location"></span></li>
         </ul>
       </div>
 
-      <div class="accordion" data-accordion-text="parking" data-accordion-label="Parking"></div>
-      <div class="accordion" data-accordion-text="ev_charging" data-accordion-label="EV Charging"></div>
-      <div class="accordion" data-accordion-text="pool" data-accordion-label="Pool"></div>
-      <div class="accordion" data-accordion-text="flexibility" data-accordion-label="Check-in / Checkout Flexibility"></div>
+      <!-- Sheet-driven: contact_primary_name + contact_primary_phone (renderHostRow) -->
+      <div id="host-row"></div>
 
-      <!-- Sheet-driven: postal_info + delivery_address (falls back to address) -->
-      <div class="accordion" id="postal-row" style="display:none;">
-        <button class="gallery-toggle" id="postal-toggle" aria-expanded="false" aria-controls="postal-collapse">
-          <span class="acc-label">Deliveries &amp; mail</span>
+    </section>
+
+    <!-- ============ WELCOME ============ -->
+    <section class="section" id="welcome">
+      <!-- Sheet-driven: welcome_note -->
+      <div class="accordion" id="welcome-accordion">
+        <button class="gallery-toggle" id="welcome-toggle" aria-expanded="false" aria-controls="welcome-collapse">
+          <span class="acc-summary">
+            <span class="acc-label">A Note from Your Host</span>
+            <span class="acc-preview" id="welcome-preview"></span>
+          </span>
           <span class="gallery-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
         </button>
-        <div class="gallery-collapse" id="postal-collapse">
-          <div class="postal-body" id="postal-text"></div>
-          <div class="copy-block" id="copy-address-block" style="display:none;">
-            <span class="copy-address" id="copy-address-text"></span>
-            <button class="copy-btn" type="button" id="copy-address-btn">
-              <svg class="copy-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-              <span class="copy-btn-label">Copy address</span>
-            </button>
-          </div>
+        <div class="gallery-collapse" id="welcome-collapse">
+          <div class="welcome-body" id="welcome-body"></div>
         </div>
       </div>
     </section>
@@ -500,6 +539,33 @@
       </div>
     </section>
 
+    <!-- ============ GETTING HERE ============ -->
+    <!-- First thing a guest sees after booking: how to reach the property.
+         Sheet-driven: arrival_from_faro, arrival_from_lisbon (short strings),
+         arrival_transfers / arrival_car_hire / arrival_train_bus (" | " lists,
+         "Name — description — link"; put Uber/Bolt as an item in transfers),
+         arrival_notes (one visible line). Link guests here after booking with
+         #getting-here; the plain URL at check-in opens on the essentials.
+         Every piece hides when its key is blank; all blank = no section, no tab. -->
+    <section class="section" id="getting-here">
+      <h2 class="section-heading">Getting Here</h2>
+      <div class="route-strip">
+        <div class="card route-card">
+          <div class="route-from">From Faro Airport</div>
+          <div class="route-value" data-key="arrival_from_faro"></div>
+        </div>
+        <div class="card route-card">
+          <div class="route-from">From Lisbon</div>
+          <div class="route-value" data-key="arrival_from_lisbon"></div>
+        </div>
+      </div>
+      <!-- arrival_notes: one visible line, hidden when blank -->
+      <p class="help-availability" data-note="arrival_notes" style="display:none;"></p>
+      <div class="accordion" data-accordion-list="arrival_transfers" data-accordion-label="Transfers, Taxis &amp; Ride Apps"></div>
+      <div class="accordion" data-accordion-list="arrival_car_hire" data-accordion-label="Car Hire"></div>
+      <div class="accordion" data-accordion-list="arrival_train_bus" data-accordion-label="Train &amp; Bus"></div>
+    </section>
+
     <!-- ============ ARRIVAL ============ -->
     <section class="section" id="arrival">
       <h2 class="section-heading">Arrival</h2>
@@ -517,11 +583,18 @@
         <div class="card-label">Address &middot; Tap to Open in Maps</div>
         <div class="card-value" id="address-text" style="color:var(--link);"></div>
       </a>
-      <div class="card"><div class="card-label">Keys</div><div class="card-value" data-key="keys_info"></div></div>
-      <div class="card"><div class="card-label">Keysafe Location</div><div class="card-value" data-key="keysafe_location"></div></div>
-      <div class="card"><div class="card-label">Floor &amp; Door</div><div class="card-value" data-key="access_floor"></div></div>
+      <div class="card">
+        <ul class="prop-list">
+          <li class="prop-item"><div class="prop-label">Keys</div><div class="prop-value" data-key="keys_info"></div></li>
+          <li class="prop-item"><div class="prop-label">Keysafe Location</div><div class="prop-value" data-key="keysafe_location"></div></li>
+          <li class="prop-item"><div class="prop-label">Floor &amp; Door</div><div class="prop-value" data-key="access_floor"></div></li>
+        </ul>
+      </div>
+      <div class="accordion" data-accordion-text="parking" data-accordion-label="Parking"></div>
       <div class="accordion" data-accordion-text="gate_info" data-accordion-label="Gate &amp; Entrance"></div>
+      <div class="accordion" data-accordion-text="flexibility" data-accordion-label="Early Check-in / Late Checkout"></div>
       <div class="accordion" data-accordion-text="luggage_storage" data-accordion-label="Luggage Storage"></div>
+      <div class="accordion" data-accordion-text="ev_charging" data-accordion-label="EV Charging"></div>
     </section>
 
     <!-- ============ PROPERTY ============ -->
@@ -637,6 +710,27 @@
         </div>
       </div>
 
+      <div class="subgroup">
+        <div class="accordion" data-accordion-text="pool" data-accordion-label="Pool"></div>
+        <!-- Sheet-driven: postal_info + delivery_address (falls back to address) -->
+        <div class="accordion" id="postal-row" style="display:none;">
+          <button class="gallery-toggle" id="postal-toggle" aria-expanded="false" aria-controls="postal-collapse">
+            <span class="acc-label">Deliveries &amp; mail</span>
+            <span class="gallery-chevron"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+          </button>
+          <div class="gallery-collapse" id="postal-collapse">
+            <div class="postal-body" id="postal-text"></div>
+            <div class="copy-block" id="copy-address-block" style="display:none;">
+              <span class="copy-address" id="copy-address-text"></span>
+              <button class="copy-btn" type="button" id="copy-address-btn">
+                <svg class="copy-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span class="copy-btn-label">Copy address</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Sheet-driven: staff_housekeeper / staff_pool / staff_gardener. Each
            accordion hides itself when its key is empty; renderStaff() hides the
            whole subgroup when all three are empty. -->
@@ -734,6 +828,16 @@
       <div id="help-contacts"></div>
     </section>
 
+
+    <!-- ============ TIPS LIBRARY ============ -->
+    <!-- Filled from the shared Tips sheet (TIPS_URL), not the property sheet.
+         Generic Algarve answers, grouped by category, every row expands in
+         place. Hidden until the tips sheet loads; stays hidden if it fails. -->
+    <section class="section" id="tips" style="display:none;">
+      <h2 class="section-heading">General Tips</h2>
+      <p class="tips-note">General Algarve information, not specific to this property. Where the two differ, the sections above win.</p>
+      <div id="tips-groups"></div>
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -746,6 +850,40 @@
     </a>
   </footer>
 
+
+  <!-- Add a note: bottom sheet. Posts silently to the Google Form in NOTES_FORM. -->
+  <div class="note-overlay" id="note-overlay" role="dialog" aria-modal="true" aria-labelledby="note-title">
+    <form class="note-sheet" id="note-form" autocomplete="off">
+      <div class="note-head">
+        <div class="note-title" id="note-title">Add a note &middot; Deixar uma nota</div>
+        <button class="note-close" id="note-close" type="button" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <p class="note-sub">Something wrong, missing or worth adding? Tell us and we will fix the page. &middot; Algo errado ou em falta? Diga-nos.</p>
+      <div id="note-fields">
+        <div class="note-field">
+          <label class="note-label" for="note-section">Section</label>
+          <select class="note-select" id="note-section"></select>
+        </div>
+        <div class="note-field">
+          <label class="note-label" for="note-type">What is it</label>
+          <select class="note-select" id="note-type">
+            <option value="Something is wrong">Something is wrong &middot; Est&aacute; errado</option>
+            <option value="Something is missing">Something is missing &middot; Falta algo</option>
+            <option value="Suggestion">Suggestion &middot; Sugest&atilde;o</option>
+            <option value="Compliment">Compliment &middot; Elogio</option>
+          </select>
+        </div>
+        <div class="note-field">
+          <label class="note-label" for="note-message">Your note</label>
+          <textarea class="note-text" id="note-message" rows="4" placeholder="What should we know?"></textarea>
+        </div>
+        <div class="note-actions">
+          <button class="note-send" id="note-send" type="submit">Send &middot; Enviar</button>
+        </div>
+      </div>
+      <div class="note-done" id="note-done" style="display:none;">Thank you, we read every note.<br>Obrigado, lemos todas as notas.</div>
+    </form>
+  </div>
   <!-- Sheet-driven: whatsapp_number. Hidden until the sheet supplies a number. -->
   <a class="whatsapp-fab" id="whatsapp-fab" href="#" target="_blank" rel="noopener" style="display:none;" aria-label="Message your host on WhatsApp">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
@@ -757,6 +895,20 @@
        Sheet file ID between /d/ and /export. Everything else is generic.
        ===================================================================== */
     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1FZZSD98-sCyVAinCxxrRILHsnQ35UIg9_ug6GphS_c4/export?format=csv';
+
+    // Shared across every client page: the GuestPage Tips Library sheet
+    // (02 Templates). Generic Algarve answers that search can find even though
+    // the property page never prints them. Same ID on every page; a property
+    // sheet can drop tips that do not apply with tips_hide = "pool, bbq".
+    const TIPS_URL = 'https://docs.google.com/spreadsheets/d/1niH1RGy0UGXAaHyED3JK9QDhlQkSyx8yMNlMMSQVaDI/export?format=csv';
+
+    // Add a note: the Google Form that collects guest notes. Same form on every
+    // page (the property is one of the fields). Leave action empty to hide the
+    // button. Field IDs come from the form's pre-filled link (entry.NNNN).
+    const NOTES_FORM = {
+      action: '',
+      fields: { property: '', section: '', type: '', message: '', search: '' }
+    };
 
     const CHEVRON_SVG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
     const PIN_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
@@ -1206,6 +1358,106 @@
       }
     }
 
+
+    // Essentials: one contact card for the host (name + phone, tel: link),
+    // built from contact_primary_name / contact_primary_phone. Hidden when blank.
+    function renderHostRow(data) {
+      const wrap = document.getElementById('host-row');
+      if (!wrap) return;
+      wrap.innerHTML = '';
+      const name = (data['contact_primary_name'] || '').split(' — ')[0].trim();
+      const phone = (data['contact_primary_phone'] || '').trim();
+      if (!name && !phone) { wrap.style.display = 'none'; return; }
+      wrap.style.display = '';
+      const tel = phone.replace(/\s/g, '');
+      const el = document.createElement(tel ? 'a' : 'div');
+      el.className = 'contact-card';
+      if (tel) el.href = 'tel:' + tel;
+      const n = document.createElement('span');
+      n.className = 'contact-name';
+      n.textContent = name || 'Your host';
+      const r = document.createElement('span');
+      r.className = 'contact-role';
+      r.textContent = ' · your host';
+      n.appendChild(r);
+      el.appendChild(n);
+      if (phone) {
+        const p = document.createElement('span');
+        p.className = 'contact-num';
+        p.textContent = phone;
+        el.appendChild(p);
+      }
+      wrap.appendChild(el);
+    }
+
+    // Wi-Fi password: tap the value to copy it. A short hint sits under it so
+    // guests know the row is tappable; it turns green for two seconds on copy.
+    function wireCopyValues() {
+      document.querySelectorAll('.info-copy').forEach(el => {
+        if (el.dataset.wired) return;
+        el.dataset.wired = '1';
+        const hint = document.createElement('span');
+        hint.className = 'info-copy-hint';
+        hint.textContent = 'tap to copy';
+        el.parentElement.appendChild(hint);
+        let timer = null;
+        el.addEventListener('click', async () => {
+          const text = el.textContent.trim();
+          if (!text) return;
+          try {
+            if (navigator.clipboard && navigator.clipboard.writeText) await navigator.clipboard.writeText(text);
+            else { const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
+            el.classList.add('copied'); hint.textContent = 'copied ✓';
+          } catch (err) { hint.textContent = 'press and hold to copy'; }
+          clearTimeout(timer);
+          timer = setTimeout(() => { el.classList.remove('copied'); hint.textContent = 'tap to copy'; }, 2000);
+        });
+      });
+    }
+
+    // [data-note]: a single visible paragraph from one sheet key (arrival_notes).
+    function renderNotes(data) {
+      document.querySelectorAll('[data-note]').forEach(p => {
+        const v = (data[p.getAttribute('data-note')] || '').trim();
+        p.textContent = v;
+        p.style.display = v ? '' : 'none';
+      });
+    }
+
+    // Preview lines. Text accordions already show the first ~60 chars next to
+    // their label; this gives the same to list accordions (first item names)
+    // and to the static prop-list accordions (their visible row labels), so a
+    // closed accordion always says what is inside instead of only a chevron.
+    function addPreviews() {
+      const clip = s => s.length > 60 ? s.slice(0, 60).trim() + '…' : s;
+      document.querySelectorAll('main .accordion').forEach(acc => {
+        if (acc.style.display === 'none') return;
+        const toggle = acc.querySelector(':scope > .gallery-toggle');
+        const collapse = acc.querySelector(':scope > .gallery-collapse');
+        if (!toggle || !collapse) return;
+        if (toggle.querySelector('.acc-preview')) return; // already has one
+        const label = toggle.querySelector('.acc-label') || toggle.firstElementChild;
+        if (!label || label.classList.contains('gallery-chevron')) return;
+        let names = [];
+        collapse.querySelectorAll('.place-name').forEach(n => names.push(n.textContent.trim()));
+        if (!names.length) collapse.querySelectorAll('.prop-item').forEach(li => { if (li.style.display !== 'none') { const l = li.querySelector('.prop-label'); if (l) names.push(l.textContent.trim()); } });
+        if (!names.length) collapse.querySelectorAll('.inclusion-item').forEach(li => names.push(li.textContent.trim()));
+        if (!names.length) collapse.querySelectorAll('.tip-title').forEach(t => names.push(t.textContent.trim()));
+        if (!names.length) return;
+        const summary = document.createElement('span');
+        summary.className = 'acc-summary';
+        const l = document.createElement('span');
+        l.className = 'acc-label';
+        l.textContent = label.textContent.trim();
+        const p = document.createElement('span');
+        p.className = 'acc-preview';
+        p.textContent = clip(names.join(' · '));
+        summary.appendChild(l);
+        summary.appendChild(p);
+        toggle.replaceChild(summary, label);
+      });
+    }
+
     // Location card: a single centered "Open in Maps" link built from the gps
     // field (a full Google Maps URL). The whole card hides when gps is empty.
     function renderLocationMap(data) {
@@ -1308,8 +1560,12 @@
       renderCommaList('data-rulelist', 'rule-item', '<span class="rule-dot"></span>', data);
       renderChecklist(data);
       renderHelp(data);
+      renderHostRow(data);
+      renderNotes(data);
       renderWhatsApp(data);
       pruneEmpty();
+      addPreviews();
+      wireCopyValues();
       syncTabs();
       sheetRendered = true;
       refreshSearch();
@@ -1331,11 +1587,13 @@
       }
     }
 
+    let sheetData = {};
     async function loadSheet() {
       try {
         const res = await fetch(SHEET_URL);
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const data = parseCSV(await res.text());
+        sheetData = data;
         checkExpiry(data);
         injectData(data);
         applyDynamic(data);
@@ -1388,11 +1646,11 @@
     // Each section maps to the group tab that should highlight while it is in
     // view, so the 6 grouped tabs stay in sync with the 13 underlying sections.
     const SECTION_GROUP = {
-      welcome: 'welcome', 'quick-info': 'welcome', photos: 'welcome',
-      arrival: 'arrival', access: 'arrival',
+      'quick-info': 'quick-info', welcome: 'quick-info', photos: 'quick-info',
+      'getting-here': 'arrival', arrival: 'arrival', access: 'arrival',
       property: 'property', rules: 'property',
       'local-info': 'local-info', beaches: 'local-info', 'eat-drink': 'local-info', explore: 'local-info',
-      checkout: 'checkout', help: 'help'
+      checkout: 'checkout', help: 'help', tips: 'help'
     };
     let activeId = document.querySelector('.tab-btn.active') ? document.querySelector('.tab-btn.active').dataset.target : null;
     function setActive(id) {
@@ -1643,7 +1901,7 @@
     }
     function searchKey(str) { return searchNormalise(str).text.replace(/\s+/g, ' ').trim(); }
 
-    const SEARCH_SECTION_TITLES = { welcome: 'Welcome' };
+    const SEARCH_SECTION_TITLES = { welcome: 'Welcome', 'quick-info': 'Essentials' };
     // Name for a section's own entry (the content not inside a card or
     // accordion): the steps list, the rules list, the checklist, the contacts.
     const SEARCH_RESIDUAL_TITLES = { arrival: 'Check-in steps', rules: 'House rules', checkout: 'Checkout checklist', help: 'Contacts & emergency' };
@@ -1687,7 +1945,7 @@
       }
 
       document.querySelectorAll('main .section').forEach(sec => {
-        if (!searchIsShown(sec) || sec.id === 'photos') return;
+        if (!searchIsShown(sec) || sec.id === 'photos' || sec.id === 'tips') return; // tips have their own group
         const locationCard = sec.querySelector('#location-card');
         if (locationCard) covered.add(locationCard); // a Maps link, nothing to search
         const secTitle = searchSectionTitle(sec);
@@ -1911,6 +2169,14 @@
           b.addEventListener('click', () => jumpTo(help));
           actions.appendChild(b);
         }
+        if (notesEnabled()) {
+          const n = document.createElement('button');
+          n.type = 'button';
+          n.className = 'search-empty-btn tertiary';
+          n.textContent = 'Tell us what you looked for';
+          n.addEventListener('click', () => { close(); openNote({ section: 'Search', search: query }); });
+          actions.appendChild(n);
+        }
         box.appendChild(t);
         box.appendChild(p);
         if (actions.childNodes.length) box.appendChild(actions);
@@ -1939,6 +2205,23 @@
             }
             results.appendChild(row(entry, null, true));
           });
+          const tipsSec = document.getElementById('tips');
+          if (tipsSec && tipsSec.style.display !== 'none' && tipsLibrary.length) {
+            const h = document.createElement('div');
+            h.className = 'search-group';
+            h.textContent = 'Dicas gerais · General tips';
+            results.appendChild(h);
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'search-result compact';
+            b.setAttribute('role', 'option');
+            const t = document.createElement('div');
+            t.className = 'search-result-title';
+            t.textContent = tipsLibrary.length + ' Algarve tips, A to Z';
+            b.appendChild(t);
+            b.addEventListener('click', () => jumpTo(tipsSec));
+            results.appendChild(b);
+          }
           open();
           return;
         }
@@ -1949,14 +2232,57 @@
           if (m) hits.push({ entry, m, i });
         });
         hits.sort((a, b) => (b.m.titleHits - a.m.titleHits) || (a.i - b.i));
-        if (!hits.length) {
+        const tipHits = searchTips(tokens);
+        if (!hits.length && !tipHits.length) {
           results.appendChild(renderEmpty(query.trim()));
           open();
           return;
         }
-        results.appendChild(label('Resultados · Results'));
-        hits.slice(0, 8).forEach(h => results.appendChild(row(h.entry, h.m)));
+        if (hits.length) {
+          results.appendChild(label('Resultados · Results'));
+          hits.slice(0, 8).forEach(h => results.appendChild(row(h.entry, h.m)));
+        }
+        if (tipHits.length) {
+          results.appendChild(label('Dicas gerais · General tips'));
+          const note = document.createElement('div');
+          note.className = 'search-tips-note';
+          note.textContent = 'General Algarve information, not specific to this property.';
+          results.appendChild(note);
+          tipHits.slice(0, 4).forEach(h => results.appendChild(tipRow(h.tip, h.m)));
+        }
         open();
+      }
+
+      // A tip row expands its answer in place; there is nothing on the page to jump to.
+      function tipRow(tip, m) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'search-result tip';
+        btn.setAttribute('role', 'option');
+        const k = document.createElement('div');
+        k.className = 'search-result-kicker';
+        k.textContent = tip.category || 'Tip';
+        btn.appendChild(k);
+        const t = document.createElement('div');
+        t.className = 'search-result-title';
+        t.textContent = tip.topic;
+        btn.appendChild(t);
+        const s = searchSnippet({ text: tip.answer, nText: tip.nText }, m);
+        if (s) btn.appendChild(s);
+        const ans = document.createElement('div');
+        ans.className = 'search-tip-answer';
+        appendLinkified(ans, tip.answer);
+        if (tip.link) { ans.appendChild(document.createTextNode(' ')); appendLinkified(ans, tip.link); }
+        btn.addEventListener('click', () => {
+          const openNow = ans.classList.toggle('open');
+          btn.setAttribute('aria-expanded', String(openNow));
+          if (openNow) { const sn = btn.querySelector('.search-result-snippet'); if (sn) sn.style.display = 'none'; }
+          else { const sn = btn.querySelector('.search-result-snippet'); if (sn) sn.style.display = ''; }
+        });
+        const wrap = document.createDocumentFragment();
+        wrap.appendChild(btn);
+        wrap.appendChild(ans);
+        return wrap;
       }
 
       input.addEventListener('input', render);
@@ -1984,7 +2310,246 @@
       if (bar && bar.rerender) bar.rerender();
     }
 
+
+    /* ---------------------------------------------------------------------
+       Tips Library. A second, shared sheet (TIPS_URL) with one row per tip:
+       id, topic, keywords, answer, category, link. Rendered as category
+       accordions at the foot of the page and searched as its own group. The
+       property sheet can hide tips with tips_hide ("pool, bbq" or "all").
+       Loads independently of the property sheet; if it fails the page is
+       exactly what it was before this feature existed.
+       --------------------------------------------------------------------- */
+    let tipsLibrary = [];
+
+    // Full CSV parser (quoted fields, embedded commas, quotes and newlines) ->
+    // array of objects keyed by the header row. parseCSV above is key/value only.
+    function parseCSVTable(text) {
+      const rows = [];
+      let row = [], field = '', q = false, i = 0;
+      text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+      while (i < text.length) {
+        const c = text[i];
+        if (q) {
+          if (c === '"' && text[i + 1] === '"') { field += '"'; i += 2; continue; }
+          if (c === '"') { q = false; i++; continue; }
+          field += c; i++; continue;
+        }
+        if (c === '"') { q = true; i++; continue; }
+        if (c === ',') { row.push(field); field = ''; i++; continue; }
+        if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; i++; continue; }
+        field += c; i++;
+      }
+      if (field.length || row.length) { row.push(field); rows.push(row); }
+      if (!rows.length) return [];
+      const head = rows[0].map(h => h.trim().toLowerCase());
+      return rows.slice(1).filter(r => r.some(v => v.trim())).map(r => {
+        const o = {};
+        head.forEach((h, idx) => { o[h] = (r[idx] || '').trim(); });
+        return o;
+      });
+    }
+
+    function tipsHidden() {
+      const raw = (sheetData['tips_hide'] || '').trim().toLowerCase();
+      if (!raw) return new Set();
+      return new Set(raw.split(/[,|]\s*/).map(s => s.trim()).filter(Boolean));
+    }
+
+    async function loadTips() {
+      if (!TIPS_URL) return;
+      try {
+        const res = await fetch(TIPS_URL);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const rows = parseCSVTable(await res.text());
+        tipsLibrary = rows.filter(r => r.id && r.topic && r.answer).map(r => ({
+          id: r.id, topic: r.topic, keywords: r.keywords || '', answer: r.answer,
+          category: r.category || 'Tips', link: r.link || '',
+          nTitle: searchNormalise(r.topic + ' ' + (r.keywords || '') + ' ' + (r.category || '')),
+          nText: searchNormalise(r.answer)
+        }));
+      } catch (err) {
+        console.warn('Tips load failed:', err);
+        tipsLibrary = [];
+      }
+      // The property sheet may still be loading; render once both are in.
+      whenSheetSettled(renderTipsSection);
+    }
+
+    // Runs fn after the property sheet has rendered (or failed), so tips_hide is known.
+    function whenSheetSettled(fn) {
+      if (sheetRendered) { fn(); return; }
+      const t = setInterval(() => { if (sheetRendered) { clearInterval(t); fn(); } }, 100);
+      setTimeout(() => { clearInterval(t); if (!sheetRendered) fn(); }, 8000);
+    }
+
+    function activeTips() {
+      const hide = tipsHidden();
+      if (hide.has('all')) return [];
+      return tipsLibrary.filter(t => !hide.has(t.id.toLowerCase()));
+    }
+
+    function renderTipsSection() {
+      const sec = document.getElementById('tips');
+      const wrap = document.getElementById('tips-groups');
+      if (!sec || !wrap) return;
+      wrap.innerHTML = '';
+      const tips = activeTips();
+      if (!tips.length) { sec.style.display = 'none'; return; }
+      const groups = new Map();
+      tips.forEach(t => { if (!groups.has(t.category)) groups.set(t.category, []); groups.get(t.category).push(t); });
+      groups.forEach((list, cat) => {
+        const acc = document.createElement('div');
+        acc.className = 'accordion';
+        const l = document.createElement('span');
+        l.textContent = cat + ' (' + list.length + ')';
+        const { toggle, collapse } = makeToggle(l);
+        list.forEach(tip => {
+          const rowBtn = document.createElement('button');
+          rowBtn.type = 'button';
+          rowBtn.className = 'tip-row';
+          rowBtn.id = 'tip-' + tip.id;
+          rowBtn.setAttribute('aria-expanded', 'false');
+          const tt = document.createElement('span');
+          tt.className = 'tip-title';
+          tt.textContent = tip.topic;
+          const ch = document.createElement('span');
+          ch.className = 'gallery-chevron';
+          ch.innerHTML = CHEVRON_SVG;
+          rowBtn.appendChild(tt);
+          rowBtn.appendChild(ch);
+          const ans = document.createElement('div');
+          ans.className = 'tip-answer';
+          appendLinkified(ans, tip.answer);
+          if (tip.link) { ans.appendChild(document.createTextNode(' ')); appendLinkified(ans, tip.link); }
+          rowBtn.addEventListener('click', () => {
+            const o = rowBtn.classList.toggle('open');
+            ans.classList.toggle('open', o);
+            rowBtn.setAttribute('aria-expanded', String(o));
+          });
+          collapse.appendChild(rowBtn);
+          collapse.appendChild(ans);
+        });
+        acc.appendChild(toggle);
+        acc.appendChild(collapse);
+        wrap.appendChild(acc);
+      });
+      sec.style.display = '';
+      if (typeof addPreviews === 'function') addPreviews();
+      syncTabs();
+      onScrollSpy();
+    }
+
+    // Search over the tips: same token + synonym rules as the page search.
+    // Topic, keywords and category count as title; the answer as text.
+    function searchTips(tokens) {
+      if (!tokens.length) return [];
+      const out = [];
+      activeTips().forEach((tip, i) => {
+        const m = searchMatch(tip, tokens);
+        if (m) out.push({ tip, m, i });
+      });
+      out.sort((a, b) => (b.m.titleHits - a.m.titleHits) || (a.i - b.i));
+      return out;
+    }
+
+    /* ---------------------------------------------------------------------
+       Add a note. One button on the hero (and one in the no-results panel)
+       opens a bottom sheet: section, type, message. Submits to the Google
+       Form in NOTES_FORM with a no-cors POST, so the guest never leaves the
+       page. Nothing is shown publicly; responses land in the form's sheet.
+       --------------------------------------------------------------------- */
+    function notesEnabled() {
+      return !!(NOTES_FORM.action && NOTES_FORM.fields.message);
+    }
+
+    function noteSectionOptions() {
+      const opts = [];
+      document.querySelectorAll('main .section').forEach(sec => {
+        if (sec.style.display === 'none') return;
+        const h = sec.querySelector(':scope > .section-heading');
+        const name = h ? h.textContent.trim() : (sec.id === 'welcome' ? 'Welcome' : sec.id);
+        opts.push({ id: sec.id, name });
+      });
+      opts.push({ id: 'general', name: 'General · Geral' });
+      return opts;
+    }
+
+    function openNote(preset) {
+      const overlay = document.getElementById('note-overlay');
+      const select = document.getElementById('note-section');
+      const msg = document.getElementById('note-message');
+      const fields = document.getElementById('note-fields');
+      const done = document.getElementById('note-done');
+      if (!overlay || !select) return;
+      preset = preset || {};
+      select.innerHTML = '';
+      noteSectionOptions().forEach(o => {
+        const opt = document.createElement('option');
+        opt.value = o.name; opt.textContent = o.name;
+        select.appendChild(opt);
+      });
+      if (preset.section) {
+        const opt = document.createElement('option');
+        opt.value = preset.section; opt.textContent = preset.section;
+        select.insertBefore(opt, select.firstChild);
+        select.value = preset.section;
+      }
+      overlay.dataset.search = preset.search || '';
+      msg.value = preset.search ? 'I searched for "' + preset.search + '" and could not find it.' : '';
+      fields.style.display = '';
+      done.style.display = 'none';
+      overlay.classList.add('open');
+      setTimeout(() => msg.focus(), 50);
+    }
+
+    function closeNote() {
+      const overlay = document.getElementById('note-overlay');
+      if (overlay) overlay.classList.remove('open');
+    }
+
+    (function wireNotes() {
+      const btn = document.getElementById('note-open');
+      const overlay = document.getElementById('note-overlay');
+      const form = document.getElementById('note-form');
+      const closeBtn = document.getElementById('note-close');
+      const send = document.getElementById('note-send');
+      if (!btn || !overlay || !form) return;
+      // Listeners are always wired; only the button's visibility depends on
+      // NOTES_FORM being configured, so a page without a form shows nothing.
+      if (notesEnabled()) btn.style.display = '';
+      btn.addEventListener('click', () => openNote());
+      closeBtn.addEventListener('click', closeNote);
+      overlay.addEventListener('click', e => { if (e.target === overlay) closeNote(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('open')) closeNote(); });
+      form.addEventListener('submit', async e => {
+        e.preventDefault();
+        const message = document.getElementById('note-message').value.trim();
+        if (!message) { document.getElementById('note-message').focus(); return; }
+        send.disabled = true;
+        const f = NOTES_FORM.fields;
+        const body = new FormData();
+        const slug = (location.pathname.match(/\/clients\/([^\/]+)/) || [])[1] || location.pathname;
+        const prop = (sheetData['property_name'] || '').trim();
+        if (f.property) body.append(f.property, (prop ? prop + ' · ' : '') + slug);
+        if (f.section) body.append(f.section, document.getElementById('note-section').value);
+        if (f.type) body.append(f.type, document.getElementById('note-type').value);
+        if (f.message) body.append(f.message, message);
+        if (f.search) body.append(f.search, overlay.dataset.search || '');
+        try {
+          await fetch(NOTES_FORM.action, { method: 'POST', mode: 'no-cors', body });
+        } catch (err) {
+          console.warn('Note send failed:', err);
+        }
+        // no-cors gives an opaque response either way; treat as sent.
+        document.getElementById('note-fields').style.display = 'none';
+        document.getElementById('note-done').style.display = '';
+        send.disabled = false;
+        setTimeout(closeNote, 2200);
+      });
+    })();
+
     loadSheet().then(onScrollSpy);
+    loadTips();
     onScrollSpy();
   </script>
 

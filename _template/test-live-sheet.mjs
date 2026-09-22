@@ -50,10 +50,10 @@ const sheetFilled = csv.replace(/\r/g, '').split('\n')
   .map(l => l.match(/^"?([a-z0-9_]+)"?,\s*"?(.*?)"?\s*$/))
   .filter(m => m && m[2].trim()).map(m => m[1]);
 const templateKeys = [...new Set([
-  ...[...HTML.matchAll(/data-(?:key|list|steps|checklist|inclusion|rulelist|accordion-text|accordion-list)="([a-z0-9_]+)"/g)].map(m => m[1]),
+  ...[...HTML.matchAll(/data-(?:key|list|steps|checklist|inclusion|rulelist|accordion-text|accordion-list|note)="([a-z0-9_]+)"/g)].map(m => m[1]),
   'property_name', 'location', 'welcome_note', 'host_availability', 'postal_info', 'delivery_address',
   'address', 'gps', 'whatsapp_number', 'contact_primary_name', 'contact_primary_phone',
-  'contact_owner_name', 'contact_owner_phone', 'contact_taxi', 'emergency', 'expiry_date',
+  'contact_owner_name', 'contact_owner_phone', 'contact_taxi', 'emergency', 'expiry_date', 'tips_hide',
 ])];
 
 console.log(`Sheet ${SHEET_ID}`);
@@ -78,7 +78,7 @@ console.log('  ' + emptySlots.join(', '));
 
 // The contract: nothing blank may still be on screen, and no chrome left behind.
 const leaked = emptySlots.filter(k => {
-  const el = d.querySelector(`[data-key="${k}"], [data-accordion-text="${k}"], [data-accordion-list="${k}"], [data-list="${k}"]`);
+  const el = d.querySelector(`[data-key="${k}"], [data-accordion-text="${k}"], [data-accordion-list="${k}"], [data-list="${k}"], [data-note="${k}"]`);
   return el && shown(el) && text(el);
 });
 const orphans = [];
