@@ -193,6 +193,9 @@
     .search-tip-answer { display: none; padding: 0 20px 14px; font-size: 14px; line-height: 1.6; color: var(--text); background: var(--bg); border-bottom: 1px solid var(--border); }
     .search-tip-answer.open { display: block; }
     .search-tips-note { font-size: 11px; color: var(--label); padding: 6px 20px 8px; line-height: 1.4; }
+    .search-tips-toggle { width: 100%; text-align: left; cursor: pointer; font-family: 'Montserrat', sans-serif; display: flex; justify-content: space-between; align-items: center; }
+    .search-tips-toggle::after { content: '+'; font-size: 14px; font-weight: 700; color: var(--primary); }
+    .search-tips-toggle.open::after { content: '–'; }
 
     /* ---- Add a note: one quiet button on the hero, a bottom sheet to fill in. ---- */
     .note-btn { position: relative; z-index: 2; align-self: flex-start; margin-top: 12px; display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.3); color: #fff; border-radius: 999px; padding: 6px 12px 6px 10px; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.03em; cursor: pointer; }
@@ -2243,12 +2246,39 @@
           hits.slice(0, 8).forEach(h => results.appendChild(row(h.entry, h.m)));
         }
         if (tipHits.length) {
-          results.appendChild(label('Dicas gerais · General tips'));
+          // The property wins. With page results present, the tips collapse to
+          // one row that expands on tap, so they never compete with the answer
+          // the host wrote. With no page results they show in full.
+          const rows = document.createDocumentFragment();
           const note = document.createElement('div');
           note.className = 'search-tips-note';
           note.textContent = 'General Algarve information, not specific to this property.';
-          results.appendChild(note);
-          tipHits.slice(0, 4).forEach(h => results.appendChild(tipRow(h.tip, h.m)));
+          rows.appendChild(note);
+          tipHits.slice(0, 4).forEach(h => rows.appendChild(tipRow(h.tip, h.m)));
+          if (hits.length) {
+            const holder = document.createElement('div');
+            holder.className = 'search-tips-fold';
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'search-group search-tips-toggle';
+            btn.setAttribute('aria-expanded', 'false');
+            btn.textContent = 'Dicas gerais · General Algarve tips (' + Math.min(tipHits.length, 4) + ')';
+            const body = document.createElement('div');
+            body.style.display = 'none';
+            body.appendChild(rows);
+            btn.addEventListener('click', () => {
+              const o = body.style.display === 'none';
+              body.style.display = o ? '' : 'none';
+              btn.setAttribute('aria-expanded', String(o));
+              btn.classList.toggle('open', o);
+            });
+            holder.appendChild(btn);
+            holder.appendChild(body);
+            results.appendChild(holder);
+          } else {
+            results.appendChild(label('Dicas gerais · General tips'));
+            results.appendChild(rows);
+          }
         }
         open();
       }
