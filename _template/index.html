@@ -221,6 +221,64 @@
     .note-done { text-align: center; padding: 18px 0 6px; font-size: 14px; color: var(--navy); font-weight: 600; line-height: 1.5; }
     .search-empty-btn.tertiary { background: transparent; color: var(--link); border: 1px solid transparent; padding-left: 4px; }
 
+
+    /* =====================================================================
+       HUB MODE (body.hub). Home = hero + essentials + tiles. A room shows one
+       group of sections under a sticky bar with a back arrow. Everything
+       below is scoped to body.hub, so scroll mode renders exactly as before.
+       ===================================================================== */
+    :root { --warm: #C8893A; --shadow: 0 1px 2px rgba(28,28,92,0.06), 0 2px 8px rgba(28,28,92,0.06); }
+    body.hub .tab-scroll { display: none; }
+    body.hub .hub-bar { display: none; align-items: center; gap: 6px; padding: 0 8px 10px; }
+    body.hub.in-room .hub-bar { display: flex; }
+    body.hub .hub-back { background: none; border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    body.hub .hub-back:hover { background: rgba(255,255,255,0.12); }
+    body.hub .hub-title { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.02em; }
+    body.hub .hub-home-link { margin-left: auto; background: none; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.85); border-radius: 999px; padding: 5px 11px; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 600; cursor: pointer; }
+
+    /* Tiles */
+    body.hub .hub-home { padding: 6px 20px 30px; }
+    body.hub .hub-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    body.hub .hub-tile { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; text-align: left; background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 16px 14px 14px; min-height: 112px; cursor: pointer; font-family: 'Montserrat', sans-serif; box-shadow: var(--shadow); transition: transform 0.12s, box-shadow 0.12s; }
+    body.hub .hub-tile:active { transform: scale(0.98); }
+    body.hub .hub-tile-icon { width: 40px; height: 40px; border-radius: 12px; background: #EDF6FB; color: var(--link); display: flex; align-items: center; justify-content: center; }
+    body.hub .hub-tile-icon svg { width: 22px; height: 22px; }
+    body.hub .hub-tile.warm .hub-tile-icon { background: #FBF1E4; color: var(--warm); }
+    body.hub .hub-tile-title { font-size: 15px; font-weight: 700; color: var(--navy); line-height: 1.25; }
+    body.hub .hub-tile-sub { font-size: 12px; font-weight: 400; color: var(--label); line-height: 1.4; }
+
+    /* Rooms: sections hidden unless the open room owns them; home shows essentials + welcome */
+    body.hub main .section { display: none; }
+    body.hub main .section.hub-visible { display: block; }
+    body.hub main .section { border-bottom: none; padding-top: 22px; }
+    body.hub .room-foot { display: none; padding: 6px 20px 30px; }
+    body.hub.in-room .room-foot { display: flex; gap: 10px; }
+    body.hub .room-foot button { flex: 1; background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 13px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: var(--navy); cursor: pointer; box-shadow: var(--shadow); }
+    body.hub.in-room .hub-home { display: none; }
+    body.hub.in-room .whatsapp-fab { bottom: 20px; }
+
+    /* Quieter surfaces: borderless cards on soft shadow, sentence-case labels */
+    body.hub .card, body.hub .place-card, body.hub .gallery-toggle, body.hub a.contact-card { background: #fff; border: 1px solid #F0F1F3; box-shadow: var(--shadow); }
+    body.hub .gallery-toggle:hover { border-color: #F0F1F3; }
+    body.hub .card-label, body.hub .acc-label, body.hub .prop-label, body.hub .route-from, body.hub .note-label { font-size: 11px; letter-spacing: 0.04em; text-transform: none; font-weight: 600; }
+    body.hub .gallery-toggle { font-size: 12px; letter-spacing: 0.02em; text-transform: none; padding: 14px 16px; }
+    body.hub .gallery-toggle > span:first-child:not(.acc-summary) { font-size: 14px; font-weight: 600; color: var(--navy); }
+    body.hub .section-heading { font-size: 20px; font-weight: 700; letter-spacing: 0; text-transform: none; color: var(--navy); margin-bottom: 14px; }
+    body.hub .subsection-heading { font-size: 12px; letter-spacing: 0.04em; text-transform: none; font-weight: 600; }
+    body.hub .card-value { font-size: 16px; }
+    body.hub .info-value, body.hub .prop-value, body.hub .place-desc, body.hub .step-text, body.hub .postal-body, body.hub .tip-answer, body.hub .welcome-body p { font-size: 15px; }
+    body.hub .search-group, body.hub .search-results-label { text-transform: none; letter-spacing: 0.02em; font-size: 11px; }
+    body.hub .search-result.tip .search-result-kicker, body.hub .tips-note { color: var(--warm); }
+    body.hub .note-done { color: var(--warm); }
+    body.hub .help-availability { background: #FBF6EE; border-left-color: var(--warm); }
+    body.hub .hero { min-height: 250px; }
+    body.hub #location-card { display: none !important; }
+    body.hub #quick-info { padding-bottom: 6px; }
+    body.hub #quick-info .section-heading { display: none; }
+    body.hub .hub-home { padding-top: 14px; }
+    body.hub #welcome { padding-top: 0; }
+    body.hub .site-footer { border-top: none; }
+
     .main { padding-bottom: 60px; }
     .section { padding: 26px 20px 30px; border-bottom: 8px solid var(--card); }
     .section:last-child { border-bottom: none; }
@@ -451,6 +509,12 @@
       </div>
       <div class="search-results" id="search-results" role="listbox" aria-label="Sections"></div>
     </div>
+    <!-- Hub mode: replaces the tab row while a room is open -->
+    <div class="hub-bar" id="hub-bar">
+      <button class="hub-back" id="hub-back" type="button" aria-label="Back to home"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <span class="hub-title" id="hub-title"></span>
+      <button class="hub-home-link" id="hub-home-link" type="button">Home</button>
+    </div>
     <div class="tab-scroll">
     <div class="tab-list">
       <button class="tab-btn active" data-target="quick-info">Welcome</button>
@@ -492,7 +556,6 @@
         <ul class="info-list">
           <li class="info-item"><span class="info-label">Network</span><span class="info-value" data-key="wifi_name"></span></li>
           <li class="info-item"><span class="info-label">Password</span><span class="info-value info-copy" data-key="wifi_password"></span></li>
-          <li class="info-item"><span class="info-label">Router</span><span class="info-value" data-key="router_location"></span></li>
         </ul>
       </div>
 
@@ -500,6 +563,11 @@
       <div id="host-row"></div>
 
     </section>
+
+    <!-- ============ HUB HOME (hub mode only) ============ -->
+    <div class="hub-home" id="hub-home" style="display:none;">
+      <div class="hub-tiles" id="hub-tiles"></div>
+    </div>
 
     <!-- ============ WELCOME ============ -->
     <section class="section" id="welcome">
@@ -669,6 +737,7 @@
           </button>
           <div class="gallery-collapse">
             <ul class="prop-list">
+              <li class="prop-item"><div class="prop-label">Wi-Fi Router</div><div class="prop-value" data-key="router_location"></div></li>
               <li class="prop-item"><div class="prop-label">Fuse Box</div><div class="prop-value" data-key="fuse_box"></div></li>
               <li class="prop-item"><div class="prop-label">Shutters &amp; Windows</div><div class="prop-value" data-key="shutters_windows"></div></li>
               <li class="prop-item"><div class="prop-label">Bins &amp; Recycling</div><div class="prop-value" data-key="bins_location"></div></li>
@@ -841,6 +910,10 @@
       <p class="tips-note">General Algarve information, not specific to this property. Where the two differ, the sections above win.</p>
       <div id="tips-groups"></div>
     </section>
+    <div class="room-foot" id="room-foot">
+      <button type="button" id="room-home">Home</button>
+      <button type="button" id="room-next"></button>
+    </div>
   </main>
 
   <footer class="site-footer">
@@ -908,6 +981,10 @@
     // Add a note: the Google Form that collects guest notes. Same form on every
     // page (the property is one of the fields). Leave action empty to hide the
     // button. Field IDs come from the form's pre-filled link (entry.NNNN).
+    // Page model. 'hub' = home screen with tiles, one room at a time (new
+    // clients). 'scroll' = the single long page with tabs (existing clients).
+    const LAYOUT = 'hub';
+
     const NOTES_FORM = {
       action: '',
       fields: { property: '', section: '', type: '', message: '', search: '' }
@@ -1572,6 +1649,7 @@
       syncTabs();
       sheetRendered = true;
       refreshSearch();
+      hubRefresh();
     }
 
     function checkExpiry(data) {
@@ -1686,6 +1764,7 @@
     }
     let spyTicking = false;
     function onScrollSpy() {
+      if (isHub()) return;
       if (spyTicking) return;
       spyTicking = true;
       // Clear the tick in a finally: if setActive ever throws, the spy has to
@@ -1723,6 +1802,7 @@
         pruneEmpty();
         syncTabs();
         refreshSearch();
+        hubRefresh();
         onScrollSpy();
       });
     });
@@ -2098,6 +2178,12 @@
       function jumpTo(el) {
         close();
         input.blur();
+        if (isHub()) {
+          const sec = el.closest('.section');
+          const room = sec ? roomOf(sec.id) : null;
+          if (room) { if (!currentRoom || currentRoom.id !== room.id) openRoom(room.id, { keepScroll: true }); }
+          else if (sec && HUB_HOME_SECTIONS.includes(sec.id) && currentRoom) goHome();
+        }
         // Open the accordion the target sits in (or is), outermost first.
         const chain = [];
         let acc = el.classList.contains('accordion') ? el : el.closest('.accordion');
@@ -2341,6 +2427,162 @@
     }
 
 
+
+    /* ---------------------------------------------------------------------
+       Hub mode. Rooms are groups of sections. Home shows Essentials, the host
+       note and the tiles; a room shows its sections under a back bar. Search
+       jumps open the room first. The URL hash carries the room (#arrival) or
+       a section (#getting-here), so the post-booking link opens straight on
+       Getting Here and the phone's back button returns home.
+       --------------------------------------------------------------------- */
+    const HUB_HOME_SECTIONS = ['quick-info', 'welcome'];
+    const ICON = {
+      car: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M7 17a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm14 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM3 17V11l2.5-5h10L19 11h2v6"/><path d="M3 11h18"/></svg>',
+      key: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M10.85 12.15 19 4m-3 3 3 3m-6-0.5 2 2"/></svg>',
+      home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>',
+      camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+      pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+      door: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h8"/><path d="M14 3l6 2v14l-6 2"/><circle cx="11.5" cy="12" r="1"/></svg>',
+      help: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M4.9 4.9l4.6 4.6m5 5 4.6 4.6M19.1 4.9l-4.6 4.6m-5 5-4.6 4.6"/></svg>',
+      sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>'
+    };
+    const HUB_ROOMS = [
+      { id: 'getting-here', title: 'Getting here', sub: 'From Faro and Lisbon, transfers, car hire', icon: 'car', sections: ['getting-here'] },
+      { id: 'arrival', title: 'Arrival', sub: 'Check-in steps, keys, parking', icon: 'key', sections: ['arrival', 'access'] },
+      { id: 'house', title: 'The house', sub: 'Appliances, bathrooms, rules', icon: 'home', sections: ['property', 'rules'] },
+      { id: 'photos', title: 'Photos', sub: 'A look around', icon: 'camera', sections: ['photos'] },
+      { id: 'local', title: 'Out & about', sub: 'Beaches, eating, things to do', icon: 'pin', sections: ['local-info', 'beaches', 'eat-drink', 'explore'] },
+      { id: 'checkout', title: 'Checkout', sub: 'Before you leave', icon: 'door', sections: ['checkout'] },
+      { id: 'help', title: 'Help', sub: 'Contacts and emergencies', icon: 'help', sections: ['help'] },
+      { id: 'tips', title: 'Algarve tips', sub: 'Sun, pests, money, driving', icon: 'sun', sections: ['tips'], warm: true }
+    ];
+    let currentRoom = null;
+
+    const isHub = () => LAYOUT === 'hub';
+    function roomOf(sectionId) {
+      return HUB_ROOMS.find(r => r.sections.includes(sectionId)) || null;
+    }
+    function roomHasContent(room) {
+      return room.sections.some(id => { const s = document.getElementById(id); return s && s.style.display !== 'none' && !s.classList.contains('hub-empty'); });
+    }
+
+    // Sections hide themselves with style.display when their sheet keys are
+    // blank. Hub mode needs a second, independent switch (class hub-visible)
+    // so a room can show a section without undoing the blank-key hiding.
+    // pruneEmpty sets display:none; we never touch display here.
+    function hubApply() {
+      if (!isHub()) return;
+      document.querySelectorAll('main .section').forEach(sec => {
+        const show = currentRoom ? currentRoom.sections.includes(sec.id) : HUB_HOME_SECTIONS.includes(sec.id);
+        sec.classList.toggle('hub-visible', show);
+      });
+      document.body.classList.toggle('in-room', !!currentRoom);
+      const title = document.getElementById('hub-title');
+      if (title) title.textContent = currentRoom ? currentRoom.title : '';
+      const next = document.getElementById('room-next');
+      if (next) {
+        const list = HUB_ROOMS.filter(roomHasContent);
+        const i = currentRoom ? list.findIndex(r => r.id === currentRoom.id) : -1;
+        const n = i >= 0 && i < list.length - 1 ? list[i + 1] : null;
+        next.style.display = n ? '' : 'none';
+        next.textContent = n ? n.title + ' ›' : '';
+        next.onclick = n ? () => openRoom(n.id) : null;
+      }
+    }
+
+    function renderTiles() {
+      const wrap = document.getElementById('hub-tiles');
+      const home = document.getElementById('hub-home');
+      if (!wrap || !home || !isHub()) return;
+      wrap.innerHTML = '';
+      HUB_ROOMS.forEach(room => {
+        if (!roomHasContent(room)) return;
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'hub-tile' + (room.warm ? ' warm' : '');
+        b.setAttribute('aria-label', room.title);
+        const ic = document.createElement('span');
+        ic.className = 'hub-tile-icon';
+        ic.innerHTML = ICON[room.icon] || '';
+        const t = document.createElement('span');
+        t.className = 'hub-tile-title';
+        t.textContent = room.title;
+        const s = document.createElement('span');
+        s.className = 'hub-tile-sub';
+        s.textContent = room.sub;
+        b.appendChild(ic); b.appendChild(t); b.appendChild(s);
+        b.addEventListener('click', () => openRoom(room.id));
+        wrap.appendChild(b);
+      });
+      home.style.display = '';
+    }
+
+    function openRoom(id, opts) {
+      opts = opts || {};
+      const room = HUB_ROOMS.find(r => r.id === id);
+      if (!room || !isHub()) return;
+      currentRoom = room;
+      hubApply();
+      if (!opts.silent) history.pushState({ room: id }, '', '#' + id);
+      if (!opts.keepScroll) {
+        const nav = document.querySelector('.tab-nav');
+        const top = document.getElementById(room.sections[0]);
+        const y = top ? top.getBoundingClientRect().top + window.scrollY - (nav ? nav.offsetHeight : 0) : 0;
+        window.scrollTo({ top: Math.max(0, y - 4), behavior: 'auto' });
+      }
+    }
+
+    function goHome(opts) {
+      opts = opts || {};
+      if (!isHub()) return;
+      currentRoom = null;
+      hubApply();
+      if (!opts.silent) history.pushState({ room: null }, '', location.pathname + location.search);
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+
+    // Deep link: #getting-here (a section) or #arrival (a room).
+    function hubFromHash() {
+      const h = (location.hash || '').replace('#', '');
+      if (!h) return false;
+      const room = HUB_ROOMS.find(r => r.id === h) || roomOf(h);
+      if (!room) return false;
+      openRoom(room.id, { silent: true });
+      const sec = document.getElementById(h);
+      if (sec && sec.classList.contains('section')) sec.scrollIntoView({ block: 'start' });
+      return true;
+    }
+
+    (function wireHub() {
+      if (!isHub()) return;
+      document.body.classList.add('hub');
+      const back = document.getElementById('hub-back');
+      const homeLink = document.getElementById('hub-home-link');
+      const roomHome = document.getElementById('room-home');
+      const toHome = () => { if (history.state && history.state.room) history.back(); else goHome(); };
+      if (back) back.addEventListener('click', toHome);
+      if (homeLink) homeLink.addEventListener('click', toHome);
+      if (roomHome) roomHome.addEventListener('click', toHome);
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      window.addEventListener('popstate', e => {
+        const id = e.state && e.state.room;
+        if (id) openRoom(id, { silent: true });
+        else if (!hubFromHash()) goHome({ silent: true });
+      });
+      history.replaceState({ room: null }, '', location.pathname + location.search + location.hash);
+      hubApply();
+    })();
+
+    // After every render pass: tiles reflect which rooms have content, the
+    // current view is re-applied (a room may have just gained or lost sections).
+    function hubRefresh() {
+      if (!isHub()) return;
+      renderTiles();
+      if (!hubFromHashDone) { hubFromHashDone = true; if (hubFromHash()) return; }
+      hubApply();
+    }
+    let hubFromHashDone = false;
+
     /* ---------------------------------------------------------------------
        Tips Library. A second, shared sheet (TIPS_URL) with one row per tip:
        id, topic, keywords, answer, category, link. Rendered as category
@@ -2424,7 +2666,7 @@
       if (!sec || !wrap) return;
       wrap.innerHTML = '';
       const tips = activeTips();
-      if (!tips.length) { sec.style.display = 'none'; return; }
+      if (!tips.length) { sec.style.display = 'none'; hubRefresh(); return; }
       const groups = new Map();
       tips.forEach(t => { if (!groups.has(t.category)) groups.set(t.category, []); groups.get(t.category).push(t); });
       groups.forEach((list, cat) => {
@@ -2467,6 +2709,7 @@
       if (typeof addPreviews === 'function') addPreviews();
       syncTabs();
       onScrollSpy();
+      hubRefresh();
     }
 
     // Search over the tips: same token + synonym rules as the page search.
