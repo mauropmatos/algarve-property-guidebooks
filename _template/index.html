@@ -95,6 +95,73 @@
     .tab-btn:hover  { color: rgba(255,255,255,0.8); }
     .tab-btn.active { color: #fff; border-bottom-color: var(--primary); }
 
+    /* Search bar + section index. One component in two states: box empty =
+       index of every visible section; box has text = the same list filtered.
+       Lives inside the sticky nav so it is always one tap away. */
+    .search-bar { position: relative; padding: 10px 12px 6px; }
+    .search-field { position: relative; display: flex; align-items: center; }
+    .search-icon { position: absolute; left: 12px; color: rgba(255,255,255,0.55); pointer-events: none; display: flex; }
+    .search-input {
+      width: 100%;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 10px;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px; /* 16px minimum: below that iOS Safari zooms the page on focus */
+      font-weight: 500;
+      padding: 10px 40px 10px 38px;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .search-input::placeholder { color: rgba(255,255,255,0.55); }
+    .search-input:focus { background: rgba(255,255,255,0.18); border-color: var(--primary); }
+    .search-input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+    .search-clear {
+      position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+      width: 30px; height: 30px; border: none; border-radius: 50%;
+      background: transparent; color: rgba(255,255,255,0.7);
+      display: none; align-items: center; justify-content: center; cursor: pointer;
+    }
+    .search-clear:hover { background: rgba(255,255,255,0.12); color: #fff; }
+    .search-bar.has-text .search-clear { display: flex; }
+    .search-results {
+      position: absolute; left: 0; right: 0; top: 100%;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 12px 24px rgba(28,28,92,0.18);
+      max-height: 62vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
+      display: none;
+      z-index: 210;
+    }
+    .search-bar.open .search-results { display: block; }
+    .search-results-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--label); padding: 12px 20px 4px; }
+    .search-result {
+      display: block; width: 100%; text-align: left;
+      background: none; border: none; border-bottom: 1px solid var(--border);
+      padding: 11px 20px; cursor: pointer; font-family: 'Montserrat', sans-serif;
+    }
+    .search-result:last-child { border-bottom: none; }
+    .search-group { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--link); background: var(--card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 8px 20px; }
+    .search-result.compact { padding: 9px 20px 9px 28px; }
+    .search-result.compact .search-result-title { font-weight: 500; font-size: 14px; }
+    .search-result:hover, .search-result:focus { background: var(--card); outline: none; }
+    .search-result-kicker { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--label); margin-bottom: 2px; }
+    .search-result-title { font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.35; }
+    .search-result-snippet { font-size: 13px; font-weight: 400; color: var(--text); line-height: 1.45; margin-top: 3px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .search-result-snippet mark { background: #EDF6FB; color: var(--link); font-weight: 600; padding: 0 1px; border-radius: 2px; }
+    .search-empty { padding: 18px 20px 20px; }
+    .search-empty-title { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+    .search-empty-text { font-size: 13px; color: var(--text); line-height: 1.5; margin-bottom: 12px; }
+    .search-empty-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .search-empty-btn { display: inline-flex; align-items: center; gap: 6px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.03em; color: #fff; background: var(--navy); border: none; border-radius: 999px; padding: 9px 14px; text-decoration: none; cursor: pointer; }
+    .search-empty-btn.secondary { background: var(--card); color: var(--navy); border: 1px solid var(--border); }
+    /* Keep the sticky header from covering the heading a jump scrolls to. */
+    .section, .accordion, .card, .subgroup, .place-card { scroll-margin-top: calc(var(--nav-h, 100px) + 10px); }
+    .search-target { animation: search-flash 1.6s ease-out 1; }
+    @keyframes search-flash { 0% { background-color: #EDF6FB; } 100% { background-color: transparent; } }
+
     .main { padding-bottom: 60px; }
     .section { padding: 26px 20px 30px; border-bottom: 8px solid var(--card); }
     .section:last-child { border-bottom: none; }
@@ -312,6 +379,17 @@
   </header>
 
   <nav class="tab-nav" aria-label="Page sections">
+    <!-- Search bar + section index. Empty box = index of every visible section;
+         typing filters it. The list is built from the DOM after the sheet
+         renders (buildSearchIndex), so empty sections never appear in it. -->
+    <div class="search-bar" id="search-bar">
+      <div class="search-field">
+        <span class="search-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <input class="search-input" id="search-input" type="search" placeholder="Procurar · Search" aria-label="Search this page" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
+        <button class="search-clear" id="search-clear" type="button" aria-label="Clear search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <div class="search-results" id="search-results" role="listbox" aria-label="Sections"></div>
+    </div>
     <div class="tab-scroll">
     <div class="tab-list">
       <button class="tab-btn active" data-target="welcome">Welcome</button>
@@ -1215,6 +1293,7 @@
       });
     }
 
+    let sheetRendered = false;
     function applyDynamic(data) {
       renderHero(data);
       renderWelcome(data);
@@ -1232,6 +1311,8 @@
       renderWhatsApp(data);
       pruneEmpty();
       syncTabs();
+      sheetRendered = true;
+      refreshSearch();
     }
 
     function checkExpiry(data) {
@@ -1374,8 +1455,13 @@
       img.addEventListener('error', () => {
         const item = img.closest('.gallery-item');
         if (item) item.style.display = 'none';
+        // Prune only once the sheet has rendered. A tile that 404s before the
+        // CSV arrives would otherwise prune every still-empty section for good
+        // (pruneEmpty only ever hides). The render pass prunes again anyway.
+        if (!sheetRendered) return;
         pruneEmpty();
         syncTabs();
+        refreshSearch();
         onScrollSpy();
       });
     });
@@ -1415,6 +1501,488 @@
         }, 2000);
       });
     })();
+
+    /* ---------------------------------------------------------------------
+       Search bar + section index (spec: "Search bar and section index", 25 Aug
+       2026). One component in two states: empty box = index of every visible
+       section; text = the same list filtered. Jump list only: tapping a row
+       scrolls to that part of the page (opening its accordion). Nothing on the
+       page is ever hidden or rearranged by a search.
+
+       The index is built from the DOM AFTER the sheet renders and pruneEmpty
+       runs, so a section a client left blank never appears in it. Matching is
+       case- and accent-insensitive on both sides ("farmacia" finds
+       "Farmácia"), and a synonym map turns the words guests actually type
+       (laundry, senha, plage, Müll) into the words the page uses.
+       --------------------------------------------------------------------- */
+
+    // Query word -> page words it should also match. Keys and values are
+    // matched after normalisation (lowercase, accents stripped, hyphens and
+    // apostrophes removed), so "wi-fi" and "wifi" are the same word here.
+    const SEARCH_SYNONYMS = {
+      // ---- English variants ----
+      laundry: ['washing machine'], washing: ['washing machine'], washer: ['washing machine'], clothes: ['washing machine'],
+      internet: ['wifi'], password: ['wifi'], network: ['wifi'], router: ['wifi'],
+      rubbish: ['bins'], trash: ['bins'], garbage: ['bins'], recycling: ['bins'], waste: ['bins'], bin: ['bins'],
+      doctor: ['pharmacy', 'hospital'], medical: ['pharmacy', 'hospital'], medicine: ['pharmacy'], chemist: ['pharmacy'], drugstore: ['pharmacy'],
+      park: ['parking'], car: ['parking'], garage: ['parking'],
+      aircon: ['air conditioning'], ac: ['air conditioning'], airconditioning: ['air conditioning'], cooling: ['air conditioning'],
+      cold: ['heating', 'air conditioning'], hot: ['heating', 'hot water'], warm: ['heating'], heater: ['heating'], fireplace: ['wood burner'],
+      late: ['checkout', 'flexibility'], early: ['checkin', 'flexibility'], luggage: ['luggage'], bags: ['luggage'], suitcase: ['luggage'], suitcases: ['luggage'],
+      sea: ['beach'], swim: ['beach', 'pool'], swimming: ['beach', 'pool'],
+      food: ['restaurants', 'eat'], dinner: ['restaurants', 'eat'], lunch: ['restaurants', 'eat'], breakfast: ['restaurants', 'eat', 'coffee'], eat: ['eat'], restaurant: ['restaurants', 'eat'],
+      cash: ['atm'], money: ['atm'], bank: ['atm'],
+      transport: ['getting around', 'taxi'], uber: ['getting around', 'taxi'], bus: ['getting around'], train: ['getting around'], airport: ['getting around', 'taxi'],
+      police: ['emergency'], ambulance: ['emergency'], fire: ['emergency', 'fire safety'], 112: ['emergency'],
+      smoke: ['smoking'], cigarette: ['smoking'], cigarettes: ['smoking'],
+      broken: ['breakages'], broke: ['breakages'], damage: ['breakages'], damaged: ['breakages'],
+      grill: ['bbq'], barbecue: ['bbq'], barbeque: ['bbq'],
+      television: ['tv'], netflix: ['tv'], remote: ['tv'],
+      electricity: ['fuse box'], power: ['fuse box'], blackout: ['fuse box'], lights: ['fuse box', 'security light'], fuse: ['fuse box'],
+      shower: ['bathrooms', 'hot water'], bath: ['bathrooms', 'hot water'], toilet: ['bathrooms', 'plumbing'],
+      sleep: ['bedrooms'], bed: ['bedrooms'], beds: ['bedrooms'], sheets: ['bedrooms', 'included'], linen: ['bedrooms', 'included'], towels: ['included', 'bathrooms'],
+      children: ['kids'], child: ['kids'], family: ['kids'], baby: ['kids'],
+      shop: ['supermarkets'], shopping: ['supermarkets'], groceries: ['supermarkets'], market: ['supermarkets'],
+      water: ['tap water', 'hot water'], drink: ['tap water'],
+      key: ['keys'], lock: ['keys'], locked: ['keys'], door: ['keys', 'gate', 'floor'],
+      arrive: ['checkin', 'arrival'], arriving: ['checkin', 'arrival'], arrival: ['arrival', 'checkin'],
+      leave: ['checkout'], leaving: ['checkout'], departure: ['checkout'],
+      mosquito: ['insects'], mosquitoes: ['insects'], ants: ['insects'], bugs: ['insects'],
+      blinds: ['shutters'], curtains: ['shutters'], windows: ['shutters'],
+      host: ['help', 'contact'], owner: ['help', 'contact'], phone: ['help', 'contact'], call: ['help', 'contact'], number: ['help', 'contact'],
+      mail: ['deliveries'], post: ['deliveries'], parcel: ['deliveries'], delivery: ['deliveries'], amazon: ['deliveries'],
+      sunbed: ['sun loungers'], sunbeds: ['sun loungers'], umbrella: ['sun loungers'], beachtowels: ['sun loungers'],
+      // ---- Portuguese ----
+      lavar: ['washing machine', 'dishwasher'], roupa: ['washing machine'], maquina: ['washing machine', 'dishwasher', 'coffee'], louca: ['dishwasher'],
+      senha: ['wifi'], palavra: ['wifi'], passe: ['wifi'], rede: ['wifi'],
+      lixo: ['bins'], reciclagem: ['bins'], reciclar: ['bins'],
+      farmacia: ['pharmacy'], medico: ['pharmacy', 'hospital'], remedio: ['pharmacy'], remedios: ['pharmacy'],
+      estacionamento: ['parking'], estacionar: ['parking'], carro: ['parking'],
+      ar: ['air conditioning'], condicionado: ['air conditioning'], aquecimento: ['heating'], frio: ['heating', 'air conditioning'], calor: ['air conditioning'], quente: ['hot water', 'heating'],
+      malas: ['luggage'], bagagem: ['luggage'], mala: ['luggage'],
+      praia: ['beach'], praias: ['beach'], mar: ['beach'],
+      comida: ['restaurants', 'eat'], comer: ['restaurants', 'eat'], restaurante: ['restaurants', 'eat'], restaurantes: ['restaurants', 'eat'], jantar: ['restaurants', 'eat'], almoco: ['restaurants', 'eat'],
+      dinheiro: ['atm'], multibanco: ['atm'], levantar: ['atm'], banco: ['atm'],
+      autocarro: ['getting around'], comboio: ['getting around'], transporte: ['getting around', 'taxi'], transportes: ['getting around', 'taxi'], aeroporto: ['getting around', 'taxi'],
+      emergencia: ['emergency'], policia: ['emergency'], ambulancia: ['emergency'], bombeiros: ['emergency'],
+      fumar: ['smoking'], cigarro: ['smoking'],
+      avaria: ['breakages'], avarias: ['breakages'], estragos: ['breakages'], partido: ['breakages'], partiu: ['breakages'], estragou: ['breakages'],
+      churrasco: ['bbq'], grelhador: ['bbq'],
+      televisao: ['tv'], comando: ['tv'],
+      eletricidade: ['fuse box'], luz: ['fuse box', 'security light'], quadro: ['fuse box'], disjuntor: ['fuse box'],
+      chuveiro: ['bathrooms', 'hot water'], banho: ['bathrooms', 'hot water'], sanita: ['bathrooms', 'plumbing'],
+      cama: ['bedrooms'], camas: ['bedrooms'], quarto: ['bedrooms'], quartos: ['bedrooms'], lencois: ['bedrooms', 'included'], toalhas: ['included', 'bathrooms'],
+      criancas: ['kids'], crianca: ['kids'], miudos: ['kids'], familia: ['kids'], bebe: ['kids'],
+      supermercado: ['supermarkets'], compras: ['supermarkets'], mercado: ['supermarkets'],
+      agua: ['tap water', 'hot water'], torneira: ['tap water'],
+      chave: ['keys'], chaves: ['keys'], fechadura: ['keys'], porta: ['keys', 'gate', 'floor'], portao: ['gate'],
+      chegada: ['arrival', 'checkin'], entrada: ['arrival', 'checkin', 'gate'], saida: ['checkout'], partida: ['checkout'],
+      mosquitos: ['insects'], formigas: ['insects'], insetos: ['insects'], bichos: ['insects'],
+      estores: ['shutters'], persianas: ['shutters'], janelas: ['shutters'],
+      anfitriao: ['help', 'contact'], contacto: ['help', 'contact'], telefone: ['help', 'contact'], ajuda: ['help'], ligar: ['help', 'contact'],
+      correio: ['deliveries'], encomenda: ['deliveries'], encomendas: ['deliveries'], entrega: ['deliveries'],
+      piscina: ['pool'], regras: ['rules'], forno: ['oven'], cafe: ['coffee'], gas: ['gas'], lareira: ['wood burner'], alarme: ['alarm'],
+      passeios: ['things to do', 'explore'], atividades: ['things to do', 'explore'], visitar: ['explore'],
+      espreguicadeiras: ['sun loungers'], guarda: ['sun loungers'], sol: ['sun loungers'],
+      // ---- French ----
+      plage: ['beach'], pharmacie: ['pharmacy'], poubelle: ['bins'], poubelles: ['bins'], dechets: ['bins'],
+      voiture: ['parking'], lavelinge: ['washing machine'], lave: ['washing machine', 'dishwasher'], linge: ['washing machine'], vaisselle: ['dishwasher'],
+      mot: ['wifi'], motdepasse: ['wifi'], clim: ['air conditioning'], climatisation: ['air conditioning'], chauffage: ['heating'], chaleur: ['air conditioning'], froid: ['heating'],
+      cle: ['keys'], cles: ['keys'], clef: ['keys'], clefs: ['keys'], piscine: ['pool'], bagages: ['luggage'], valise: ['luggage'], valises: ['luggage'],
+      supermarche: ['supermarkets'], courses: ['supermarkets'], manger: ['restaurants', 'eat'], diner: ['restaurants', 'eat'], dejeuner: ['restaurants', 'eat'],
+      urgence: ['emergency'], urgences: ['emergency'], medecin: ['pharmacy', 'hospital'], hopital: ['hospital'],
+      depart: ['checkout'], arrivee: ['arrival', 'checkin'], enfants: ['kids'], enfant: ['kids'],
+      argent: ['atm'], banque: ['atm'], fumer: ['smoking'], tele: ['tv'], television: ['tv'],
+      chauffeeau: ['hot water'], douche: ['bathrooms', 'hot water'], eau: ['tap water', 'hot water'], chaude: ['hot water'],
+      moustiques: ['insects'], moustique: ['insects'], volets: ['shutters'], courrier: ['deliveries'], colis: ['deliveries'],
+      hote: ['help', 'contact'], aide: ['help'], contacter: ['help', 'contact'], lit: ['bedrooms'], lits: ['bedrooms'], chambre: ['bedrooms'], chambres: ['bedrooms'],
+      regles: ['rules'], four: ['oven'], electricite: ['fuse box'], lumiere: ['fuse box', 'security light'], sortie: ['checkout'], cendrier: ['smoking'],
+      // ---- German ----
+      strand: ['beach'], apotheke: ['pharmacy'], arzt: ['pharmacy', 'hospital'], krankenhaus: ['hospital'],
+      mull: ['bins'], muell: ['bins'], abfall: ['bins'], parkplatz: ['parking'], parken: ['parking'], auto: ['parking'],
+      waschmaschine: ['washing machine'], wasche: ['washing machine'], waesche: ['washing machine'], spulmaschine: ['dishwasher'], geschirrspuler: ['dishwasher'],
+      passwort: ['wifi'], wlan: ['wifi'], klimaanlage: ['air conditioning'], klima: ['air conditioning'], heizung: ['heating'], hitze: ['air conditioning'], kalt: ['heating'],
+      schlussel: ['keys'], schluessel: ['keys'], gepack: ['luggage'], gepaeck: ['luggage'], koffer: ['luggage'],
+      supermarkt: ['supermarkets'], einkaufen: ['supermarkets'], essen: ['restaurants', 'eat'], abendessen: ['restaurants', 'eat'],
+      notfall: ['emergency'], polizei: ['emergency'], feuerwehr: ['emergency'], abreise: ['checkout'], ankunft: ['arrival', 'checkin'],
+      kinder: ['kids'], kind: ['kids'], geld: ['atm'], geldautomat: ['atm'], rauchen: ['smoking'], fernseher: ['tv'],
+      warmwasser: ['hot water'], dusche: ['bathrooms', 'hot water'], wasser: ['tap water', 'hot water'], bad: ['bathrooms'],
+      mucken: ['insects'], muecken: ['insects'], rollladen: ['shutters'], rolladen: ['shutters'], paket: ['deliveries'], briefe: ['deliveries'],
+      gastgeber: ['help', 'contact'], hilfe: ['help'], kontakt: ['help', 'contact'], bett: ['bedrooms'], betten: ['bedrooms'], schlafzimmer: ['bedrooms'],
+      regeln: ['rules'], backofen: ['oven'], ofen: ['oven'], strom: ['fuse box'], sicherung: ['fuse box'], licht: ['fuse box', 'security light'], kaffee: ['coffee'], schwimmbad: ['pool'],
+      // ---- Spanish ----
+      playa: ['beach'], farmacias: ['pharmacy'], basura: ['bins'], aparcamiento: ['parking'], aparcar: ['parking'], coche: ['parking'],
+      lavadora: ['washing machine'], lavavajillas: ['dishwasher'], contrasena: ['wifi'], clave: ['wifi', 'keys'],
+      aire: ['air conditioning'], acondicionado: ['air conditioning'], calefaccion: ['heating'],
+      llave: ['keys'], llaves: ['keys'], equipaje: ['luggage'], maletas: ['luggage'], maleta: ['luggage'],
+      tiendas: ['supermarkets'], cena: ['restaurants', 'eat'], almuerzo: ['restaurants', 'eat'],
+      urgencia: ['emergency'], urgencias: ['emergency'], salida: ['checkout'], llegada: ['arrival', 'checkin'],
+      ninos: ['kids'], nino: ['kids'], efectivo: ['atm'], cajero: ['atm'], fumadores: ['smoking'],
+      caliente: ['hot water'], ducha: ['bathrooms', 'hot water'], grifo: ['tap water'],
+      persiana: ['shutters'], paquete: ['deliveries'], correo: ['deliveries'], anfitrion: ['help', 'contact'], ayuda: ['help'],
+      habitacion: ['bedrooms'], habitaciones: ['bedrooms'], normas: ['rules'], horno: ['oven'], electricidad: ['fuse box'], barbacoa: ['bbq'],
+    };
+
+    // Length-preserving normalisation: returns { text, map } where text is the
+    // lowercase, accent-stripped, hyphen/apostrophe-free copy and map[i] is the
+    // index in the ORIGINAL string of text[i]. Indices found in the normalised
+    // copy can then be mapped straight back for the snippet highlight.
+    function searchNormalise(str) {
+      let text = '';
+      const map = [];
+      for (let i = 0; i < str.length; i++) {
+        const ch = str[i];
+        if (ch === 'ß') { text += 'ss'; map.push(i, i); continue; }      // ß
+        const base = ch.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+        const c = base.length ? base[0] : '';
+        if (/[a-z0-9]/.test(c)) { text += c; map.push(i); }
+        else if (c === '-' || c === '\'' || ch === '’') { /* squash: wi-fi -> wifi */ }
+        else { text += ' '; map.push(i); }
+      }
+      return { text, map };
+    }
+    function searchKey(str) { return searchNormalise(str).text.replace(/\s+/g, ' ').trim(); }
+
+    const SEARCH_SECTION_TITLES = { welcome: 'Welcome' };
+    // Name for a section's own entry (the content not inside a card or
+    // accordion): the steps list, the rules list, the checklist, the contacts.
+    const SEARCH_RESIDUAL_TITLES = { arrival: 'Check-in steps', rules: 'House rules', checkout: 'Checkout checklist', help: 'Contacts & emergency' };
+    let searchIndex = [];
+
+    function searchSectionTitle(sec) {
+      const h = sec.querySelector(':scope > .section-heading');
+      return h ? h.textContent.trim() : (SEARCH_SECTION_TITLES[sec.id] || sec.id);
+    }
+    function searchIsShown(el) {
+      for (let n = el; n && n !== document.body; n = n.parentElement) {
+        if (n.style && n.style.display === 'none') return false;
+      }
+      return true;
+    }
+    function searchClean(s) { return (s || '').replace(/\s+/g, ' ').trim(); }
+    // Like visibleText, but with a space at every element boundary so that
+    // "Bins & Recycling" + "Communal bins" do not fuse into one word.
+    function searchText(node) {
+      if (node.nodeType === 3) return node.textContent;
+      if (node.nodeType !== 1) return '';
+      if (node.style && node.style.display === 'none') return '';
+      if (node.tagName === 'IMG' || node.tagName === 'SVG' || node.tagName === 'svg') return '';
+      let out = ' ';
+      node.childNodes.forEach(child => { out += searchText(child); });
+      return out + ' ';
+    }
+
+    function buildSearchIndex() {
+      searchIndex = [];
+      const covered = new Set();
+
+      function add(el, kicker, title, text) {
+        title = searchClean(title);
+        text = searchClean(text);
+        if (!el || !title || covered.has(el) || !searchIsShown(el)) return;
+        covered.add(el);
+        const nTitle = searchNormalise(title + ' ' + (kicker || '')); // kicker counts as title: "ajuda" finds Help › Contacts
+        const nText = searchNormalise(text);
+        searchIndex.push({ el, kicker: searchClean(kicker), title, text, nTitle, nText });
+      }
+
+      document.querySelectorAll('main .section').forEach(sec => {
+        if (!searchIsShown(sec) || sec.id === 'photos') return;
+        const locationCard = sec.querySelector('#location-card');
+        if (locationCard) covered.add(locationCard); // a Maps link, nothing to search
+        const secTitle = searchSectionTitle(sec);
+        const kickerFor = el => {
+          const group = el.closest('.subgroup');
+          const h = group && group.querySelector(':scope > .subsection-heading');
+          return h && searchIsShown(h) ? secTitle + ' · ' + h.textContent.trim() : secTitle;
+        };
+
+        // Accordions: title from the toggle label, text from the collapsed body.
+        sec.querySelectorAll('.accordion').forEach(acc => {
+          if (acc.closest('.accordion') !== acc) return; // nested: parent covers it
+          const toggle = acc.querySelector(':scope > .gallery-toggle');
+          const collapse = acc.querySelector(':scope > .gallery-collapse');
+          if (!toggle || !collapse) return;
+          const label = toggle.querySelector('.acc-label') || toggle.firstElementChild;
+          const title = label ? label.textContent : toggle.textContent;
+          add(acc, kickerFor(acc), title, searchText(collapse));
+        });
+
+        // Cards with their own label (Wi-Fi, Keys, ATMs...). Cards inside an
+        // accordion are already covered by the accordion entry.
+        sec.querySelectorAll('.card').forEach(card => {
+          if (card.closest('.accordion') || covered.has(card)) return;
+          const label = card.querySelector(':scope > .card-label');
+          let title;
+          if (label) title = label.textContent.replace(/·.*$/, '');
+          else {
+            // Unlabelled info card (tap water, town centre): name it by its rows.
+            const rows = Array.from(card.querySelectorAll('.info-label')).filter(searchIsShown).map(l => l.textContent.trim());
+            title = rows.length ? rows.join(' · ') : secTitle;
+          }
+          let body = '';
+          Array.from(card.children).forEach(child => { if (!child.matches('.card-label')) body += searchText(child); });
+          add(card, kickerFor(card), title, body);
+        });
+
+        // Place cards (beaches, restaurants, activities) outside accordions.
+        sec.querySelectorAll('.place-card').forEach(pc => {
+          if (pc.closest('.accordion')) return;
+          const name = pc.querySelector('.place-name');
+          const desc = pc.querySelector('.place-desc');
+          add(pc, kickerFor(pc), name ? name.textContent : secTitle, desc ? desc.textContent : searchText(pc));
+        });
+
+        // Whatever is left in the section (arrival steps, house rules, checkout
+        // checklist, help contacts) becomes one entry for the section itself.
+        const residualText = node => {
+          if (node.nodeType === 3) return node.textContent;
+          if (node.nodeType !== 1) return '';
+          if (covered.has(node) || node.matches('.subsection-heading')) return '';
+          if (node.style && node.style.display === 'none') return '';
+          if (node.tagName === 'svg' || node.tagName === 'IMG') return '';
+          let out = ' ';
+          node.childNodes.forEach(c => { out += residualText(c); });
+          return out + ' ';
+        };
+        let residual = '';
+        Array.from(sec.children).forEach(child => {
+          if (!child.matches('.section-heading')) residual += residualText(child);
+        });
+        if (searchClean(residual)) add(sec, secTitle, SEARCH_RESIDUAL_TITLES[sec.id] || secTitle, residual);
+      });
+      // Page order, so the index reads top to bottom like the page does. A
+      // section's own entry sorts first within its section.
+      searchIndex.sort((a, b) => {
+        if (a.el === b.el) return 0;
+        if (a.el.contains(b.el)) return -1;
+        if (b.el.contains(a.el)) return 1;
+        return (a.el.compareDocumentPosition(b.el) & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1;
+      });
+    }
+
+    function searchTokens(query) {
+      return searchKey(query).split(' ').filter(t => t.length >= 2 || /^\d+$/.test(t));
+    }
+    function searchAlternatives(token) {
+      const alts = [token];
+      const syn = SEARCH_SYNONYMS[token];
+      if (syn) syn.forEach(s => { if (alts.indexOf(s) === -1) alts.push(s); });
+      return alts;
+    }
+    // Returns { titleHits, firstMatch } or null when a token has no match.
+    function searchMatch(entry, tokens) {
+      let titleHits = 0;
+      let firstMatch = null;
+      for (const token of tokens) {
+        const alts = searchAlternatives(token);
+        let hit = false;
+        for (const alt of alts) {
+          if (entry.nTitle.text.indexOf(alt) !== -1) { hit = true; titleHits++; break; }
+          const at = entry.nText.text.indexOf(alt);
+          if (at !== -1) {
+            hit = true;
+            if (!firstMatch) firstMatch = { at, len: alt.length };
+            break;
+          }
+        }
+        if (!hit) return null;
+      }
+      return { titleHits, firstMatch };
+    }
+
+    function searchSnippet(entry, match) {
+      const wrap = document.createElement('div');
+      wrap.className = 'search-result-snippet';
+      const text = entry.text;
+      if (!text) return null;
+      if (!match || !match.firstMatch) {
+        wrap.textContent = text.length > 110 ? text.slice(0, 110).trim() + '…' : text;
+        return wrap;
+      }
+      const map = entry.nText.map;
+      const start = map[match.firstMatch.at];
+      const end = map[Math.min(map.length - 1, match.firstMatch.at + match.firstMatch.len - 1)] + 1;
+      // Snap the window to word boundaries so the snippet never opens mid-word.
+      let from = Math.max(0, start - 36);
+      if (from > 0) { const sp = text.lastIndexOf(' ', from); if (sp !== -1 && from - sp < 14) from = sp + 1; }
+      let to = Math.min(text.length, end + 90);
+      if (to < text.length) { const sp = text.indexOf(' ', to); if (sp !== -1 && sp - to < 14) to = sp; }
+      if (from > 0) wrap.appendChild(document.createTextNode('…' + text.slice(from, start)));
+      else wrap.appendChild(document.createTextNode(text.slice(0, start)));
+      const mark = document.createElement('mark');
+      mark.textContent = text.slice(start, end);
+      wrap.appendChild(mark);
+      wrap.appendChild(document.createTextNode(text.slice(end, to) + (to < text.length ? '…' : '')));
+      return wrap;
+    }
+
+    (function wireSearch() {
+      const bar = document.getElementById('search-bar');
+      const input = document.getElementById('search-input');
+      const clearBtn = document.getElementById('search-clear');
+      const results = document.getElementById('search-results');
+      const nav = document.querySelector('.tab-nav');
+      if (!bar || !input || !results) return;
+
+      function setNavHeight() {
+        if (nav) document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px');
+      }
+      setNavHeight();
+      window.addEventListener('resize', setNavHeight);
+
+      function open() { bar.classList.add('open'); }
+      function close() { bar.classList.remove('open'); }
+
+      function jumpTo(el) {
+        close();
+        input.blur();
+        // Open the accordion the target sits in (or is), outermost first.
+        const chain = [];
+        let acc = el.classList.contains('accordion') ? el : el.closest('.accordion');
+        while (acc) { chain.unshift(acc); acc = acc.parentElement ? acc.parentElement.closest('.accordion') : null; }
+        chain.forEach(a => {
+          const t = a.querySelector(':scope > .gallery-toggle');
+          if (t && !t.classList.contains('open')) t.click();
+        });
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        el.classList.remove('search-target');
+        void el.offsetWidth;
+        el.classList.add('search-target');
+      }
+
+      function row(entry, match, compact) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'search-result' + (compact ? ' compact' : '');
+        btn.setAttribute('role', 'option');
+        if (!compact && entry.kicker && entry.kicker !== entry.title) {
+          const k = document.createElement('div');
+          k.className = 'search-result-kicker';
+          k.textContent = entry.kicker;
+          btn.appendChild(k);
+        }
+        const t = document.createElement('div');
+        t.className = 'search-result-title';
+        t.textContent = entry.title;
+        btn.appendChild(t);
+        if (match) {
+          const s = searchSnippet(entry, match);
+          if (s) btn.appendChild(s);
+        }
+        btn.addEventListener('click', () => jumpTo(entry.el));
+        return btn;
+      }
+
+      function label(text) {
+        const l = document.createElement('div');
+        l.className = 'search-results-label';
+        l.textContent = text;
+        return l;
+      }
+
+      function renderEmpty(query) {
+        const box = document.createElement('div');
+        box.className = 'search-empty';
+        const t = document.createElement('div');
+        t.className = 'search-empty-title';
+        t.textContent = 'Não encontrou? · Can\'t find it?';
+        const p = document.createElement('div');
+        p.className = 'search-empty-text';
+        p.textContent = 'Nada sobre "' + query + '" nesta página. Fale connosco. · Nothing about "' + query + '" on this page. Ask your host.';
+        const actions = document.createElement('div');
+        actions.className = 'search-empty-actions';
+        const fab = document.getElementById('whatsapp-fab');
+        if (fab && fab.style.display !== 'none' && fab.href && fab.href !== '#') {
+          const a = document.createElement('a');
+          a.className = 'search-empty-btn';
+          a.href = fab.href;
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.textContent = 'WhatsApp';
+          actions.appendChild(a);
+        }
+        const help = document.getElementById('help');
+        if (help && help.style.display !== 'none') {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'search-empty-btn secondary';
+          b.textContent = 'Contactos · Contacts';
+          b.addEventListener('click', () => jumpTo(help));
+          actions.appendChild(b);
+        }
+        box.appendChild(t);
+        box.appendChild(p);
+        if (actions.childNodes.length) box.appendChild(actions);
+        return box;
+      }
+
+      function render() {
+        const query = input.value;
+        bar.classList.toggle('has-text', query.length > 0);
+        results.innerHTML = '';
+        const tokens = searchTokens(query);
+        if (!searchKey(query).length) {
+          // Index state: every visible section, no snippets.
+          if (!searchIndex.length) { close(); return; }
+          results.appendChild(label('Índice · Index'));
+          // Grouped by section: one heading per section, compact rows under it.
+          let group = null;
+          searchIndex.forEach(entry => {
+            const g = entry.kicker || entry.title;
+            if (g !== group) {
+              group = g;
+              const h = document.createElement('div');
+              h.className = 'search-group';
+              h.textContent = g;
+              results.appendChild(h);
+            }
+            results.appendChild(row(entry, null, true));
+          });
+          open();
+          return;
+        }
+        if (searchKey(query).length < 2 || !tokens.length) { close(); return; }
+        const hits = [];
+        searchIndex.forEach((entry, i) => {
+          const m = searchMatch(entry, tokens);
+          if (m) hits.push({ entry, m, i });
+        });
+        hits.sort((a, b) => (b.m.titleHits - a.m.titleHits) || (a.i - b.i));
+        if (!hits.length) {
+          results.appendChild(renderEmpty(query.trim()));
+          open();
+          return;
+        }
+        results.appendChild(label('Resultados · Results'));
+        hits.slice(0, 8).forEach(h => results.appendChild(row(h.entry, h.m)));
+        open();
+      }
+
+      input.addEventListener('input', render);
+      input.addEventListener('focus', render);
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Escape') { input.value = ''; render(); close(); input.blur(); }
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const first = results.querySelector('.search-result');
+          if (first) first.click();
+        }
+      });
+      clearBtn.addEventListener('click', () => { input.value = ''; input.focus(); render(); });
+      document.addEventListener('pointerdown', e => {
+        if (!bar.contains(e.target)) close();
+      });
+      // Re-render an open list when the index is rebuilt (sheet arrived, or a
+      // photo tile dropped out).
+      bar.rerender = () => { setNavHeight(); if (bar.classList.contains('open')) render(); };
+    })();
+
+    function refreshSearch() {
+      buildSearchIndex();
+      const bar = document.getElementById('search-bar');
+      if (bar && bar.rerender) bar.rerender();
+    }
 
     loadSheet().then(onScrollSpy);
     onScrollSpy();
