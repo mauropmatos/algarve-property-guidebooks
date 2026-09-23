@@ -170,9 +170,18 @@
     .route-value { font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.45; }
 
     /* Tap-to-copy value (Wi-Fi password): the value is the button. */
-    .info-copy { cursor: pointer; border-bottom: 1px dashed var(--border); }
-    .info-copy.copied { color: #3E7D53; }
-    .info-copy-hint { display: block; font-size: 10px; font-weight: 400; color: var(--label); margin-top: 2px; }
+    /* Copy row: the whole row is the button. Icon on the right, label flashes
+       "Copied" for two seconds, value turns green. */
+    .copy-row { cursor: pointer; align-items: center; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+    .copy-row .info-value { margin-left: auto; }
+    .copy-ic { flex-shrink: 0; width: 30px; height: 30px; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; color: var(--link); background: rgba(28,28,92,0.06); }
+    .copy-ic .ic-check { display: none; }
+    .copy-row.copied .info-label, .copy-row.copied .info-value { color: #3E7D53; }
+    .copy-row.copied .copy-ic { color: #fff; background: #3E7D53; }
+    .copy-row.copied .ic-copy { display: none; }
+    .copy-row.copied .ic-check { display: inline; }
+    .copy-row.copy-fail { user-select: text; -webkit-user-select: text; }
+    .copy-row.copy-fail .info-label { color: var(--warm); }
     /* Host row in Essentials: reuses the Help contact card. */
     #host-row a.contact-card { margin-bottom: 10px; }
     #host-row .contact-num { font-size: 13px; }
@@ -1546,28 +1555,50 @@
       wrap.appendChild(el);
     }
 
-    // Wi-Fi password: tap the value to copy it. A short hint sits under it so
-    // guests know the row is tappable; it turns green for two seconds on copy.
+    // Wi-Fi password: the whole row (label, value, icon) is one tap target.
+    // On success the label reads "Copied" for two seconds and the row fires
+    // gp:copied (the hub Wi-Fi fold listens for it). If the browser refuses the
+    // clipboard, the value is selected so a press and hold still works.
     function wireCopyValues() {
+      const IC_COPY = '<svg class="ic-copy" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+      const IC_CHECK = '<svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
       document.querySelectorAll('.info-copy').forEach(el => {
         if (el.dataset.wired) return;
         el.dataset.wired = '1';
-        const hint = document.createElement('span');
-        hint.className = 'info-copy-hint';
-        hint.textContent = 'tap to copy';
-        el.parentElement.appendChild(hint);
+        const row = el.closest('.info-item') || el.parentElement;
+        const label = row.querySelector('.info-label');
+        const labelText = label ? label.textContent : '';
+        row.classList.add('copy-row');
+        row.setAttribute('role', 'button');
+        row.tabIndex = 0;
+        row.setAttribute('aria-label', 'Copy ' + labelText.toLowerCase());
+        const ic = document.createElement('span');
+        ic.className = 'copy-ic';
+        ic.innerHTML = IC_COPY + IC_CHECK;
+        row.appendChild(ic);
         let timer = null;
-        el.addEventListener('click', async () => {
+        const flash = (cls, text, ms) => {
+          row.classList.remove('copied', 'copy-fail');
+          row.classList.add(cls);
+          if (label) label.textContent = text;
+          clearTimeout(timer);
+          timer = setTimeout(() => { row.classList.remove(cls); if (label) label.textContent = labelText; }, ms);
+        };
+        const go = async () => {
           const text = el.textContent.trim();
           if (!text) return;
           try {
             if (navigator.clipboard && navigator.clipboard.writeText) await navigator.clipboard.writeText(text);
-            else { const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
-            el.classList.add('copied'); hint.textContent = 'copied ✓';
-          } catch (err) { hint.textContent = 'press and hold to copy'; }
-          clearTimeout(timer);
-          timer = setTimeout(() => { el.classList.remove('copied'); hint.textContent = 'tap to copy'; }, 2000);
-        });
+            else { const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); if (!document.execCommand('copy')) throw new Error('copy refused'); document.body.removeChild(ta); }
+            flash('copied', 'Copied', 2000);
+            el.dispatchEvent(new CustomEvent('gp:copied', { bubbles: true }));
+          } catch (err) {
+            try { const r = document.createRange(); r.selectNodeContents(el); const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {}
+            flash('copy-fail', 'Press and hold to copy', 3000);
+          }
+        };
+        row.addEventListener('click', go);
+        row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
       });
     }
 
@@ -2651,7 +2682,7 @@
         show.addEventListener('click', () => { card.classList.remove('wifi-done'); });
         card.appendChild(show);
         if (done) card.classList.add('wifi-done');
-        pw.addEventListener('click', () => {
+        card.addEventListener('gp:copied', () => {
           try { localStorage.setItem(KEY, '1'); } catch (e) {}
           setTimeout(() => card.classList.add('wifi-done'), 2200);
         });
