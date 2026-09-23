@@ -1063,16 +1063,17 @@
     // sheet can drop tips that do not apply with tips_hide = "pool, bbq".
     const TIPS_URL = 'https://docs.google.com/spreadsheets/d/1niH1RGy0UGXAaHyED3JK9QDhlQkSyx8yMNlMMSQVaDI/export?format=csv';
 
-    // Add a note: the Google Form that collects guest notes. Same form on every
-    // page (the property is one of the fields). Leave action empty to hide the
-    // button. Field IDs come from the form's pre-filled link (entry.NNNN).
-    // Page model. 'hub' = cover, bottom bar, Guide home, rooms, full-screen
-    // search (new clients). 'scroll' = the single long page with tabs.
+    // Page model. 'hub' = bottom bar, Guide home, rooms, full-screen search
+    // (new clients). 'scroll' = the single long page with tabs.
     const LAYOUT = 'hub';
 
+    // Add a note: the Google Form "GuestPage Notes" (contact@ Drive) that
+    // collects notes from every page; the property is one of the fields.
+    // Leave action empty to hide the button. Field IDs come from the form's
+    // pre-filled link (entry.NNNN).
     const NOTES_FORM = {
-      action: '',
-      fields: { property: '', section: '', type: '', message: '', search: '' }
+      action: 'https://docs.google.com/forms/d/e/1FAIpQLSf8IykYPYsp14ZUl056Jgb47i_6ahlrksj0SGzyHKqMHjckrQ/formResponse',
+      fields: { property: 'entry.557305892', section: 'entry.788449775', type: 'entry.1302954858', message: 'entry.289113294', search: 'entry.987657338' }
     };
 
     const CHEVRON_SVG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
