@@ -228,26 +228,14 @@
        ===================================================================== */
     :root { --warm: #C8893A; --warm-tint: #FBF3E8; --hair: #ECEDF1; --soft: 0 1px 2px rgba(28,28,92,0.05), 0 4px 14px rgba(28,28,92,0.06); --tabbar-h: 64px; }
     body.hub { background: #fff; }
-    body.hub .hero, body.hub .tab-nav, body.hub main .section, body.hub .site-footer, body.hub .hub-cover, body.hub .hub-guide, body.hub .hub-roombar, body.hub .hub-pn { display: none; }
+    body.hub .hero, body.hub .tab-nav, body.hub main .section, body.hub .site-footer, body.hub .hub-guide, body.hub .hub-roombar, body.hub .hub-pn { display: none; }
     body.hub .main { padding-bottom: calc(var(--tabbar-h) + 24px); }
 
-    /* Cover */
-    body.hub.v-cover .hub-cover { display: flex; }
-    .hub-cover { position: relative; min-height: calc(100vh - var(--tabbar-h)); min-height: calc(100dvh - var(--tabbar-h)); background: var(--navy); overflow: hidden; flex-direction: column; justify-content: flex-end; }
-    .hub-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .hub-cover::after { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to bottom, rgba(28,28,92,0) 0%, rgba(28,28,92,0.25) 40%, rgba(28,28,92,0.9) 100%); }
-    .hub-cover-in { position: relative; z-index: 2; padding: 0 24px 56px; color: #fff; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-    .hub-cover-mark { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; margin-bottom: 6px; }
-    .hub-cover-eyebrow { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; }
-    .hub-cover h1 { margin: 0; font-size: 30px; font-weight: 700; line-height: 1.1; }
-    .hub-cover-addr { font-size: 13px; opacity: 0.8; }
-    .hub-go { margin-top: 14px; background: #fff; color: var(--navy); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.04em; border: none; border-radius: 999px; padding: 14px 28px; box-shadow: 0 6px 20px rgba(0,0,0,0.25); cursor: pointer; }
-    .hub-cover-sub { font-size: 11px; opacity: 0.65; margin-top: 4px; }
-
     /* Guide: compact hero + floating search + essentials + rooms + note */
-    body.hub.v-guide .hero { display: flex; min-height: 164px; padding-bottom: 40px; }
+    body.hub.v-guide .hero { display: flex; min-height: 124px; padding: 20px 20px 36px; }
     body.hub.v-guide .hero .hero-eyebrow { display: none; }
-    body.hub.v-guide .hero .hero-title { font-size: 26px; }
+    body.hub.v-guide .hero .hero-title { font-size: 22px; }
+    body.hub.v-guide .hero .hero-location { font-size: 12px; margin-top: 2px; }
     body.hub .note-btn { position: absolute; top: 14px; right: 14px; margin: 0; width: 34px; height: 34px; padding: 0; justify-content: center; border-radius: 50%; }
     body.hub .note-btn span { display: none; }
     body.hub.v-guide .hub-guide { display: block; }
@@ -261,6 +249,20 @@
     body.hub #quick-info > .card { border-radius: 0; box-shadow: none; }
     body.hub #quick-info #host-row a.contact-card { border-radius: 0 0 16px 16px; box-shadow: none; margin: 0; }
     body.hub #quick-info { filter: drop-shadow(0 4px 14px rgba(28,28,92,0.06)); }
+    body.hub #quick-info #host-row { display: none !important; }
+    body.hub #quick-info > .card:last-of-type { border-radius: 0 0 16px 16px; }
+    body.hub #quick-info .card-grid .card { padding: 10px 14px; }
+    body.hub #quick-info .card-value { font-size: 15px; }
+    body.hub #quick-info > .card { padding: 10px 14px 8px; }
+    body.hub #quick-info .info-item { padding: 7px 0; }
+    body.hub #quick-info .card-label { margin-bottom: 0; }
+    /* Once the password has been copied on this phone, the Wi-Fi card folds to one line. */
+    body.hub #quick-info .card.wifi-done .info-list { display: none; }
+    body.hub #quick-info .card.wifi-done { display: flex; align-items: center; gap: 10px; padding: 10px 14px; }
+    body.hub #quick-info .card.wifi-done .card-label { flex: 1; }
+    body.hub #quick-info .card.wifi-done .card-label::after { content: ' · copied ✓'; font-weight: 400; color: #3E7D53; }
+    .wifi-show { display: none; background: none; border: none; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; color: var(--link); cursor: pointer; padding: 4px 0; }
+    body.hub #quick-info .card.wifi-done .wifi-show { display: inline; }
     body.hub .hub-rooms { display: none; }
     body.hub.v-guide .hub-rooms { display: block; }
     .hub-rooms { margin: 14px 20px 0; background: #fff; border: 1px solid var(--hair); border-radius: 16px; box-shadow: var(--soft); overflow: hidden; }
@@ -312,12 +314,12 @@
 
     /* Bottom bar */
     body.hub .hub-tabbar { display: grid; }
-    .hub-tabbar { display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 300; grid-template-columns: repeat(4, 1fr); background: rgba(255,255,255,0.96); backdrop-filter: blur(10px); border-top: 1px solid var(--hair); padding: 8px 4px calc(10px + env(safe-area-inset-bottom, 0px)); }
+    .hub-tabbar { display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 300; grid-template-columns: repeat(3, 1fr); background: rgba(255,255,255,0.96); backdrop-filter: blur(10px); border-top: 1px solid var(--hair); padding: 8px 4px calc(10px + env(safe-area-inset-bottom, 0px)); }
     .hub-tab { display: flex; flex-direction: column; align-items: center; gap: 3px; background: none; border: none; font-family: 'Montserrat', sans-serif; font-size: 10.5px; font-weight: 600; color: var(--label); letter-spacing: 0.02em; cursor: pointer; padding: 2px 0; }
     .hub-tab svg { width: 22px; height: 22px; }
     .hub-tab.on { color: var(--link); }
     body.hub .whatsapp-fab { bottom: calc(var(--tabbar-h) + 16px); }
-    body.hub.v-cover .whatsapp-fab, body.hub.v-search .whatsapp-fab { display: none !important; }
+    body.hub.v-search .whatsapp-fab { display: none !important; }
     body.hub .note-overlay { z-index: 500; }
 
     /* Quieter surfaces everywhere in hub mode */
@@ -335,7 +337,8 @@
     body.hub .search-result.tip .search-result-kicker, body.hub .tips-note { color: var(--warm); }
     body.hub .note-done { color: var(--warm); }
     body.hub .help-availability { background: var(--warm-tint); border-left-color: var(--warm); }
-    body.hub .site-footer { border-top: none; }
+    body.hub .site-footer { border-top: none; padding: 12px 20px 8px; }
+    body.hub .footer-wordmark { font-size: 16px; }
 
     .main { padding-bottom: 60px; }
     .section { padding: 26px 20px 30px; border-bottom: 8px solid var(--card); }
@@ -555,19 +558,6 @@
     <button class="note-btn" id="note-open" type="button" style="display:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Add a note &middot; Deixar nota</span></button>
   </header>
 
-
-  <!-- ============ HUB: COVER (hub layout only) ============ -->
-  <section class="hub-cover" id="hub-cover" aria-label="Welcome">
-    <img src="/clients/casadelagos/assets/images/hero.jpg" alt="" onerror="this.style.display='none'">
-    <div class="hub-cover-in">
-      <div class="hub-cover-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></div>
-      <div class="hub-cover-eyebrow">Welcome to &middot; Bem-vindo</div>
-      <h1 class="hub-cover-title">Guest Information</h1>
-      <div class="hub-cover-addr" id="hub-cover-addr"></div>
-      <button class="hub-go" id="hub-go" type="button">Get started &middot; Come&ccedil;ar</button>
-      <div class="hub-cover-sub">Wi-Fi, check-in, directions and more</div>
-    </div>
-  </section>
 
   <!-- ============ HUB: GUIDE search button ============ -->
   <div class="hub-guide" id="hub-guide">
@@ -1008,7 +998,6 @@
 
   <!-- ============ HUB: BOTTOM BAR ============ -->
   <nav class="hub-tabbar" id="hub-tabbar" aria-label="Guide">
-    <button class="hub-tab" data-view="cover" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg><span>Home</span></button>
     <button class="hub-tab" data-view="guide" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h6"/></svg><span>Guide</span></button>
     <button class="hub-tab" data-view="search" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Search</span></button>
     <button class="hub-tab" data-view="help" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M4.9 4.9l4.6 4.6m5 5 4.6 4.6M19.1 4.9l-4.6 4.6m-5 5-4.6 4.6"/></svg><span>Help</span></button>
@@ -1736,7 +1725,6 @@
       syncTabs();
       sheetRendered = true;
       refreshSearch();
-      renderCover(data);
       hubRefresh();
     }
 
@@ -2518,7 +2506,7 @@
 
 
     /* ---------------------------------------------------------------------
-       Hub layout. Views: cover (the link opens here), guide (essentials +
+       Hub layout. Views: guide (the link opens here: essentials +
        rooms list + host note), room:<id> (one group of sections, previous /
        next), search (the search bar and results, full screen). A bottom bar
        is always on screen. The URL hash carries the view so the phone's back
@@ -2536,7 +2524,7 @@
     ];
     const HUB_ICON = { car: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M7 17a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm14 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM3 17V11l2.5-5h10L19 11h2v6"/><path d="M3 11h18"/></svg>', key: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M10.85 12.15 19 4m-3 3 3 3m-6-0.5 2 2"/></svg>', home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>', camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>', pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>', door: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h8"/><path d="M14 3l6 2v14l-6 2"/><circle cx="11.5" cy="12" r="1"/></svg>', help: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M4.9 4.9l4.6 4.6m5 5 4.6 4.6M19.1 4.9l-4.6 4.6m-5 5-4.6 4.6"/></svg>', sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>', chev: '<svg class="hub-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>' };
     const HUB_GUIDE_SECTIONS = ['quick-info', 'welcome'];
-    let hubView = 'cover';
+    let hubView = 'guide';
     let hubRoom = null;
 
     const isHub = () => LAYOUT === 'hub';
@@ -2553,7 +2541,7 @@
     function hubApply() {
       if (!isHub()) return;
       const b = document.body;
-      ['v-cover', 'v-guide', 'v-room', 'v-search'].forEach(c => b.classList.remove(c));
+      ['v-guide', 'v-room', 'v-search'].forEach(c => b.classList.remove(c));
       b.classList.add('v-' + hubView);
       document.querySelectorAll('main .section').forEach(sec => {
         let show = false;
@@ -2592,7 +2580,7 @@
       if (view === 'room') { const r = roomById(roomId); if (!r) return; hubRoom = r; }
       hubView = view;
       hubApply();
-      const hash = view === 'room' ? '#' + hubRoom.id : (view === 'cover' ? '' : '#' + view);
+      const hash = view === 'room' ? '#' + hubRoom.id : (view === 'guide' ? '' : '#' + view);
       if (!opts.silent) history.pushState({ view, room: view === 'room' ? hubRoom.id : null }, '', location.pathname + location.search + hash);
       if (!opts.keepScroll) window.scrollTo({ top: 0, behavior: 'auto' });
     }
@@ -2618,21 +2606,11 @@
       wrap.style.display = wrap.childNodes.length ? '' : 'none';
     }
 
-    function renderCover(data) {
-      const t = document.querySelector('.hub-cover-title');
-      const a = document.getElementById('hub-cover-addr');
-      const name = (data['property_name'] || '').trim();
-      const place = (data['location'] || '').trim();
-      const addr = (data['address'] || '').split(' — ')[0].trim();
-      if (t && name) t.textContent = name;
-      if (a) a.textContent = [addr, place].filter(Boolean).join(' · ');
-    }
-
     // Deep link: #getting-here (a section or room), #guide, #search.
     function hubFromHash() {
       const h = (location.hash || '').replace('#', '');
       if (!h) return false;
-      if (h === 'guide' || h === 'search') { hubGo(h, null, { silent: true }); return true; }
+      if (h === 'search') { hubGo(h, null, { silent: true }); return true; }
       const room = roomById(h) || roomOf(h);
       if (!room) return false;
       hubGo('room', room.id, { silent: true });
@@ -2654,12 +2632,30 @@
       document.body.classList.add('hub');
       if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
       const on = (id, fn) => { const el = document.getElementById(id); if (el) el.addEventListener('click', fn); };
-      on('hub-go', () => hubGo('guide'));
       on('hub-search-btn', () => hubGo('search'));
       on('hub-room-search', () => hubGo('search'));
       on('hub-back', () => hubGo('guide')); // the arrow means "back to the guide", whatever the history
       on('hub-sback', () => { if (history.state && history.state.view === 'search') history.back(); else hubGo('guide'); });
       document.querySelectorAll('.hub-tab').forEach(t => t.addEventListener('click', () => hubGo(t.dataset.view)));
+      // Wi-Fi card folds to one line once the password has been copied on this
+      // phone (per-browser memory, never shared). "Show" unfolds it again.
+      (function wifiFold() {
+        const pw = document.querySelector('#quick-info .info-copy');
+        const card = pw ? pw.closest('.card') : null;
+        if (!card) return;
+        const KEY = 'gp-wifi-copied';
+        let done = false;
+        try { done = localStorage.getItem(KEY) === '1'; } catch (e) {}
+        const show = document.createElement('button');
+        show.type = 'button'; show.className = 'wifi-show'; show.textContent = 'Show';
+        show.addEventListener('click', () => { card.classList.remove('wifi-done'); });
+        card.appendChild(show);
+        if (done) card.classList.add('wifi-done');
+        pw.addEventListener('click', () => {
+          try { localStorage.setItem(KEY, '1'); } catch (e) {}
+          setTimeout(() => card.classList.add('wifi-done'), 2200);
+        });
+      })();
       const chips = document.getElementById('hub-chips');
       if (chips) ['wifi', 'washing machine', 'beach', 'bins', 'emergency', 'baratas'].forEach(q => {
         const c = document.createElement('button'); c.type = 'button'; c.className = 'hub-chip'; c.textContent = q;
@@ -2669,9 +2665,9 @@
       window.addEventListener('popstate', e => {
         const st = e.state;
         if (st && st.view) hubGo(st.view, st.room, { silent: true });
-        else if (!hubFromHash()) hubGo('cover', null, { silent: true });
+        else if (!hubFromHash()) hubGo('guide', null, { silent: true });
       });
-      history.replaceState({ view: 'cover', room: null }, '', location.pathname + location.search + location.hash);
+      history.replaceState({ view: 'guide', room: null }, '', location.pathname + location.search + location.hash);
       hubApply();
     })();
 

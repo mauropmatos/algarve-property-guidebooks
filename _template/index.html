@@ -223,61 +223,122 @@
 
 
     /* =====================================================================
-       HUB MODE (body.hub). Home = hero + essentials + tiles. A room shows one
-       group of sections under a sticky bar with a back arrow. Everything
-       below is scoped to body.hub, so scroll mode renders exactly as before.
+       HUB LAYOUT (body.hub). Views: cover, guide, room, search. Everything
+       below is scoped to body.hub; scroll mode renders exactly as before.
        ===================================================================== */
-    :root { --warm: #C8893A; --shadow: 0 1px 2px rgba(28,28,92,0.06), 0 2px 8px rgba(28,28,92,0.06); }
+    :root { --warm: #C8893A; --warm-tint: #FBF3E8; --hair: #ECEDF1; --soft: 0 1px 2px rgba(28,28,92,0.05), 0 4px 14px rgba(28,28,92,0.06); --tabbar-h: 64px; }
+    body.hub { background: #fff; }
+    body.hub .hero, body.hub .tab-nav, body.hub main .section, body.hub .site-footer, body.hub .hub-guide, body.hub .hub-roombar, body.hub .hub-pn { display: none; }
+    body.hub .main { padding-bottom: calc(var(--tabbar-h) + 24px); }
+
+    /* Guide: compact hero + floating search + essentials + rooms + note */
+    body.hub.v-guide .hero { display: flex; min-height: 124px; padding: 20px 20px 36px; }
+    body.hub.v-guide .hero .hero-eyebrow { display: none; }
+    body.hub.v-guide .hero .hero-title { font-size: 22px; }
+    body.hub.v-guide .hero .hero-location { font-size: 12px; margin-top: 2px; }
+    body.hub .note-btn { position: absolute; top: 14px; right: 14px; margin: 0; width: 34px; height: 34px; padding: 0; justify-content: center; border-radius: 50%; }
+    body.hub .note-btn span { display: none; }
+    body.hub.v-guide .hub-guide { display: block; }
+    .hub-search-btn { margin: -24px 20px 0; position: relative; z-index: 3; width: calc(100% - 40px); background: #fff; border: none; border-radius: 14px; box-shadow: var(--soft); display: flex; align-items: center; gap: 10px; padding: 13px 14px; color: var(--label); font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 500; text-align: left; cursor: pointer; }
+    .hub-search-btn svg { flex-shrink: 0; color: var(--link); }
+    body.hub.v-guide #quick-info { display: block; padding: 16px 20px 0; border-bottom: none; }
+    body.hub #quick-info .section-heading, body.hub #location-card { display: none !important; }
+    body.hub #quick-info .card-grid { margin-bottom: 0; border-radius: 16px 16px 0 0; overflow: hidden; }
+    body.hub #quick-info .card-grid .card { border-radius: 0; box-shadow: none; border-bottom: none; }
+    body.hub #quick-info .card-grid .card:first-child { border-right: none; }
+    body.hub #quick-info > .card { border-radius: 0; box-shadow: none; }
+    body.hub #quick-info #host-row a.contact-card { border-radius: 0 0 16px 16px; box-shadow: none; margin: 0; }
+    body.hub #quick-info { filter: drop-shadow(0 4px 14px rgba(28,28,92,0.06)); }
+    body.hub #quick-info #host-row { display: none !important; }
+    body.hub #quick-info > .card:last-of-type { border-radius: 0 0 16px 16px; }
+    body.hub #quick-info .card-grid .card { padding: 10px 14px; }
+    body.hub #quick-info .card-value { font-size: 15px; }
+    body.hub #quick-info > .card { padding: 10px 14px 8px; }
+    body.hub #quick-info .info-item { padding: 7px 0; }
+    body.hub #quick-info .card-label { margin-bottom: 0; }
+    /* Once the password has been copied on this phone, the Wi-Fi card folds to one line. */
+    body.hub #quick-info .card.wifi-done .info-list { display: none; }
+    body.hub #quick-info .card.wifi-done { display: flex; align-items: center; gap: 10px; padding: 10px 14px; }
+    body.hub #quick-info .card.wifi-done .card-label { flex: 1; }
+    body.hub #quick-info .card.wifi-done .card-label::after { content: ' · copied ✓'; font-weight: 400; color: #3E7D53; }
+    .wifi-show { display: none; background: none; border: none; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; color: var(--link); cursor: pointer; padding: 4px 0; }
+    body.hub #quick-info .card.wifi-done .wifi-show { display: inline; }
+    body.hub .hub-rooms { display: none; }
+    body.hub.v-guide .hub-rooms { display: block; }
+    .hub-rooms { margin: 14px 20px 0; background: #fff; border: 1px solid var(--hair); border-radius: 16px; box-shadow: var(--soft); overflow: hidden; }
+    .hub-room { width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-top: 1px solid var(--hair); background: none; border-left: none; border-right: none; border-bottom: none; text-align: left; cursor: pointer; font-family: 'Montserrat', sans-serif; }
+    .hub-room:first-child { border-top: none; }
+    .hub-ricon { width: 40px; height: 40px; border-radius: 12px; background: #EDF6FB; color: var(--link); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .hub-ricon svg { width: 21px; height: 21px; }
+    .hub-room.warm .hub-ricon { background: var(--warm-tint); color: var(--warm); }
+    .hub-rtext { flex: 1; min-width: 0; line-height: 1.3; }
+    .hub-rtext b { display: block; font-size: 15px; font-weight: 600; color: var(--navy); }
+    .hub-rtext span { display: block; font-size: 12.5px; color: var(--label); margin-top: 1px; }
+    .hub-chev { color: #B9BEC7; flex-shrink: 0; }
+    body.hub.v-guide #welcome { display: block; padding: 14px 20px 0; border-bottom: none; }
+    body.hub.v-guide .site-footer { display: block; }
+
+    /* Room */
+    body.hub.v-room .hub-roombar { display: flex; }
+    .hub-roombar { position: sticky; top: 0; z-index: 200; align-items: center; gap: 6px; padding: 10px 10px; background: rgba(255,255,255,0.96); backdrop-filter: blur(10px); border-bottom: 1px solid var(--hair); }
+    .hub-ib { width: 36px; height: 36px; border-radius: 50%; border: none; background: none; display: flex; align-items: center; justify-content: center; color: var(--navy); cursor: pointer; }
+    .hub-ib:hover { background: #F3F4F7; }
+    .hub-roombar h2 { flex: 1; margin: 0; font-size: 17px; font-weight: 700; color: var(--navy); text-align: center; }
+    body.hub.v-room main .section.hub-visible { display: block; border-bottom: none; padding: 22px 20px 6px; }
+    body.hub.v-room .hub-pn { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 20px 18px; }
+    .hub-pn button { background: #fff; border: 1px solid var(--hair); border-radius: 14px; box-shadow: var(--soft); padding: 12px 14px; display: flex; flex-direction: column; gap: 2px; text-align: left; cursor: pointer; font-family: 'Montserrat', sans-serif; }
+    .hub-pn button.r { text-align: right; align-items: flex-end; }
+    .hub-pn small { font-size: 11px; color: var(--label); }
+    .hub-pn b { font-size: 14px; font-weight: 600; color: var(--navy); }
+    .hub-pn button:disabled { visibility: hidden; }
+    body.hub.v-room .site-footer { display: block; }
+
+    /* Search view: the existing search bar and results, full screen */
+    body.hub.v-search .tab-nav { display: block; position: sticky; top: 0; background: #fff; border-bottom: 1px solid var(--hair); }
     body.hub .tab-scroll { display: none; }
-    .hub-bar { display: none; align-items: center; gap: 6px; padding: 0 8px 10px; }
-    body.hub.in-room .hub-bar { display: flex; }
-    body.hub .hub-back { background: none; border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-    body.hub .hub-back:hover { background: rgba(255,255,255,0.12); }
-    body.hub .hub-title { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.02em; }
-    body.hub .hub-home-link { margin-left: auto; background: none; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.85); border-radius: 999px; padding: 5px 11px; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 600; cursor: pointer; }
+    body.hub.v-search .search-bar { padding: 10px 12px 10px 4px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+    body.hub.v-search .search-field { flex: 1; }
+    body.hub.v-search .search-input { background: #F3F4F7; border-color: #F3F4F7; color: var(--navy); }
+    body.hub.v-search .search-input::placeholder { color: var(--label); }
+    body.hub.v-search .search-icon { color: var(--link); }
+    body.hub.v-search .search-clear { color: var(--label); }
+    body.hub.v-search .search-results { position: static; display: block; max-height: none; box-shadow: none; border-bottom: none; width: 100%; }
+    body.hub .hub-sback { display: none; }
+    body.hub.v-search .hub-sback { display: flex; }
+    .hub-suggest { display: none; width: 100%; padding: 18px 16px 26px; }
+    body.hub.v-search .hub-suggest { display: block; }
+    body.hub.v-search .search-bar.open .search-results:not(:empty) ~ .hub-suggest { display: none; }
+    .hub-suggest .lbl { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: var(--label); margin-bottom: 8px; }
+    .hub-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .hub-chip { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 500; color: var(--navy); background: #F3F4F7; border: none; border-radius: 999px; padding: 7px 12px; cursor: pointer; }
 
-    /* Tiles */
-    body.hub .hub-home { padding: 6px 20px 30px; }
-    body.hub .hub-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    body.hub .hub-tile { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; text-align: left; background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 16px 14px 14px; min-height: 112px; cursor: pointer; font-family: 'Montserrat', sans-serif; box-shadow: var(--shadow); transition: transform 0.12s, box-shadow 0.12s; }
-    body.hub .hub-tile:active { transform: scale(0.98); }
-    body.hub .hub-tile-icon { width: 40px; height: 40px; border-radius: 12px; background: #EDF6FB; color: var(--link); display: flex; align-items: center; justify-content: center; }
-    body.hub .hub-tile-icon svg { width: 22px; height: 22px; }
-    body.hub .hub-tile.warm .hub-tile-icon { background: #FBF1E4; color: var(--warm); }
-    body.hub .hub-tile-title { font-size: 15px; font-weight: 700; color: var(--navy); line-height: 1.25; }
-    body.hub .hub-tile-sub { font-size: 12px; font-weight: 400; color: var(--label); line-height: 1.4; }
+    /* Bottom bar */
+    body.hub .hub-tabbar { display: grid; }
+    .hub-tabbar { display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 300; grid-template-columns: repeat(3, 1fr); background: rgba(255,255,255,0.96); backdrop-filter: blur(10px); border-top: 1px solid var(--hair); padding: 8px 4px calc(10px + env(safe-area-inset-bottom, 0px)); }
+    .hub-tab { display: flex; flex-direction: column; align-items: center; gap: 3px; background: none; border: none; font-family: 'Montserrat', sans-serif; font-size: 10.5px; font-weight: 600; color: var(--label); letter-spacing: 0.02em; cursor: pointer; padding: 2px 0; }
+    .hub-tab svg { width: 22px; height: 22px; }
+    .hub-tab.on { color: var(--link); }
+    body.hub .whatsapp-fab { bottom: calc(var(--tabbar-h) + 16px); }
+    body.hub.v-search .whatsapp-fab { display: none !important; }
+    body.hub .note-overlay { z-index: 500; }
 
-    /* Rooms: sections hidden unless the open room owns them; home shows essentials + welcome */
-    body.hub main .section { display: none; }
-    body.hub main .section.hub-visible { display: block; }
-    body.hub main .section { border-bottom: none; padding-top: 22px; }
-    .room-foot { display: none; padding: 6px 20px 30px; }
-    body.hub.in-room .room-foot { display: flex; gap: 10px; }
-    body.hub .room-foot button { flex: 1; background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 13px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: var(--navy); cursor: pointer; box-shadow: var(--shadow); }
-    body.hub.in-room .hub-home { display: none; }
-    body.hub.in-room .whatsapp-fab { bottom: 20px; }
-
-    /* Quieter surfaces: borderless cards on soft shadow, sentence-case labels */
-    body.hub .card, body.hub .place-card, body.hub .gallery-toggle, body.hub a.contact-card { background: #fff; border: 1px solid #F0F1F3; box-shadow: var(--shadow); }
-    body.hub .gallery-toggle:hover { border-color: #F0F1F3; }
+    /* Quieter surfaces everywhere in hub mode */
+    body.hub .card, body.hub .place-card, body.hub .gallery-toggle, body.hub a.contact-card { background: #fff; border: 1px solid var(--hair); box-shadow: var(--soft); }
+    body.hub .gallery-toggle:hover { border-color: var(--hair); }
     body.hub .card-label, body.hub .acc-label, body.hub .prop-label, body.hub .route-from, body.hub .note-label { font-size: 11px; letter-spacing: 0.04em; text-transform: none; font-weight: 600; }
     body.hub .gallery-toggle { font-size: 12px; letter-spacing: 0.02em; text-transform: none; padding: 14px 16px; }
     body.hub .gallery-toggle > span:first-child:not(.acc-summary) { font-size: 14px; font-weight: 600; color: var(--navy); }
-    body.hub .section-heading { font-size: 20px; font-weight: 700; letter-spacing: 0; text-transform: none; color: var(--navy); margin-bottom: 14px; }
+    body.hub .section-heading.hub-dup { display: none; }
+    body.hub .section-heading { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: none; color: var(--label); margin-bottom: 12px; }
     body.hub .subsection-heading { font-size: 12px; letter-spacing: 0.04em; text-transform: none; font-weight: 600; }
     body.hub .card-value { font-size: 16px; }
     body.hub .info-value, body.hub .prop-value, body.hub .place-desc, body.hub .step-text, body.hub .postal-body, body.hub .tip-answer, body.hub .welcome-body p { font-size: 15px; }
-    body.hub .search-group, body.hub .search-results-label { text-transform: none; letter-spacing: 0.02em; font-size: 11px; }
+    body.hub .search-group, body.hub .search-results-label, body.hub .search-result-kicker { text-transform: none; letter-spacing: 0.02em; font-size: 11px; }
     body.hub .search-result.tip .search-result-kicker, body.hub .tips-note { color: var(--warm); }
     body.hub .note-done { color: var(--warm); }
-    body.hub .help-availability { background: #FBF6EE; border-left-color: var(--warm); }
-    body.hub .hero { min-height: 250px; }
-    body.hub #location-card { display: none !important; }
-    body.hub #quick-info { padding-bottom: 6px; }
-    body.hub #quick-info .section-heading { display: none; }
-    body.hub .hub-home { padding-top: 14px; }
-    body.hub #welcome { padding-top: 0; }
-    body.hub .site-footer { border-top: none; }
+    body.hub .help-availability { background: var(--warm-tint); border-left-color: var(--warm); }
+    body.hub .site-footer { border-top: none; padding: 12px 20px 8px; }
+    body.hub .footer-wordmark { font-size: 16px; }
 
     .main { padding-bottom: 60px; }
     .section { padding: 26px 20px 30px; border-bottom: 8px solid var(--card); }
@@ -494,26 +555,28 @@
     <h1 class="hero-title">Guest Information</h1>
     <p class="hero-location"></p>
     <!-- Add a note. Hidden until NOTES_FORM is configured (see script). -->
-    <button class="note-btn" id="note-open" type="button" style="display:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add a note &middot; Deixar nota</button>
+    <button class="note-btn" id="note-open" type="button" style="display:none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Add a note &middot; Deixar nota</span></button>
   </header>
+
+
+  <!-- ============ HUB: GUIDE search button ============ -->
+  <div class="hub-guide" id="hub-guide">
+    <button class="hub-search-btn" id="hub-search-btn" type="button"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Search this guide &middot; Procurar</span></button>
+  </div>
 
   <nav class="tab-nav" aria-label="Page sections">
     <!-- Search bar + section index. Empty box = index of every visible section;
          typing filters it. The list is built from the DOM after the sheet
          renders (buildSearchIndex), so empty sections never appear in it. -->
     <div class="search-bar" id="search-bar">
+      <button class="hub-ib hub-sback" id="hub-sback" type="button" aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
       <div class="search-field">
         <span class="search-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
         <input class="search-input" id="search-input" type="search" placeholder="Procurar · Search" aria-label="Search this page" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
         <button class="search-clear" id="search-clear" type="button" aria-label="Clear search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       </div>
       <div class="search-results" id="search-results" role="listbox" aria-label="Sections"></div>
-    </div>
-    <!-- Hub mode: replaces the tab row while a room is open -->
-    <div class="hub-bar" id="hub-bar">
-      <button class="hub-back" id="hub-back" type="button" aria-label="Back to home"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
-      <span class="hub-title" id="hub-title"></span>
-      <button class="hub-home-link" id="hub-home-link" type="button">Home</button>
+      <div class="hub-suggest" id="hub-suggest"><div class="lbl">Try &middot; Experimente</div><div class="hub-chips" id="hub-chips"></div></div>
     </div>
     <div class="tab-scroll">
     <div class="tab-list">
@@ -528,6 +591,13 @@
   </nav>
 
   <main class="main">
+
+    <!-- ============ HUB: ROOM BAR ============ -->
+    <div class="hub-roombar" id="hub-roombar">
+      <button class="hub-ib" id="hub-back" type="button" aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <h2 id="hub-room-title"></h2>
+      <button class="hub-ib" id="hub-room-search" type="button" aria-label="Search"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+    </div>
 
     <!-- ============ QUICK INFO ============ -->
     <section class="section" id="quick-info">
@@ -564,10 +634,8 @@
 
     </section>
 
-    <!-- ============ HUB HOME (hub mode only) ============ -->
-    <div class="hub-home" id="hub-home" style="display:none;">
-      <div class="hub-tiles" id="hub-tiles"></div>
-    </div>
+    <!-- ============ HUB: ROOMS LIST (Guide view) ============ -->
+    <div class="hub-rooms" id="hub-rooms" style="display:none;"></div>
 
     <!-- ============ WELCOME ============ -->
     <section class="section" id="welcome">
@@ -910,9 +978,9 @@
       <p class="tips-note">General Algarve information, not specific to this property. Where the two differ, the sections above win.</p>
       <div id="tips-groups"></div>
     </section>
-    <div class="room-foot" id="room-foot">
-      <button type="button" id="room-home">Home</button>
-      <button type="button" id="room-next"></button>
+    <div class="hub-pn" id="hub-pn">
+      <button type="button" id="hub-prev"><small>&lsaquo; Previous</small><b></b></button>
+      <button type="button" id="hub-next" class="r"><small>Next &rsaquo;</small><b></b></button>
     </div>
   </main>
 
@@ -926,6 +994,14 @@
     </a>
   </footer>
 
+
+
+  <!-- ============ HUB: BOTTOM BAR ============ -->
+  <nav class="hub-tabbar" id="hub-tabbar" aria-label="Guide">
+    <button class="hub-tab" data-view="guide" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h6"/></svg><span>Guide</span></button>
+    <button class="hub-tab" data-view="search" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Search</span></button>
+    <button class="hub-tab" data-view="help" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M4.9 4.9l4.6 4.6m5 5 4.6 4.6M19.1 4.9l-4.6 4.6m-5 5-4.6 4.6"/></svg><span>Help</span></button>
+  </nav>
 
   <!-- Add a note: bottom sheet. Posts silently to the Google Form in NOTES_FORM. -->
   <div class="note-overlay" id="note-overlay" role="dialog" aria-modal="true" aria-labelledby="note-title">
@@ -981,9 +1057,9 @@
     // Add a note: the Google Form that collects guest notes. Same form on every
     // page (the property is one of the fields). Leave action empty to hide the
     // button. Field IDs come from the form's pre-filled link (entry.NNNN).
-    // Page model. 'hub' = home screen with tiles, one room at a time (new
-    // clients). 'scroll' = the single long page with tabs (existing clients).
-    const LAYOUT = 'scroll';
+    // Page model. 'hub' = cover, bottom bar, Guide home, rooms, full-screen
+    // search (new clients). 'scroll' = the single long page with tabs.
+    const LAYOUT = 'hub';
 
     const NOTES_FORM = {
       action: '',
@@ -2181,8 +2257,8 @@
         if (isHub()) {
           const sec = el.closest('.section');
           const room = sec ? roomOf(sec.id) : null;
-          if (room) { if (!currentRoom || currentRoom.id !== room.id) openRoom(room.id, { keepScroll: true }); }
-          else if (sec && HUB_HOME_SECTIONS.includes(sec.id) && currentRoom) goHome();
+          if (room) hubGo('room', room.id, { keepScroll: true });
+          else if (sec && HUB_GUIDE_SECTIONS.includes(sec.id)) hubGo('guide', null, { keepScroll: true });
         }
         // Open the accordion the target sits in (or is), outermost first.
         const chain = [];
@@ -2413,6 +2489,7 @@
       });
       clearBtn.addEventListener('click', () => { input.value = ''; input.focus(); render(); });
       document.addEventListener('pointerdown', e => {
+        if (isHub() && hubView === 'search') return;
         if (!bar.contains(e.target)) close();
       });
       // Re-render an open list when the index is rebuilt (sheet arrived, or a
@@ -2429,159 +2506,170 @@
 
 
     /* ---------------------------------------------------------------------
-       Hub mode. Rooms are groups of sections. Home shows Essentials, the host
-       note and the tiles; a room shows its sections under a back bar. Search
-       jumps open the room first. The URL hash carries the room (#arrival) or
-       a section (#getting-here), so the post-booking link opens straight on
-       Getting Here and the phone's back button returns home.
+       Hub layout. Views: guide (the link opens here: essentials +
+       rooms list + host note), room:<id> (one group of sections, previous /
+       next), search (the search bar and results, full screen). A bottom bar
+       is always on screen. The URL hash carries the view so the phone's back
+       button works and a post-booking link can open on #getting-here.
        --------------------------------------------------------------------- */
-    const HUB_HOME_SECTIONS = ['quick-info', 'welcome'];
-    const ICON = {
-      car: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M7 17a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm14 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM3 17V11l2.5-5h10L19 11h2v6"/><path d="M3 11h18"/></svg>',
-      key: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M10.85 12.15 19 4m-3 3 3 3m-6-0.5 2 2"/></svg>',
-      home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>',
-      camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
-      pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
-      door: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h8"/><path d="M14 3l6 2v14l-6 2"/><circle cx="11.5" cy="12" r="1"/></svg>',
-      help: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M4.9 4.9l4.6 4.6m5 5 4.6 4.6M19.1 4.9l-4.6 4.6m-5 5-4.6 4.6"/></svg>',
-      sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>'
-    };
     const HUB_ROOMS = [
       { id: 'getting-here', title: 'Getting here', sub: 'From Faro and Lisbon, transfers, car hire', icon: 'car', sections: ['getting-here'] },
       { id: 'arrival', title: 'Arrival', sub: 'Check-in steps, keys, parking', icon: 'key', sections: ['arrival', 'access'] },
       { id: 'house', title: 'The house', sub: 'Appliances, bathrooms, rules', icon: 'home', sections: ['property', 'rules'] },
-      { id: 'photos', title: 'Photos', sub: 'A look around', icon: 'camera', sections: ['photos'] },
+      { id: 'photos', title: 'Photos', sub: 'A look around the house', icon: 'camera', sections: ['photos'] },
       { id: 'local', title: 'Out & about', sub: 'Beaches, eating, things to do', icon: 'pin', sections: ['local-info', 'beaches', 'eat-drink', 'explore'] },
       { id: 'checkout', title: 'Checkout', sub: 'Before you leave', icon: 'door', sections: ['checkout'] },
       { id: 'help', title: 'Help', sub: 'Contacts and emergencies', icon: 'help', sections: ['help'] },
       { id: 'tips', title: 'Algarve tips', sub: 'Sun, pests, money, driving', icon: 'sun', sections: ['tips'], warm: true }
     ];
-    let currentRoom = null;
+    const HUB_ICON = { car: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M7 17a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm14 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM3 17V11l2.5-5h10L19 11h2v6"/><path d="M3 11h18"/></svg>', key: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M10.85 12.15 19 4m-3 3 3 3m-6-0.5 2 2"/></svg>', home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>', camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>', pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>', door: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h8"/><path d="M14 3l6 2v14l-6 2"/><circle cx="11.5" cy="12" r="1"/></svg>', help: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M4.9 4.9l4.6 4.6m5 5 4.6 4.6M19.1 4.9l-4.6 4.6m-5 5-4.6 4.6"/></svg>', sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>', chev: '<svg class="hub-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>' };
+    const HUB_GUIDE_SECTIONS = ['quick-info', 'welcome'];
+    let hubView = 'guide';
+    let hubRoom = null;
 
     const isHub = () => LAYOUT === 'hub';
-    function roomOf(sectionId) {
-      return HUB_ROOMS.find(r => r.sections.includes(sectionId)) || null;
-    }
+    const roomOf = id => HUB_ROOMS.find(r => r.sections.includes(id)) || null;
+    const roomById = id => HUB_ROOMS.find(r => r.id === id) || null;
     function roomHasContent(room) {
-      return room.sections.some(id => { const s = document.getElementById(id); return s && s.style.display !== 'none' && !s.classList.contains('hub-empty'); });
+      return room.sections.some(id => { const s = document.getElementById(id); return s && s.style.display !== 'none'; });
     }
+    const liveRooms = () => HUB_ROOMS.filter(roomHasContent);
 
     // Sections hide themselves with style.display when their sheet keys are
-    // blank. Hub mode needs a second, independent switch (class hub-visible)
-    // so a room can show a section without undoing the blank-key hiding.
-    // pruneEmpty sets display:none; we never touch display here.
+    // blank; the hub adds an independent class so a view can show a section
+    // without undoing that. Never touches style.display.
     function hubApply() {
       if (!isHub()) return;
+      const b = document.body;
+      ['v-guide', 'v-room', 'v-search'].forEach(c => b.classList.remove(c));
+      b.classList.add('v-' + hubView);
       document.querySelectorAll('main .section').forEach(sec => {
-        const show = currentRoom ? currentRoom.sections.includes(sec.id) : HUB_HOME_SECTIONS.includes(sec.id);
+        let show = false;
+        if (hubView === 'guide') show = HUB_GUIDE_SECTIONS.includes(sec.id);
+        else if (hubView === 'room' && hubRoom) show = hubRoom.sections.includes(sec.id);
         sec.classList.toggle('hub-visible', show);
       });
-      document.body.classList.toggle('in-room', !!currentRoom);
-      const title = document.getElementById('hub-title');
-      if (title) title.textContent = currentRoom ? currentRoom.title : '';
-      const next = document.getElementById('room-next');
-      if (next) {
-        const list = HUB_ROOMS.filter(roomHasContent);
-        const i = currentRoom ? list.findIndex(r => r.id === currentRoom.id) : -1;
-        const n = i >= 0 && i < list.length - 1 ? list[i + 1] : null;
-        next.style.display = n ? '' : 'none';
-        next.textContent = n ? n.title + ' ›' : '';
-        next.onclick = n ? () => openRoom(n.id) : null;
-      }
-    }
-
-    function renderTiles() {
-      const wrap = document.getElementById('hub-tiles');
-      const home = document.getElementById('hub-home');
-      if (!wrap || !home || !isHub()) return;
-      wrap.innerHTML = '';
-      HUB_ROOMS.forEach(room => {
-        if (!roomHasContent(room)) return;
-        const b = document.createElement('button');
-        b.type = 'button';
-        b.className = 'hub-tile' + (room.warm ? ' warm' : '');
-        b.setAttribute('aria-label', room.title);
-        const ic = document.createElement('span');
-        ic.className = 'hub-tile-icon';
-        ic.innerHTML = ICON[room.icon] || '';
-        const t = document.createElement('span');
-        t.className = 'hub-tile-title';
-        t.textContent = room.title;
-        const s = document.createElement('span');
-        s.className = 'hub-tile-sub';
-        s.textContent = room.sub;
-        b.appendChild(ic); b.appendChild(t); b.appendChild(s);
-        b.addEventListener('click', () => openRoom(room.id));
-        wrap.appendChild(b);
+      const title = document.getElementById('hub-room-title');
+      if (title) title.textContent = hubRoom && hubView === 'room' ? hubRoom.title : '';
+      // A section heading that just repeats the room title is noise under the bar.
+      document.querySelectorAll('main .section > .section-heading').forEach(h => {
+        const dup = hubView === 'room' && hubRoom && h.textContent.trim().toLowerCase() === hubRoom.title.toLowerCase();
+        h.classList.toggle('hub-dup', dup);
       });
-      home.style.display = '';
-    }
-
-    function openRoom(id, opts) {
-      opts = opts || {};
-      const room = HUB_ROOMS.find(r => r.id === id);
-      if (!room || !isHub()) return;
-      currentRoom = room;
-      hubApply();
-      if (!opts.silent) history.pushState({ room: id }, '', '#' + id);
-      if (!opts.keepScroll) {
-        const nav = document.querySelector('.tab-nav');
-        const top = document.getElementById(room.sections[0]);
-        const y = top ? top.getBoundingClientRect().top + window.scrollY - (nav ? nav.offsetHeight : 0) : 0;
-        window.scrollTo({ top: Math.max(0, y - 4), behavior: 'auto' });
+      const list = liveRooms();
+      const i = hubRoom ? list.findIndex(r => r.id === hubRoom.id) : -1;
+      const prev = i > 0 ? list[i - 1] : null;
+      const next = i >= 0 && i < list.length - 1 ? list[i + 1] : null;
+      const pb = document.getElementById('hub-prev'), nb = document.getElementById('hub-next');
+      if (pb) { pb.disabled = !prev; pb.querySelector('b').textContent = prev ? prev.title : ''; pb.onclick = prev ? () => hubGo('room', prev.id) : null; }
+      if (nb) { nb.disabled = !next; nb.querySelector('b').textContent = next ? next.title : ''; nb.onclick = next ? () => hubGo('room', next.id) : null; }
+      const active = hubView === 'room' && hubRoom && hubRoom.id === 'help' ? 'help' : (hubView === 'room' ? 'guide' : hubView);
+      document.querySelectorAll('.hub-tab').forEach(t => t.classList.toggle('on', t.dataset.view === active));
+      const bar = document.getElementById('search-bar');
+      const input = document.getElementById('search-input');
+      if (bar && input) {
+        if (hubView === 'search') { setTimeout(() => { input.focus(); input.dispatchEvent(new Event('focus')); }, 30); }
+        else { bar.classList.remove('open'); input.blur(); }
       }
     }
 
-    function goHome(opts) {
+    function hubGo(view, roomId, opts) {
       opts = opts || {};
       if (!isHub()) return;
-      currentRoom = null;
+      if (view === 'help') { view = 'room'; roomId = 'help'; }
+      if (view === 'room') { const r = roomById(roomId); if (!r) return; hubRoom = r; }
+      hubView = view;
       hubApply();
-      if (!opts.silent) history.pushState({ room: null }, '', location.pathname + location.search);
-      window.scrollTo({ top: 0, behavior: 'auto' });
+      const hash = view === 'room' ? '#' + hubRoom.id : (view === 'guide' ? '' : '#' + view);
+      if (!opts.silent) history.pushState({ view, room: view === 'room' ? hubRoom.id : null }, '', location.pathname + location.search + hash);
+      if (!opts.keepScroll) window.scrollTo({ top: 0, behavior: 'auto' });
     }
 
-    // Deep link: #getting-here (a section) or #arrival (a room).
+    function renderRooms() {
+      const wrap = document.getElementById('hub-rooms');
+      if (!wrap || !isHub()) return;
+      wrap.innerHTML = '';
+      liveRooms().forEach(room => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'hub-room' + (room.warm ? ' warm' : '');
+        const ic = document.createElement('span'); ic.className = 'hub-ricon'; ic.innerHTML = HUB_ICON[room.icon] || '';
+        const t = document.createElement('span'); t.className = 'hub-rtext';
+        const bb = document.createElement('b'); bb.textContent = room.title;
+        const ss = document.createElement('span'); ss.textContent = room.sub;
+        t.appendChild(bb); t.appendChild(ss);
+        b.appendChild(ic); b.appendChild(t);
+        b.insertAdjacentHTML('beforeend', HUB_ICON.chev);
+        b.addEventListener('click', () => hubGo('room', room.id));
+        wrap.appendChild(b);
+      });
+      wrap.style.display = wrap.childNodes.length ? '' : 'none';
+    }
+
+    // Deep link: #getting-here (a section or room), #guide, #search.
     function hubFromHash() {
       const h = (location.hash || '').replace('#', '');
       if (!h) return false;
-      const room = HUB_ROOMS.find(r => r.id === h) || roomOf(h);
+      if (h === 'search') { hubGo(h, null, { silent: true }); return true; }
+      const room = roomById(h) || roomOf(h);
       if (!room) return false;
-      openRoom(room.id, { silent: true });
+      hubGo('room', room.id, { silent: true });
       const sec = document.getElementById(h);
-      if (sec && sec.classList.contains('section')) sec.scrollIntoView({ block: 'start' });
+      if (sec && sec.classList.contains('section') && room.sections[0] !== h) sec.scrollIntoView({ block: 'start' });
       return true;
+    }
+
+    let hubStarted = false;
+    function hubRefresh() {
+      if (!isHub()) return;
+      renderRooms();
+      if (!hubStarted) { hubStarted = true; if (hubFromHash()) return; }
+      hubApply();
     }
 
     (function wireHub() {
       if (!isHub()) return;
       document.body.classList.add('hub');
-      const back = document.getElementById('hub-back');
-      const homeLink = document.getElementById('hub-home-link');
-      const roomHome = document.getElementById('room-home');
-      const toHome = () => { if (history.state && history.state.room) history.back(); else goHome(); };
-      if (back) back.addEventListener('click', toHome);
-      if (homeLink) homeLink.addEventListener('click', toHome);
-      if (roomHome) roomHome.addEventListener('click', toHome);
       if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-      window.addEventListener('popstate', e => {
-        const id = e.state && e.state.room;
-        if (id) openRoom(id, { silent: true });
-        else if (!hubFromHash()) goHome({ silent: true });
+      const on = (id, fn) => { const el = document.getElementById(id); if (el) el.addEventListener('click', fn); };
+      on('hub-search-btn', () => hubGo('search'));
+      on('hub-room-search', () => hubGo('search'));
+      on('hub-back', () => hubGo('guide')); // the arrow means "back to the guide", whatever the history
+      on('hub-sback', () => { if (history.state && history.state.view === 'search') history.back(); else hubGo('guide'); });
+      document.querySelectorAll('.hub-tab').forEach(t => t.addEventListener('click', () => hubGo(t.dataset.view)));
+      // Wi-Fi card folds to one line once the password has been copied on this
+      // phone (per-browser memory, never shared). "Show" unfolds it again.
+      (function wifiFold() {
+        const pw = document.querySelector('#quick-info .info-copy');
+        const card = pw ? pw.closest('.card') : null;
+        if (!card) return;
+        const KEY = 'gp-wifi-copied';
+        let done = false;
+        try { done = localStorage.getItem(KEY) === '1'; } catch (e) {}
+        const show = document.createElement('button');
+        show.type = 'button'; show.className = 'wifi-show'; show.textContent = 'Show';
+        show.addEventListener('click', () => { card.classList.remove('wifi-done'); });
+        card.appendChild(show);
+        if (done) card.classList.add('wifi-done');
+        pw.addEventListener('click', () => {
+          try { localStorage.setItem(KEY, '1'); } catch (e) {}
+          setTimeout(() => card.classList.add('wifi-done'), 2200);
+        });
+      })();
+      const chips = document.getElementById('hub-chips');
+      if (chips) ['wifi', 'washing machine', 'beach', 'bins', 'emergency', 'baratas'].forEach(q => {
+        const c = document.createElement('button'); c.type = 'button'; c.className = 'hub-chip'; c.textContent = q;
+        c.addEventListener('click', () => { const i = document.getElementById('search-input'); i.value = q; i.dispatchEvent(new Event('input')); i.focus(); });
+        chips.appendChild(c);
       });
-      history.replaceState({ room: null }, '', location.pathname + location.search + location.hash);
+      window.addEventListener('popstate', e => {
+        const st = e.state;
+        if (st && st.view) hubGo(st.view, st.room, { silent: true });
+        else if (!hubFromHash()) hubGo('guide', null, { silent: true });
+      });
+      history.replaceState({ view: 'guide', room: null }, '', location.pathname + location.search + location.hash);
       hubApply();
     })();
-
-    // After every render pass: tiles reflect which rooms have content, the
-    // current view is re-applied (a room may have just gained or lost sections).
-    function hubRefresh() {
-      if (!isHub()) return;
-      renderTiles();
-      if (!hubFromHashDone) { hubFromHashDone = true; if (hubFromHash()) return; }
-      hubApply();
-    }
-    let hubFromHashDone = false;
 
     /* ---------------------------------------------------------------------
        Tips Library. A second, shared sheet (TIPS_URL) with one row per tip:
