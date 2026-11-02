@@ -20,15 +20,15 @@ Client pages are paid deliverables and cannot break.
 - Delete the branch after merge.
 
 ## The template is current — use it
-_template/index.html IS the master (rebuilt 7 Aug 2026 as the union of every client section: 13 sections behind 6 grouped tabs, ~76 sheet keys, pruneEmpty for empty-key hiding). Cantinho da Praia was built from it with only the slug and Sheet ID swapped — that is the intended amount of code editing for a new client: two swaps, zero other edits.
-An older version of this file said _template was stale and to copy luzbeachhouse. That is obsolete. Never copy a client page.
-
-Fixes discovered during any build go to the template FIRST, then to affected client pages. No cross-client contamination: distances, recommendations, contacts verified per property.
-
-_template also carries the test tools (not copied to clients):
-- test-live-sheet.mjs — the gate: renders the template against a real sheet ID.
-- test-empty-keys.mjs — empty-key hiding check.
-- make-preview.mjs — local preview build.
+_template/index.html IS the master. Version 2 (Nov 2026, branch redesign-v2) is the guest guide redesign: Home, Arrive, House, Explore and Checkout tabs, a Contacts sheet, search, and quick fixes. It is built from the approved prototype in Claude's workspace, so do not hand-edit large parts of it; template changes go back through that source.
+- A client page is still a copy with two swaps: `REPLACE-SLUG` (image folder) and `REPLACE-SHEET-ID` (in SHEET_URL). Both sit in the PER-CLIENT SETTINGS block at the top of the script.
+- It reads the new sheet keys first and falls back to the old ones (contact_primary_name, host_availability, flexibility, luggage_storage, included_items), so an old sheet still renders before its new rows are added.
+- It keeps the last good copy of the sheet on the guest's phone and opens from it when the signal is weak (4 second wait). With no copy and no signal, it shows a "try again" screen instead of an empty page.
+- Photos: hero.jpg, optional host.jpg (the host's face on the cards), and the gallery files named in the sheet's `photos` row ("living-room — Living room | terrace — The terrace"). Missing files are skipped.
+- expiry_date and tips_hide work as before. The Tips Library is now built into the page (73 tips), not fetched from the Tips sheet.
+- The "Add a note" Google Form is not in version 2 (open question for Mauro).
+- The old test tools (test-live-sheet.mjs, test-empty-keys.mjs, make-preview.mjs) were written for version 1 and do not test version 2. Claude runs the version 2 gate (all client sheets, broken and empty sheets, offline, phone widths, accessibility) from its workspace until they are replaced.
+Client pages on version 1 (cantinhodapraia, luzbeachhouse, omarafado, joao-demo, pdm10) keep working unchanged until each is moved, one at a time, with its own phone test.
 
 ## New client checklist (the whole job)
 1. Sheet: in the GuestPage Drive, copy "GuestPage Master Property Sheet (copy per client)", rename to the property, fill it during onboarding. Share: anyone with the link, viewer (required for CSV export). Column C is guidance for filling — the page reads only columns A and B.
